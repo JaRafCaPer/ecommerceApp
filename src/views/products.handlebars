@@ -1,0 +1,30 @@
+<h2>Products</h2>
+<a href="/form-products">Agregar Producto</a>
+<hr>
+
+<div class="row">
+  {{#each products}}
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="{{image}}" alt="{{name}}">
+      <div class="card-body">
+        <h5 class="card-title">{{name}}</h5>
+        <p class="card-text">{{description}}</p>
+        <a href="/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
+        <form action="/carts/{{this._id}}/products" method="POST">
+          <input type="hidden" name="products[0][product]" value="{{this._id}}">
+          <input type="hidden" name="products[0][name]" value="{{name}}">
+          <input type="hidden" name="products[0][image]" value="{{image}}">
+          <input type="hidden" name="products[0][description]" value="{{description}}">
+          <input type="hidden" name="products[0][category]" value="{{category}}">
+          <input type="hidden" name="products[0][price]" value="{{price}}">
+          <input type="hidden" name="products[0][status]" value="{{status}}">
+          <input type="hidden" name="products[0][stock]" value="{{stock}}">
+          <input type="number" name="products[0][quantity]" value="1" min="1">
+          <button type="submit" class="btn btn-success">Agregar al carrito</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>

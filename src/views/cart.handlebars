@@ -1,0 +1,24 @@
+<!-- cart.handlebars -->
+
+<h2>Carrito</h2>
+<p>Carrito ID: {{cart._id}}</p>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Cantidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each cart.products}}
+    <tr>
+      <td>{{this.product.name}}</td>
+      <td>{{this.product.description}}</td>
+      <td>${{this.product.price}}</td>
+      <td>{{this.quantity}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

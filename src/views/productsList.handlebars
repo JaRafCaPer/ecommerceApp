@@ -1,0 +1,73 @@
+<h2>Products</h2>
+<a href="/form-products">Agregar Producto</a>
+<hr>
+
+<div class="row">
+
+    <form id="formulario">
+      Limit: <input type="number" id="query-limit" value="{{limit}}">
+      Page: <input type="number" id="query-page" value="{{page}}">
+      <input type="hidden" name="sort" id="sort-order" value="desc">
+      <button type="submit">Cargar</button>
+      <button type="submit">Precio Descendente</button>
+       <button type="submit" id="sort-button">Precio Ascendente</button>
+     <select id="category-select" name="category">
+        <option value="">Todas las categorías</option>
+        {{#each categories}}
+          <option value="{{category}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </form>
+   
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th >image</th> 
+        <th>description</th>
+        <th>category</th>
+        <th>price</th> 
+        <th>status</th> 
+        <th>stock</th> 
+      </tr>
+    </thead>
+    <tbody>
+        {{#each docs}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{image}}</td>
+                <td>{{description}}</td>
+                <td>{{category}}</td>
+                <td>{{price}}</td>
+                <td>{{status}}</td>
+                <td>{{stock}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+  </table>
+  
+
+  <script>
+  const sortOrderInput = document.getElementById('sort-order');
+  const sortButton = document.getElementById('sort-button');
+  const categorySelect = document.getElementById('category-select');
+
+  sortButton.onclick = () => {
+    sortOrderInput.value = sortOrderInput.value === 'asc' ? 'desc' : 'asc';
+  };
+
+  document.getElementById('formulario').onsubmit = (e) => {
+    e.preventDefault();
+    const limit = document.getElementById('query-limit').value;6
+    const page = document.getElementById('query-page').value;
+    const sortOrder = sortOrderInput.value;
+    const category = categorySelect.value;
+    const url = `/list?limit=${limit}&page=${page}&sort=${sortOrder}&query=category,${category}`;
+  window.location.href = url;
+  };
+  </script>
+  </div>
+  
+
+
