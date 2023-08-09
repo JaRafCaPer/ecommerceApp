@@ -60,18 +60,18 @@ router.get('/list', async (req, res) => {
   sortQuery['price'] = sortParam === 'asc' ? 1 : -1;
 }
 
-  console.log(sort);
-  console.log(query); 
-
   try {
     const result = await ProductModel.paginate(query, {
       page,
       limit,
       sort: sortQuery, 
       lean: true,
-    });
-    const categories = await ProductModel.distinct('category').lean().exec();
 
+    });
+    console.log(result);
+    const categories = await ProductModel.distinct('category').lean().exec();
+    
+    console.log(categories);
     res.render('productsList', {
       ...result,
       categories,
@@ -107,13 +107,20 @@ router.post('/form-products', async (req, res) => {
     res.redirect('/')
 })
 
+
+
 router.get('/carts/:cid', async (req, res) => {
   try {
-  
-    const cart = await cartModel.findById(req.params.cid).populate('products.product').lean().exec();
+    const cart = await cartModel
+      .findById(req.params.cid)
+      .populate('products.item')  // Carga los detalles completos de los productos usando populate
+      .lean()
+      .exec();
+
     res.render('cart', { cart });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 export default router

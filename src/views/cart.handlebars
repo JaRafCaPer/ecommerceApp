@@ -1,24 +1,23 @@
-<!-- cart.handlebars -->
-
-<h2>Carrito</h2>
-<p>Carrito ID: {{cart._id}}</p>
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Precio</th>
-      <th>Cantidad</th>
-    </tr>
-  </thead>
-  <tbody>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping Cart</title>
+</head>
+<body>
+  <h1>Your Shopping Cart</h1>
+  <ul>
     {{#each cart.products}}
-    <tr>
-      <td>{{this.product.name}}</td>
-      <td>{{this.product.description}}</td>
-      <td>${{this.product.price}}</td>
-      <td>{{this.quantity}}</td>
-    </tr>
+      <li>
+        <h3>{{this.item.name}}</h3>
+        <p>Price: ${{this.item.price}}</p>
+        <p>Quantity: {{this.quantity}}</p>
+        <p>Description: {{this.item.description}}</p>
+        <p>Category: {{this.item.category}}</p>
+        <p>Status: {{this.item.status}}</p>
+        <p>Stock: {{this.item.stock}}</p>
+        <img src="{{this.item.image}}" alt="{{this.item.name}}">
+      </li>
     {{/each}}
-  </tbody>
-</table>
+  </ul>
+</body>
+</html>
