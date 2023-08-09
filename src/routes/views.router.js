@@ -113,14 +113,16 @@ router.get('/carts/:cid', async (req, res) => {
   try {
     const cart = await cartModel
       .findById(req.params.cid)
-      .populate('products.item')  // Carga los detalles completos de los productos usando populate
+      .populate('products.item')
       .lean()
       .exec();
+
+    // Console log
+    console.log(cart);
 
     res.render('cart', { cart });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-
 export default router
