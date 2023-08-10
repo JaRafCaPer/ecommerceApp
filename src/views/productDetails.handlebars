@@ -6,4 +6,8 @@
 <p>Stock: {{product.stock}}</p>
 <p>Price: ${{product.price}}</p>
 <!-- Agregar más detalles del producto si es necesario -->
-<a href="#" class="btn btn-primary">Agregar al carrito</a>
+<form action="/api/carts/64d3e68269768eff4dc2cb7c/products"  method="POST">
+    <input type="hidden" name="products[0][item]" value="{{product._id}}">
+    <input type="number" name="products[0][quantity]" value="1" min="1">
+    <button type="submit" class="btn btn-success">Agregar al carrito</button>
+</form>

@@ -15,6 +15,7 @@ router.get('/products/:pid', async (req, res) => {
   const { pid } = req.params;
   try {
     const product = await ProductModel.findById(pid).lean().exec();
+    console.log(product);
     if (product) {
       res.render('productDetails', { product });
     } else {

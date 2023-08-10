@@ -140,5 +140,26 @@ router.put("/:cid/products/:pid", async (req, res) => {
   }
 });
 
+router.put("/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid; // Cart ID
+    const newProducts = req.body.products; // New products array from request body
+
+    const cart = await CartModel.findByIdAndUpdate(
+      cid,
+      { products: newProducts },
+      { new: true } // To return the updated cart
+    );
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
 
