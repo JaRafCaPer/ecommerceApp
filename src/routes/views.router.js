@@ -8,7 +8,10 @@ const router = Router()
 
 router.get('/products', async (req, res) => {
     const products = await ProductModel.find().lean().exec()
-    res.render('products', {products })
+    const carts = await cartModel.find();
+    const cartId = carts ? carts[0]._id : null
+    console.log(cartId);
+    res.render('products', {products, cartId})
 })
 
 router.get('/products/:pid', async (req, res) => {
@@ -16,8 +19,12 @@ router.get('/products/:pid', async (req, res) => {
   try {
     const product = await ProductModel.findById(pid).lean().exec();
     console.log(product);
+    const carts = await cartModel.find();
+    console.log(carts);
+    const cartId = carts ? carts[0]._id : null
+    console.log(cartId);
     if (product) {
-      res.render('productDetails', { product });
+      res.render('productDetails', { product, cartId });
     } else {
       res.status(404).send({ message: 'Product not found' });
     }

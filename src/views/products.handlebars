@@ -11,7 +11,7 @@
         <h5 class="card-title">{{name}}</h5>
         <p class="card-text">{{description}}</p>
         <a href="/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
-        <form action="/api/carts/64d3e68269768eff4dc2cb7c/products"  method="POST">
+        <form action="/api/carts/{{@root.cartId}}/products"  method="POST">
           <input type="hidden" name="products[0][item]" value="{{_id}}">
           <input type="number" name="products[0][quantity]" value="1" min="1">
           <button type="submit" class="btn btn-success">Agregar al carrito</button>
