@@ -8,15 +8,35 @@ import viewsRouter from './routes/views.router.js'
 import __dirname from './utils.js'
 import MessageModel from "../src/DAO/mongoManager/models/message.model.js"
 import productModel from './DAO/mongoManager/models/product.model.js'
+import MongoStore from 'connect-mongo'
+import session from "express-session"
  
 const app = express()
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+
+const uri = 'mongodb+srv://caballeroperezjavier:prueba2023@ecommerce.0mdas1z.mongodb.net/'
+const dbName = 'ecommerce'
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: uri,
+        dbName,
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        },
+        ttl: 100
+    }),
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}))
 
 app.use('/', viewsRouter)
 app.use('/api/products', productRouter)
