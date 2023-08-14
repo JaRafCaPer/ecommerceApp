@@ -12,7 +12,7 @@ router.post("/login", async (req, res) => {
   
     req.session.user = user;
   
-    return res.redirect("/realtimeproducts");
+    return res.redirect("/products");
   });
   
   router.post("/register", async (req, res) => {
@@ -39,4 +39,4 @@ router.post("/login", async (req, res) => {
     });
   });
   
-  module.exports = router;
+export default  router;

@@ -4,6 +4,7 @@ import { Server } from 'socket.io'
 import mongoose from 'mongoose'
 import productRouter from './routes/product.router.js'
 import cartRouter from './routes/cart.router.js'
+import sessionRouter from './routes/session.router.js'
 import viewsRouter from './routes/views.router.js'
 import __dirname from './utils.js'
 import MessageModel from "../src/DAO/mongoManager/models/message.model.js"
@@ -41,6 +42,7 @@ app.use(session({
 app.use('/', viewsRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
+app.use('/api/session', sessionRouter)
 
 const runServer = () => {
     const httpServer = app.listen(8080, () => console.log('Listening...'))

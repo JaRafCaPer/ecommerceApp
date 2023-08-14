@@ -10,8 +10,9 @@ router.get('/products', async (req, res) => {
     const products = await ProductModel.find().lean().exec()
     const carts = await cartModel.find();
     const cartId = carts ? carts[0]._id : null
-    console.log(cartId);
-    res.render('products', {products, cartId})
+    const user = req.session.user;
+    console.log(user);
+    res.render('products', {products, cartId, user})
 })
 
 router.get('/products/:pid', async (req, res) => {
