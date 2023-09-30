@@ -1,5 +1,10 @@
-export default class carts {
+export default class CartDTO{
+
     constructor(cart){
-        this.products = cart?.products ?? [];
+        this.products = [
+            this.product = cart?.product,
+            this.quantity = cart?.quantity
+        ] = cart?.products ?? []
     }
+
 }

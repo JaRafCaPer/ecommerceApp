@@ -1,11 +1,12 @@
-export default class products{
-    constructor(prod){
-        this.title = prod?.title ?? ''
-        this.description = prod?.description ?? ''
-        this.price = parseFloat(prod?.price) ?? 0
-        this.thumbnail = prod?.thumbnail ?? ''
-        this.code = prod?.code ?? ''
-        this.stock = parseInt(prod?.stock) ?? 0
-        this.status = prod?.status ?? true
+export default class ProductDTO {
+
+    constructor(product) {
+        this.name = product?.name ?? 'NN'
+        this.image = product?.image ?? ''
+        this.description = product?.description ?? 'No Description' 
+        this.category = product?.category ?? 'generic' 
+        this.price = product?.price ?? 0 
+        this.status = product?.status ?? true 
+        this.stock = product?.stock ?? 0 
     }
 }

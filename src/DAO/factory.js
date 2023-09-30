@@ -1,51 +1,42 @@
-import config from "../config/config.js";
-import mongoose from "mongoose";
-import 'dotenv/config.js';
+import config from '../config/config.js'
+import mongoose from 'mongoose'
 
-export let Products
-export let Carts
-export let View
-export let Ticket
+export let User
+export let Store
+export let Order
+
+console.log(`Persistence with ${config.persistence}`)
 
 switch (config.persistence) {
-    case "MEMORY" :
-      
-        const {default: ViewMemory } = await import("./memory/view.memory.js");
-        const {default: ProductsMemory } = await import("./memory/products.memory.js");
-        const {default: CartsMemory} = await import("./memory/cart.memory.js");
-        Products = ProductsMemory;
-        Carts = CartsMemory;
-        View = ViewMemory;
+    case 'MONGO':
+
+        mongoose.connect(config.dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: config.dbName
+        })
+
+        const { default: UserMongo } = await import('./mongo/users.mongo.js')
+        const { default: StoreMongo } = await import('./mongo/stores.mongo.js')
+        const { default: OrderMongo } = await import('./mongo/tickets.mongo.js')
+
+        User = UserMongo
+        Store = StoreMongo
+        Order = OrderMongo
+
         break;
 
-    case "FILE" :
-        const {default: ProductsFile } = await import("./files/productManager.js");
-        const {default: CartsFile} = await import("./files/cartManager.js");
-        console.log("connected to file");
-        Products = ProductsFile
-        Carts = CartsFile
+    case 'FILE':
+        const { default: UserFile } = await import('./file/users.file.js')
+        const { default: StoreFile } = await import('./file/stores.file.js')
+        const { default: OrderFile } = await import('./file/tickets.file.js')
+
+        User = UserFile
+        Store = StoreFile
+        Order = OrderFile
+
         break;
 
-    case "MONGODB" :{
-      
-        const {default: ProductsMongo } = await import("./mongo/product.services.js");
-        const {default: ViewMongo } = await import("./mongo/views.services.js");
-        const {default: CartsMongo} = await import("./mongo/cart.services.js");
-        const {default: TicketsMongo} = await import("./mongo/ticket.services.js")
-        mongoose.connect(process.env.URL_MONGO, {
-            dbName: "ecommerce"
-          })
-            .then(() => {
-              console.log("DB connected!!");
-             
-            })
-            .catch (e => {
-              console.log("can´t connect to DB", e.message);
-            })
-        Products = ProductsMongo
-        Carts = CartsMongo
-        View = ViewMongo
-        Ticket = TicketsMongo
+    default:
         break;
-    }
 }

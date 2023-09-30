@@ -6,10 +6,17 @@ export default class UserRepository {
         this.dao = dao
     }
 
-    getUsers = async () => { return await this.dao.getUsers() }
+    getUsers = async (populate = false) => { 
+        return await this.dao.getUsers(populate) 
+    }
     getUserById = async(id) => { return await this.dao.getUserById(id) }
     saveUser = async(user) => { 
         const userToInsert = new UserDTO(user)
         return await this.dao.saveUser(userToInsert)
+    }
+    addOrderToUser = async ( userId, orderId) => {
+        const user = await this.dao.getUserById(userId)
+        user.orders.push(orderId)
+        return await this.dao.updateUser(user.id, user)
     }
 }

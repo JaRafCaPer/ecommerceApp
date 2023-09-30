@@ -5,11 +5,20 @@ export default class Product extends FileManager {
         super(filename)
     }
 
-    getProducts = async () => { return await this.get() }
-    getProductById = async (id) => { return await this.getById(id) }
-    createProduct = async (Product) => { return await this.add(Product) }
-    updateProduct = async (id, Product) => {
-        Product.id = id
-        return await this.update(Product)
+     getProducts = async () => {
+        return await this.get()
+    }
+
+     getProductById = async (id)=> {
+        return await this.getById(id)
+    }
+
+     addProductToDatabase = async (product) => {
+        return await this.add(product)
+    }
+
+     updateProduct = async (id, data) => {
+        return await this.update(id, data)
     }
 }
+   
