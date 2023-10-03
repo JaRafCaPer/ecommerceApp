@@ -1,37 +1,40 @@
-import FileManager from "./file.manager.js";
-import Ticket from "./tickets.file.js";
-import Cart from '../file/carts.file.js'
-
-
-export default class User extends FileManager {
-
-    constructor(filename = './db.users.json') {
-        super(filename)
-        this.ticketFile = new Ticket()
-        this.cartFile = new Cart()
+import FileManager from './FileManager.js'
+import CartManager from './carts.file.js'
+export default class UserManager extends FileManager{
+    constructor(path = './db/users.db.js'){
+        super(path)
+        this.cartManager = new CartManager()
     }
-    getUsers = async (populate = false) => { 
+    async getAllUsers(populate = false){
         const users = await this.get()
-        
-        if(populate) {
-            const tickets = await this.ticketFile.getTickets()
+        if(populate){
+            const carts = await this.cartManager.getAllCarts()
             for (let i = 0; i < users.length; i++) {
                 const result = []
-                const ticketUsers = users[i].tickets
-                ticketUsers.forEach(oid => {
-                    let ticket = tickets.fnd(o => o.id = oid)
-                    result.push(ticket)
+                const userCartArray = []
+                const usersCart = users[i].cart
+                userCartArray.push(usersCart)
+                userCartArray.forEach(cId => {
+                    let cart = carts.find(cart => parseInt(cart._id) === parseInt(cId)) 
+                    result.push(cart)
                 })
-                users[i].tickets = result
+                users[i].cart = result
             }
         }
-
         return users
     }
-    getUserById = async(id) => { return await this.getById(id) }
-    createUser = async(user) => { return await this.add(user)}
-    updateUser = async(id, user) => {
-        user.id = id
-        return await this.update(user)
+    async createUser(user){
+        return await this.add(user)
     }
+
+    async getUserByEmail(email){
+        const user = await this.getAllUsers()
+        const userEmail = user.find(user => user.email === email)
+        return userEmail
+    }
+
+    async getUserById(id){
+        return await this.getById(id)
+    }
+
 }

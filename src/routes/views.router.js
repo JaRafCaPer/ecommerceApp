@@ -1,193 +1,204 @@
-import { Router } from "express";
-import {renderProducts, renderProductById,renderCartById, login,chat,profile, register, productList, realTimeProducts, formProducts, getFormProducts} from '../controllers/views.controller.js'
-import passport from "passport";
+import {Router} from 'express'
+import jwt from 'jsonwebtoken'
+
+import prod from '../app.js'
+import ProductModel from '../DAO/mongo/models/products.mongo.model.js'
+import { extractCookie, authorization, authToken } from '../utils.js'
+import cartModel from '../DAO/mongo/models/carts.mongo.model.js'
+import userModel from '../DAO/mongo/models/users.mongo.model.js'
+import { productService, cartService, userService } from '../services/index.js'
+
+//.env config
+import config from '../config/config.js'
+
 const router = Router()
 
-// function auth(req, res, next) {
-//     if(req.session?.user) return next()
-//     res.redirect('/')
-//   }
 
-router.get('/products', passport.authenticate('jwt', { session: false }), renderProducts
+//Autenticacion para poder entrar solo si estas loggeado
+function auth(req, res, next){
+    const token = extractCookie(req)
+    if(!token){ 
+        return res.redirect('/')
+    }
+    jwt.verify(token, config.SECRET_JWT, (error, credentials) =>{
+        if(error) return res.status(403).send({error: 'Not authorized / modified cookie'})
+        
+        console.log(credentials.user)
+        req.user = credentials.user
+        console.log("Authenticated!")
+        return next()
+    })
+}
 
-// passport.authenticate('jwt', { session: false }), async (req, res) => {
-//     const products = await ProductModel.find().lean().exec()
-//     const carts = await cartModel.find();
-//     const cartId = carts ? carts[0]._id : null
-//     const user = req.user;
-//     console.log('Proiducts:', user);
-//     res.render('products', {products, cartId, user})
-// }
-
-)
-
-router.get('/products/:pid', renderProductById 
-
-// async (req, res) => {
-//   const { pid } = req.params;
-//   try {
-//     const product = await ProductModel.findById(pid).lean().exec();
-//     console.log(product);
-//     const carts = await cartModel.find();
-//     console.log(carts);
-//     const cartId = carts ? carts[0]._id : null
-//     console.log(cartId);
-//     if (product) {
-//       res.render('productDetails', { product, cartId });
-//     } else {
-//       res.status(404).send({ message: 'Product not found' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// }
-);
-
-router.get('/list', productList
-
-// async (req, res) => {
-
-//   const page= parseInt(req.query?.page || 1)
-//   const limit= parseInt(req.query?.limit || 10)
-//   const queryParams = req.query?.query || ''
-//   const queryParam = req.query?.query || ''
-//   const sortParam = req.query?.sort || ''
-
-
-//  // Creamos un objeto vacío para la consulta
-//     const query = {}
-//     let sort = {}
-//     // Creamos un objeto para el ordenamiento por precio
-//   const sortQuery = {};
-
-// //dividimos la informacion obtenida en query
-//   if (queryParams) {
-//     const field = queryParams.split (',')[0]
-//     const value = queryParams.split (',')[1] 
-
-//     if(!isNaN(parseInt(value))) value = parseInt(value)
+router.get('/realtimeproducts', authToken, authorization('admin'), async (req, res)=>{
     
-//     query[field] = value
-//   }
-//   // Agregamos lógica para filtrar por categoría si se seleccionó una categoría válida
-//   if (query.category && query.category !== '') {
-//     query['category'] = query.category;
-//   } else {
-//     delete query.category; // Si no se seleccionó ninguna categoría, eliminamos el filtro de categoría
-//   }
-//  // Agregamos lógica para ordenar por precio
-//  if (sortParam === 'asc' || sortParam === 'desc') {
-//   sortQuery['price'] = sortParam === 'asc' ? 1 : -1;
-// }
-
-//   try {
-//     const result = await ProductModel.paginate(query, {
-//       page,
-//       limit,
-//       sort: sortQuery, 
-//       lean: true,
-
-//     });
-//     console.log(result);
-//     const categories = await ProductModel.distinct('category').lean().exec();
+    // const totalProducts = await ProductModel.find().lean().exec()
+    const totalProducts = await productService.getProducts()
+    res.render('realTimeProducts', {totalProducts})
+})
+router.get('/products', authToken, async (req, res)=>{
     
-//     console.log(categories);
-//     res.render('productsList', {
-//       ...result,
-//       categories,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// }
+    try{
+        if(!req.user){
+            throw new Error('Please, log in to see our products!')
+        }
+        //arreglar cartURL
+        const page = parseInt(req.query?.page) || 1
+        const limit = parseInt(req.query?.limit) || 10
 
-)
+        var cartId = req.user.cart
+        // const cartObtained = await cartModel.findById(cartId).populate('products.product').lean().exec()
+        const cartObtained = await cartService.getCartById(false, cartId)
+        if(!cartObtained) throw new Error("The cart does not exist")
 
-router.get('/realtimeproducts', realTimeProducts
-// async (req, res) => {
-//     console.log("get products")
-//     const products = await ProductModel.find().lean().exec()
-//     res.render('products_realtime', { products })
-// }
-)
-
-router.get('/form-products', passport.authenticate('jwt', { session: false }), formProducts
-// async (req, res) => {
-//     res.render('form', {})
-// }
-)
-
-router.post('/form-products', getFormProducts
-// async (req, res) => {
-//     const data = req.body
-//     const result = await ProductModel.create(data)
-
-//     res.redirect('/')
-// }
-)
-
-router.get('/chat', passport.authenticate('jwt', { session: false }), chat
-
-// async (req, res) => {
-//     try {
-//         const messages = await messageModel.find().lean().exec();
-//         res.render('chat', { messages });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// }
-);
+        const userFound = await userService.getUserByEmail(req.user.email, true)
+        // const userFound = await userModel.find({email: req.user.email}).populate('cart').lean().exec()
+        const {_id, first_name, email, last_name, age, cart, rol} = userFound
+        const user = {_id, first_name, email, last_name, age, cart, rol}
 
 
+        const sortType = parseInt(req.query?.sort) || ''
+        let sort = ''
+        let sortCheck = ''
 
-router.get('/carts/:cid', renderCartById
-// async (req, res) => {
-//   try {
-//     const cart = await cartModel
-//       .findById(req.params.cid)
-//       .populate('products.item')
-//       .lean()
-//       .exec();
+        const statusType = req.query?.status || ''
+        let status = ''
+        let statusCheck = ''
 
-//     // Console log
-//     console.log(cart);
+        let options = ''
 
-//     res.render('cart', { cart });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// }
-);
+        switch(sortType){
+            case -1: sort = `&sort=-1`; sortCheck = -1; break;
+            case 1: sort = `&sort=1`; sortCheck = 1; break;
+            default: sort = ''; sortCheck = '';break;
+        }
+        
+        switch(statusType){
+            case 'true': status = '&status=true'; statusCheck = true; break;
+            case 'false': status = '&status=false'; statusCheck = false; break;
+            default: status = ''; statusCheck = ''; break;
+        }
+        
+        if(sortCheck !== ''){
+            options = {
+                page,
+                limit,
+                sort:{
+                    price: sortCheck
+                },
+                lean:true
+            }
+        }else{
+            options = {
+                page,
+                limit,
+                lean:true
+            }
+        }
 
-router.get('/', login
-// (req, res) => {
-//   if(req.session?.user) {
-//       res.redirect('/profile')
-//   }
+        if(statusCheck !== ''){
+            const statusFilter = {status: statusCheck}
+            const totalProducts = await ProductModel.paginate(statusFilter, options, (err, results)=>{
+                if(err){ return console.log(err)}
+                return results
+            })
 
-//   res.render('login', {})
-// }
-)
+            totalProducts.prevLink = totalProducts.hasPrevPage? `/products?page=${totalProducts.prevPage}&limit=${limit}${sort}${status}` : ''
+            totalProducts.nextLink = totalProducts.hasNextPage? `/products?page=${totalProducts.nextPage}&limit=${limit}${sort}${status}` : ''
 
-router.get('/register', register
-// (req, res) => {
-//   if(req.session?.user) {
-//       res.redirect('/profile')
-//   }
+            // const userFound = await userModel.find({email: req.user.email}).populate('cart').lean().exec()
+            // const {_id, first_name, email, last_name, age, cart, rol} = userFound[0]
+            // const user = {_id, first_name, email, last_name, age, cart, rol}
+            return res.render('home', ({result: 'success'}, {
+                totalProducts: totalProducts,
+                cartId: cartId,
+                user: user
+            }))
 
-//   res.render('register', {})
-// }
-)
+            // }
+            // else{
+
+            // }
+        }
+        const totalProducts = await ProductModel.paginate({}, options, (err, results)=>{
+            if(err){ return console.log(err)}
+            return results
+        })
+
+
+        totalProducts.prevLink = totalProducts.hasPrevPage? `/products?page=${totalProducts.prevPage}&limit=${limit}${sort}${status}` : ''
+        totalProducts.nextLink = totalProducts.hasNextPage? `/products?page=${totalProducts.nextPage}&limit=${limit}${sort}${status}` : ''
+        // const user = req.user
+
+        
+        let totalQuantity = 0
+        cartObtained.products.forEach(product => {
+            if(product.quantity == product.stock){
+                console.log('Error: No puede agregar mas de este producto al carrito')
+            }
+            if(product.quantity > product.stock){
+                console.log("Error: Tiene más cantidad que stock!, reseteando cantidad...")
+                product.quantity = 0
+            }
+            console.log(product.quantity)
+            totalQuantity += product.quantity               
+        });
+        //Pasar este valor por la navbar para cambiar la cantidad de productos que tiene en el carrito
+        console.log('Total quantity: ' + totalQuantity)
+
+        console.log(user)
+        // console.log("User logeado: " + user)
+        return res.render('home', ({result: 'success'}, {
+            totalProducts: totalProducts,
+            cartId: cartId,
+            user: user
+        }))
+
+    }catch(e){
+        return console.error(e)
+    }
+})
+router.get('/products/:pId', async (req, res)=>{
+    try{
+        const pId = req.params.pId
+        const product = await prod.getProductById(pId)
+        // console.log(product)
+        res.render('products', {product})
+    }catch(e){
+        return console.error(e)
+    }
+
+})
+router.get('/cart/:cId', async (req, res)=>{
+    try{
+        const cId = req.params.cId
+        const cart = await cartModel.findById(cId).populate('products.product').lean()
+
+        // console.log(JSON.stringify(cart, null,'\t'))
+
+        res.render('carts', {cart})
+    }catch(e){
+        return console.error(e)
+    }
+})
+router.get('/chat', (req, res)=>{
+    res.render('chat', {})
+})
 
 
 
-router.get('/profile', passport.authenticate('jwt', { session: false }), profile
-//   passport.authenticate('jwt', { session: false }),
-//   (req, res) => {
+router.get('/', (req, res)=>{
+    if(req.user){
+        return res.redirect('/products')
+    }
+    // if(req.session?.user){
+    //     res.redirect('/products')
+    // }
+    res.render('login', {})
+})
 
-//     const { user } = req
-//     console.log('profile:', user)
-//     res.render('profile', user)
-//   }
-)
+router.get('/register', (req, res)=>{
+    
+    res.render('register', {})
+})
 export default router

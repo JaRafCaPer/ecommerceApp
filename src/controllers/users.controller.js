@@ -1,30 +1,35 @@
-import { userService } from "../services/index.js"
+import { userService } from "../services/index.js";
 
-export const getUsers = async (req, res) => {
-    let populate = req.query?.populate ?? true
-    populate = populate === "false" ? false : true
-
-    const result = await userService.getUsers(populate)
-    res.send({ status: 'success', payload: result })
+export const getAllUsers = async (req, res)=>{
+    try {
+        let populate = req.query?.populate || false
+        populate = populate === "false" ? false : true
+        return await userService.getAllUsers(populate)
+         
+    } catch (error) {
+        return console.error(error)
+    }
 }
 
-export const getUserByID = async (req, res) => {
-    const { uid } = req.params
-    const result = await userService.getUserById(uid)
-
-    res.send({ status: 'success', payload: result })
+export const createUser = async (req, res)=>{
+    try {
+        const user = req.body
+        const userCreated = await userService.createUser(user)
+        if(!userCreated) return res.send({status: 'error', payload: 'Unable to create the user!'})
+        return res.send({status: 'success', payload: user})
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
-export const saveUsers = async (req, res) => {
-    const user = req.body
-
-    const result = await userService.saveUser(user)
-    res.send({ status: 'success', payload: result })
-}
-
-export const addOrder = async (req, res) => {
-    const { userId, orderId } = req.params
-
-    const result = await userService.addOrderToUser(parseInt(userId), parseInt(orderId))
-    res.send({ status: 'success', payload: result })
+export const getUserByEmail = async (req, res)=>{
+    try {
+        // const email = req.body.email
+        const email = req.params.email
+        const getUser = await userService.getUserByEmail(email)
+        if(!getUser) return res.send({status: 'error', payload: 'Unable to find the user!'})
+        return res.send({status: 'success', payload: getUser})
+    } catch (error) {
+        throw new Error(error)
+    }
 }
