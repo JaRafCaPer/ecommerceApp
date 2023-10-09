@@ -1,64 +1,68 @@
-import ProductModel from '../mongo/models/products.mongo.model.js';
+// products.mongo.js
+import ProductsModel from './models/products.mongo.model.js';
 
-
-export default class ProductManager{
- async getProducts() {
-  try {
-    const result = await ProductModel.find();
-    return result;
-  } catch (error) {
-    throw new Error('Error fetching products: ' + error.message);
+export default class ProductsMongo {
+  create = async(productData) => {
+    return await ProductsModel.create(productData);
   }
-}
 
+  delete = async (productId) => {
+    return await ProductsModel.findByIdAndDelete(productId);
+  }
 
-async getProductById(pid) {
-  try {
-    const result = await ProductModel.findById(pid);
-    if (!result) {
-      throw new Error('Product not found');
+  findProductByCode = async (productCode) => {
+    return await ProductsModel.findOne({ code: productCode });
+  }
+
+  findProductById = async (productId) => {
+    return await ProductsModel.findById(productId);
+  }
+
+  update = async (productId, updatedFields) => {
+    return await ProductsModel.findByIdAndUpdate(productId, updatedFields, { new: true });
+  }
+  getProducts = async (limit, page, sort, status) => {
+    try{
+        switch (status) {
+            case 'true':
+                status = {status: true}
+                break;
+            case 'false':
+                status = {status: false}
+                break;
+            default:
+                status = {}
+                break;
+        }
+        let options = {
+            limit, 
+            page, 
+            lean: true
+        }
+        if(sort){
+            let options = {
+                limit, 
+                page, 
+                sort:{
+                    price: sort
+                },
+                lean: true
+            }
+            console.log(status)
+            const products = await ProductsModel.paginate(status, options)
+            products.prevLink = products.hasPrevPage? `/products?page=${products.prevPage}&limit=${limit}&sort=${sort}&status=${status}` : ''
+            products.nextLink = products.hasNextPage? `/products?page=${products.nextPage}&limit=${limit}&sort=${sort}&status=${status}` : ''
+            return products
+        }
+        const products = await ProductsModel.paginate(status, options)
+        products.prevLink = products.hasPrevPage? `/products?page=${products.prevPage}&limit=${limit}${status}` : ''
+        products.nextLink = products.hasNextPage? `/products?page=${products.nextPage}&limit=${limit}${status}` : ''
+        return products
+
+    }catch(e){
+        return console.error(e)
     }
-    return result;
-  } catch (error) {
-    throw new Error('Error fetching product by ID:'+ error.message);
-  }
 }
 
- async updateProduct(pid, updatedParams) {
-  try {
-    const result = await ProductModel.findByIdAndUpdate(
-      pid,
-      updatedParams,
-      { new: true } // This option returns the updated document
-    );
-    if (!result) {
-      throw new Error('Product not found');
-    }
-    return result;
-  } catch (error) {
-    throw new Error('Error updating product: ' + error.message);
-  }
-}
 
- async createProduct(data) {
-  try {
-    const result = await ProductModel.create(data);
-    return result;
-  } catch (error) {
-    throw new Error('Error creating product: ' + error.message);
-  }
 }
-
- async deleteProduct(pid) {
-  try {
-    const result = await ProductModel.findByIdAndRemove(pid);
-    if (!result) {
-      throw new Error('Product not found');
-    }
-    return { message: 'Product deleted successfully' };
-  } catch (error) {
-    throw new Error('Error deleting product: ' + error.message);
-  }
-}
-
- }

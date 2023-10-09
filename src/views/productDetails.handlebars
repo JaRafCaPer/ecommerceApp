@@ -1,0 +1,13 @@
+<!-- product.docsDetails.handlebars -->
+<h2>{{product.name}}</h2>
+<img src="{{product.image}}" alt="">
+<p>Description: {{product.description}}</p>
+<p>Category: {{product.category}}</p>
+<p>Stock: {{product.stock}}</p>
+<p>Price: {{product.price}}</p>
+<!-- Agregar más detalles del product.docso si es necesario -->
+<form action="/api/carts/{{@root.cartId}}/products/{{product._id}}"  method="POST">
+      {{!-- <input type="hidden" name="products[0][item]" value="{{product._id}}"> --}}
+      <input type="number" name="quantity" value="1" min="1">
+      <button type="submit" class="btn btn-success">Agregar al carrito</button>
+    </form>

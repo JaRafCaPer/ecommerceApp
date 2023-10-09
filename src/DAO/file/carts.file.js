@@ -1,62 +1,45 @@
-import FileManager from "./file.manager.js";
-import Product from "./products.file.js";
-import CartDTO from "../DTO/carts.dto.js";
+import fs from 'fs';
 
-export default class CartManager extends FileManager{
-    constructor(filename = './db.users.json') {
-        super(filename)
-        this.productFile = new Product()
-    }
-    createCart = async (array={}) => {
-        const newCart = new CartDTO(array)
-        return await this.add(newCart)
-    }
-    getCarts = async (populate = false) => {
-        const carts = await this.get()
-        if(populate){
-            const products = await this.productFile.getProducts()
-            for (let i = 0; i < carts.length; i++) {
-                const result = []
-                const cartProducts = carts[i].products
-                cartProducts.forEach((prodId)=>{
-                    let prod = products.find(prod => parseInt(prod._id) == parseInt(prodId.product))
-                    result.push(prod)
-                })
-                carts[i].products = result
-                
-            }
-        }
-        return carts
+export default class CartsFile {
 
+  constructor(filename = 'carts.json') {
+    this.filename = filename;
+    if (!fs.existsSync(this.filename)) {
+      fs.writeFileSync(this.filename, '[]');
     }
-    getCartById = async (populate = false, id) => {
-        const cart = await this.getById(id)
-        if(populate){
-            const products = await this.productFile.getProducts()
-            const result = []
+  }
 
-            cart.products.forEach(product=>{
-                let prod = products.find(prod=> parseInt(prod._id) == parseInt(product.product))
-                result.push(prod)
-            })
-            cart.products = result
-            console.log(result)
-        }
-        return cart
-    }
-    addProduct = async (cartId, prodId) =>  {
-        const prod = await this.productFile.getProductById(prodId)
-        const cart = await this.getById(cartId)
-        let quantity = 1
-        if(cart && prod){
-            cart.products.push({product: prod._id, quantity: quantity})
-            return await this.update(cartId, cart)
-        }else{
-            throw new Error('Product not added')
-        }
+  async getCarts(query = {}) {
+    //basico
+    return await this.get();
+  }
 
+  async getCartByID(cid) {
+    const db = await this.get();
+    return db.find(cart => cart.id === cid);
+  }
+
+  async createNewCart() {
+    const db = await this.get();
+    const newCart = { id: new Date().toISOString(), products: [] };
+    db.push(newCart);
+    await fs.promises.writeFile(this.filename, JSON.stringify(db));
+    return newCart;
+  }
+
+  async updateCart(cid, updatedCart) {
+    const db = await this.get();
+    const cartIndex = db.findIndex(cart => cart.id === cid);
+    if (cartIndex !== -1) {
+      db[cartIndex] = updatedCart;
+      await fs.promises.writeFile(this.filename, JSON.stringify(db));
+      return updatedCart;
     }
-    updateCart = async (id, cart) => {
-        return await this.update(id, cart)
-    }
+    return null;
+  }
+
+  get = async () => {
+    return fs.promises.readFile(this.filename, {encoding: 'utf-8'})
+      .then(r => JSON.parse(r));
+  }
 }

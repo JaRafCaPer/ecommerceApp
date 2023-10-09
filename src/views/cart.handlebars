@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping Cart</title>
+</head>
+<body>
+  <h1>Your Shopping Cart</h1>
+  <ul>
+      {{#each cart}}
+    <p class="pid"> Status:{{status}}</p>
+  
+    {{/each}}
+    {{#each cart.products}}
+      <li>
+        <h3>{{this.productId.name}}</h3>
+        <p>Price: ${{products.price}}</p>
+        <p>Quantity: {{this.quantity}}</p>
+        <p>Description: {{this.products.description}}</p>
+        <p>Category: {{this.products.category}}</p>
+        <p>Status: {{this.products.status}}</p>
+        <p>Stock: {{this.products.stock}}</p>
+        <img src="{{this.products.image}}" alt="{{this.products.name}}">
+      </li>
+    {{/each}}
+  </ul>
+</body>
+</html>

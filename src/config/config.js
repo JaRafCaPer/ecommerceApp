@@ -9,5 +9,6 @@ export default  {
     CLIENT_SECRET_GITHUB: process.env.CLIENT_SECRET_GITHUB,
     CALLBACK_URL_GITHUB: process.env.CALLBACK_URL_GITHUB,
     SECRET_JWT: process.env.SECRET_JWT,
-    PERSISTENCY: process.env.PERSISTENCY
+    PERSISTENCE: process.env.PERSISTENCE,
+    SECRET_KEY: "secret"
 }

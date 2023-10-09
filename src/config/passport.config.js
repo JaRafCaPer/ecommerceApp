@@ -42,7 +42,7 @@ function initializePassport() {
             const firstName = nameParts[0];
             const lastName = nameParts.slice(1).join(' ');
 
-            const newCart = await cartService.createCart();
+            const newCart = await cartService.createNewCart();
             console.log('carrito nuevo ',newCart)
             const newUser = {
               first_name: firstName,
@@ -52,17 +52,24 @@ function initializePassport() {
               password: '',
               social: 'github',
               rol: 'user',
-              cartId: newCart._id,
+              cart: newCart._id,
             };
             const result = await userService.createUser(newUser);
-            console.log(result);
+            console.log('Ojo',result);
           }
 
           
           const token = generateToken(user);
           console.log('el token es', token);
-          user.token = token;
-          return done(null, user);
+
+          if (user) {
+            user.token = token;
+            return done(null, user);
+          } else {
+            return done('Error logging in with Github. User is null.');
+          }
+
+          
         } catch (e) {
           return done("Error logging in with Github. " + e);
         }

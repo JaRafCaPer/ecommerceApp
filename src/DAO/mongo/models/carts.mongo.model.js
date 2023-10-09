@@ -4,7 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2'
 const cartSchema = new mongoose.Schema({
   products: [
     {
-      item: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'products'
       },
@@ -13,9 +13,14 @@ const cartSchema = new mongoose.Schema({
         default: 1
       }
     }
-  ]
+  ],
+  status: {
+    type: String,
+    enum: ['abierto', 'cerrado'],
+    default: 'abierto'
+  }
 });
 cartSchema.plugin(mongoosePaginate);
-const CartModel = mongoose.model('carts', cartSchema);
+const cartsModel = mongoose.model('carts', cartSchema);
 
-export default CartModel;
+export default cartsModel;

@@ -17,10 +17,11 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
-  cartId:{
+  cart:{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'carts'
-  }
+  },
+  ticket: {type: mongoose.Schema.Types.ObjectId, ref: "tickets"}
 });
 
 mongoose.set("strictQuery", false);
