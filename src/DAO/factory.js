@@ -1,59 +1,41 @@
-import mongoose from 'mongoose';
-import config from '../config/config.js';
+import config from "../config/config.js";
+import mongoose from "mongoose";
 
-export async function connectMongo() {
-  try {
-    await mongoose.connect(config.MONGO_URI, {
-      dbName: config.DB_NAME,
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-    });
-    console.log("DB conectada");
-  } catch (err) {
-    console.log("No se pudo conectar a la base de datos");
-  }
-}
-
-export let Carts;
 export let User;
-export let Products;
-export let Messages;
-export let Tickets;
+export let Product;
+export let Category;
+export let Message;
+export let Cart;
+export let Session;
+export let Ticket;
 
-console.log(`Persistence with ${config.PERSISTENCE}`);
-
-switch (config.PERSISTENCE) {
+console.log(`Persistente with ${config.persistence}`);
+switch (config.persistence) {
   case "MONGO":
-    await connectMongo();
-
-    const { default: CartsMongo } = await import("./mongo/carts.mongo.js");
-    const { default: UserMongo } = await import("../DAO/mongo/user.mongo.js");
-    const { default: ProductsMongo } = await import("../DAO/mongo/products.mongo.js");
-    const { default: MessagesMongo } = await import("../DAO/mongo/messages.mongo.js");
-    const { default: TicketsMongo } = await import("../DAO/mongo/ticket.mongo.js");
-
-    Carts = CartsMongo;
+    mongoose
+      .connect(config.url, {
+        dbName: config.dbName,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => console.log("Database Connected Successfully"))
+      .catch((err) => console.log(err));
+    const { default: UserMongo } = await import("./mongo/user.mongo.js");
+    const { default: ProductMongo } = await import("./mongo/products.mongo.js");
+    const { default: CategoryMongo } = await import(
+      "./mongo/category.mongo.js"
+    );
+    const { default: MessageMongo } = await import("./mongo/messages.mongo.js");
+    const { default: CartMongo } = await import("./mongo/carts.mongo.js");
+    const { default: SessionMongo } = await import("./mongo/user.mongo.js");
+    const {default: TicketMongo} = await import("./mongo/ticket.mongo.js");
+    Product = ProductMongo;
+    Category = CategoryMongo;
+    Message = MessageMongo;
+    Cart = CartMongo;
     User = UserMongo;
-    Products = ProductsMongo;
-    Messages = MessagesMongo;
-    Tickets = TicketsMongo;
-    break;
-
-  case 'FILE':
-    const { default: UserFile } = await import('./file/user.file.js');
-    const { default: CartsFile } = await import('./file/carts.file.js');
-    const { default: ProductsFile } = await import('./file/products.file.js');
-    const { default: MessagesFile } = await import('./file/messages.file.js');
-    const { default: TicketsFile } = await import('./file/ticket.file.js');
-
-    User = UserFile;
-    Carts = CartsFile;
-    Products = ProductsFile;
-    Messages = MessagesFile;
-    Tickets = TicketsFile;
-    break;
-
+    Session = SessionMongo;
+    Ticket = TicketMongo;
   default:
-    console.log("No se eligió una opción de persistencia válida.");
     break;
 }

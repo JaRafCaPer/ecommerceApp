@@ -1,174 +1,96 @@
-import passport from 'passport';
-import local from 'passport-local';
-import github from 'passport-github2'
-import google from "passport-google-oauth20";
-import passportJWT from 'passport-jwt'
-import { cartService, userService } from '../services/index.js';
-import UserModel from '../DAO/mongo/models/users.mongo.model.js';
-import config from './config.js';
-import {
-  createHash,
-  isValidPassword,
-  extractCookie,
-  generateToken,
-} from '../utils.js';
+import passport from "passport";
+import GitHubStrategy from "passport-github";
+import { generateToken } from "../utils.js";
+// import GoogleStrategy from "passport-google-oauth20";
+import jwt from "passport-jwt";
+import config from "../config/config.js";
+import { userRepository } from "../services/index.js";
+import cartModel from "../DAO/mongo/models/carts.mongo.model.js";
 
-const LocalStrategy = local.Strategy;
-const JWTStrategy = passportJWT.Strategy;
-const JWTExtract = passportJWT.ExtractJwt;
-const GitHubStrategy = github.Strategy;
-const GoogleStrategy = google.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
 
-function initializePassport() {
+const validarUser = async (user, profile) => {
+  if (user) {
+    const token = generateToken(user);
+    user.token = token;
+    return user;
+  }
+  const cartProducts = { products: [] };
+  const cart = await cartModel.create(cartProducts);
+  const newUser = {
+    first_name: profile._json.name,
+    last_name: "",
+    email: profile._json.email,
+    age: "",
+    password: "",
+    cartId: cart,
+    rol: "user",
+    status: "verified",
+  };
+  const result = await userRepository.createUser(newUser);
+  const token = generateToken(result);
+  result.token = token;
+};
+
+const cookieExtractor = (req) =>
+  req && req.cookies ? req.cookies["keyCookieForJWT"] : null;
+
+debugger;
+const initializatePassport = () => {
   passport.use(
-    'github',
+    "jwt",
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: "secretForJWT",
+      },
+      async (jwt_payload, done) => {
+        try {
+          done(null, jwt_payload);
+        } catch (e) {
+          return done(e);
+        }
+      }
+    )
+  );
+
+  // passport.use(
+  //   "google",
+  //   new GoogleStrategy(
+  //     {
+  //       clientID: config.GOOGLE_CLIENT_ID,
+  //       clientSecret: config.GOOGLE_CLIENT_SECRET,
+  //       callbackURL: config.GOOGLE_callbackURL,
+  //     },
+  //     async (accessToken, refreshToken, profile, cb) => {
+  //       try {
+  //         const email = profile._json.email;
+  //         const user = await userRepository.getUserByEmail(email);
+  //         const result = await validarUser(user, profile);
+  //         return cb(null, result);
+  //       } catch (e) {
+  //         return cb("Error to login wuth google: " + e);
+  //       }
+  //     }
+  //   )
+  // );
+  passport.use(
+    "github",
     new GitHubStrategy(
       {
-        clientID: config.CLIENT_ID_GITHUB,
-        clientSecret: config.CLIENT_SECRET_GITHUB,
-        callbackURL: config.CALLBACK_URL_GITHUB,
+        clientID: config.GITHUB_CLIENT_ID,
+        clientSecret: config.GITHUB_CLIENT_SECRET,
+        callbackURL: config.GITHUB_callbackurl,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
           const email = profile._json.email;
-          console.log({ email });
-          const user = await userService.getUserByEmail(email);
-          if (user) {
-            console.log('User already exists ' + profile._json.email);
-          } else {
-            console.log(` Registering User`);
-            const fullName = profile._json.name;
-            const nameParts = fullName.split(' ');
-            const firstName = nameParts[0];
-            const lastName = nameParts.slice(1).join(' ');
-
-            const newCart = await cartService.createNewCart();
-            console.log('carrito nuevo ',newCart)
-            const newUser = {
-              first_name: firstName,
-              last_name: lastName,
-              email,
-              age: profile._json.public_repos,
-              password: '',
-              social: 'github',
-              rol: 'user',
-              cart: newCart._id,
-            };
-            const result = await userService.createUser(newUser);
-            console.log('Ojo',result);
-          }
-
-          
-          const token = generateToken(user);
-          console.log('el token es', token);
-
-          if (user) {
-            user.token = token;
-            return done(null, user);
-          } else {
-            return done('Error logging in with Github. User is null.');
-          }
-
-          
-        } catch (e) {
-          return done("Error logging in with Github. " + e);
-        }
-      }
-    )
-  );
-
-  passport.use(
-    'jwt',
-    new JWTStrategy(
-      {
-        jwtFromRequest: JWTExtract.fromExtractors([extractCookie]),
-        secretOrKey: config.SECRET_JWT,
-      },
-      (jwt_payload, done) => {
-        return done(null, jwt_payload);
-      }
-    )
-  );
-
-  passport.use(
-    'register',
-    new LocalStrategy(
-      {
-        passReqToCallback: true,
-        usernameField: 'email',
-      },
-      async (req, username, password, done) => {
-        try {
-          const { first_name, last_name, age, rol, email } = req.body;
-          const user = await userService.getUserByEmail(username);
-          if (user) {
-            console.log('User already exists');
-            return done(null, false);
-          }
-          const newCartForUser = await cartService.createCart([]);
-          const newUser = {
-            first_name,
-            last_name,
-            age,
-            rol,
-            email,
-            cart: newCartForUser._id,
-            password: createHash(password),
-          };
-          const result = await userService.createUser(newUser);
+          const user = await userRepository.getUserByEmail(email);
+          const result = await validarUser(user, profile);
           return done(null, result);
         } catch (e) {
-          return done('Error registering: ' + e);
-        }
-      }
-    )
-  );
-
-  passport.use(
-    'login',
-    new LocalStrategy(
-      { usernameField: 'email' },
-      async (username, password, done) => {
-        try {
-          if (
-            username == 'adminCoder@coder.com' &&
-            password == 'adminCod3r123'
-          ) {
-            var mongoObjectId = function () {
-              var timestamp = (new Date().getTime() / 1000 | 0).toString(16);
-              return (
-                timestamp +
-                'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function () {
-                  return (Math.random() * 16 | 0).toString(16);
-                }).toLowerCase()
-              );
-            };
-            const user = {
-              _id: mongoObjectId,
-              email: username,
-              password,
-              rol: 'admin',
-            };
-            const token = generateToken(user);
-            user.token = token;
-            return done(null, user);
-          }
-          const user = await userService.getUserByEmail(username, true);
-          if (!user) {
-            console.error('User does not exist');
-            return done(null, false);
-          }
-          if (!isValidPassword(user, password)) {
-            console.error('Password is not valid');
-            return done(null, false);
-          }
-          console.log('Login completed');
-          const token = generateToken(user);
-          user.token = token;
-          console.log(user);
-          return done(null, user);
-        } catch (error) {
-          return done('Error logging in... ' + error);
+          return done("Error to login wuth github: " + e);
         }
       }
     )
@@ -177,11 +99,9 @@ function initializePassport() {
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
-
   passport.deserializeUser(async (id, done) => {
-    const user = await userService.getUserById(id);
+    let user = await userRepository.getUserByEmail(id);
     done(null, user);
   });
-}
-
-export default initializePassport;
+};
+export default initializatePassport;

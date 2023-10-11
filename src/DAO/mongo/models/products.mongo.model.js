@@ -1,28 +1,48 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-const productsSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
-    image: String,
-    description: String,
-    category: String,
-    price: Number,
-    status: String,
-    stock: Number,
-    code:Number,
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-    deletedAt: { type: Date, default: null }
+mongoose.set("strictQuery", false);
 
-})
+const productSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  descripcion: {
+    type: String,
+    required: true,
+  },
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: Boolean,
+    required: true,
+  },
+  stock: {
+    type: Number,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  thumbail: {
+    type: String,
+    required: true,
+  },
+});
 
-productsSchema.plugin(mongoosePaginate)
+const productsCollection = "products";
 
-mongoose.set(`strictQuery`,false)
+productSchema.plugin(mongoosePaginate);
 
-const ProductsModel = mongoose.model('products',productsSchema)
+const productModel = mongoose.model(productsCollection, productSchema);
 
-
-export default ProductsModel
-
-
+export default productModel;

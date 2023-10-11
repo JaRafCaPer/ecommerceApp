@@ -1,94 +1,275 @@
-<form method="post" id="form">
-    
-    <label for="title">Title:</label>
-    <input type="text" name="title" id="title" required></br>
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-primary"
+  style="padding: 10px 20px;"
+>
+  <div class="container-fluid">
+    <a href="/">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="2em"
+        viewBox="0 0 576 512"
+      >
+        <!-- Tu logotipo o icono aquí -->
+      </svg>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2rem"
+              viewBox="0 0 512 512"
+            >
+              <!-- Icono y texto de Menage -->
+            </svg>
+            <p>Home</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./realTimeProducts">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2rem"
+              viewBox="0 0 512 512"
+            >
+              <!-- Icono y texto de Menage -->
+            </svg>
+            <p>Manage</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/cart/user">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2rem"
+              viewBox="0 0 576 512"
+            >
+              <!-- Icono y texto de Cart -->
+            </svg>
+            <p>Cart</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/chat">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2rem"
+              viewBox="0 0 512 512"
+            >
+              <!-- Icono y texto de Support -->
+            </svg>
+            <p>Support</p>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a href="/profile">
+            <div
+              style="display: flex; justify-content:space-evenly;align-items:center;"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="2rem"
+                viewBox="0 0 448 512"
+              >
+                <!-- Icono de perfil -->
+              </svg>
+            </div>
+            <p style="font-size: 2.1rem;color:white;margin-right:10px;">
+              {{first_name}}
+              {{last_name}}
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/api/session/logout" style="margin-left:1rem;">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="2rem"
+              viewBox="0 0 512 512"
+            >
+              <!-- Icono y texto de Logout -->
+            </svg>
+            <p>Logout</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <label for="description">Description:</label>
-    <input type="text" name="description" id="description" required></br>
+<section class="container mt-3" style="margin: 0 auto;">
+  <div class="row">
+    <div class="col-lg-6" style="margin: 0 auto;">
+      <h2 class="titulo-categoria">Categorias</h2>
+      <form id="form-category">
+        <div class="mb-3">
+          <label for="category" class="form-label">Seleccione una categoría</label>
+          <select id="category" name="category" class="form-select" required>
+            <option selected disabled>Seleccione una opción</option>
+            {{#each category}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Ordenar por precio</label>
+          <select id="price" name="sort" class="form-select" required>
+            <option selected disabled>Seleccione una opción</option>
+            <option value="1">Menor Precio</option>
+            <option value="-1">Mayor Precio</option>
+            <option value="0">No ordenar</option>
+          </select>
+        </div>
+        <div class="d-flex flex-column">
+          <button class="btn btn-primary" type="submit">FILTRAR</button>
+          <a class="" href="/" style="width: 100%;">
+            <button
+              class="btn btn-primary"
+              style="width: 100%;margin-top:20px"
+            >Volver</button>
+          </a>
+        </div>
+      </form>
+    </div>
+    <h2 style="text-align: center;margin-top:20px;">TODOS LOS PRODUCTOS</h2>
+  </div>
+</section>
+<section
+  class="cards contenedor"
+  id="cards-product"
+  style="margin-bottom: 20px;"
+>
+  {{#each products}}
+    <div class="card" style="width: 30rem;">
+      <img class="card-img-top" src="{{thumbail}}" alt="Card image cap" />
+      <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-stock">Stock: {{stock}}</p>
+        <p class="card-price">${{price}}</p>
+        <p class="_id">ID: {{_id}}</p>
+      </div>
+    </div>
+  {{/each}}
+</section>
 
-    <label for="price">Price:</label>
-    <input type="number" name="price" id="price" required></br>
+{{cid}}
 
-    <label for="stock">Stock:</label>
-    <input type="number" name="stock" id="stock" required></br>
+<section class="pagination contenedor3">
+  <div class="pagination-container">
+    {{#if products.hasPrevPage}}
+      <a href={{products.prevLink}}>Anterior</a>
+    {{/if}}
+    {{#if products.prevPageValidate}}
+      <a href={{products.prevLink}}>{{products.prevPage}}</a>
+    {{/if}}
+    {{#if products.page}}
+      <p class="pagination-text">{{products.page}}</p>
+    {{/if}}
+    {{#if products.nextPageValidate}}
+      <a href={{products.nextLink}}>{{products.nextPage}}</a>
+    {{/if}}
+    {{#if products.hasNextPage}}
+      <a href={{products.nextLink}}>Siguiente</a>
+    {{/if}}
+  </div>
+</section>
 
-    <label for="thumbnail">Thumbnail:</label>
-    <input type="text" name="thumbnail" id="thumbnail"></br>
+<section class="formulario-realTimeProducts contenedor5">
+  <div class="formulario-real">
+    <h3 style="text-transform:uppercase">Crear Productos</h3>
+    <form id="formCreate" class="formulario-grid">
+      <label for="title">Title: </label>
+      <input
+        id="title"
+        placeholder="Ingrese el titulo aqui"
+        type="text"
+        name="title"
+        required
+      />
+      <label for="descripcion">Descripcion: </label>
+      <input
+        id="descripcion"
+        type="text"
+        placeholder="Ingrese la descripcion"
+        name="descripcion"
+        required
+      />
+      <label for="code">Code: </label>
+      <input
+        id="code"
+        placeholder="Ingrese el code aqui"
+        type="text"
+        name="code"
+        required
+      />
+      <label for="price">Price: </label>
+      <input
+        id="price"
+        type="number"
+        placeholder="Ingrese el precio"
+        min="1"
+        name="price"
+        required
+      />
+      <label for="status">Status: </label>
+      <select id="status" name="status" required>
+        <option class="option" selected="" disabled>Select one</option>
+        <option class="option" value="0">true</option>
+        <option class="option" value="1">false</option>
+      </select>
+      <label for="stock">Stock: </label>
+      <input
+        id="stock"
+        placeholder="Ingrese el stock aqui"
+        type="number"
+        min="0"
+        name="stock"
+        required
+      />
+      <label for="category-select">category: </label>
+      <select name="category">
+        <option selected="" disabled required>Select one</option>
+        {{#each category}}
+          <option class="option" value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+      <label for="thumbail">Thumbail: </label>
+      <input
+        id="thumbail"
+        placeholder="Ingrese el thumbail aqui"
+        type="text"
+        name="thumbail"
+        required
+      />
+      <button class="btn" type="submit" id="create">Crear Producto </button>
+    </form>
+    <p class="txtfont">Recuerde rellenar todos los campos.
+    </p>
+  </div>
+  <div class="formulario-delete">
+    <h3>Eliminar productos</h3>
+    <form class="form-delete" id="formDelete">
+      <label for="id">ID: </label>
+      <input type="text" name="id" required />
+      <button class="btn" type="submit" id="create">Eliminar producto</button>
+    </form>
+  </div>
+</section>
 
-    <label for="code">Code:</label>
-    <input type="text" name="code" id="code" required></br>
+<script src="/socket.io/socket.io.js"></script>
 
-    <button type="submit">Send data</button> 
-
-</form>
-<hr>
-    <table   class="table">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Code</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-            
-                {{#each totalProducts}}
-                <tr>
-                    <th scope="row">{{this._id}}</th>
-                    <td>{{this.title}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.stock}}</td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.status}}</td>
-                    <td><a href="api/products/delete/{{this._id}}">🗑️</a></td>
-                {{/each}}
-                </tr>
-        </tbody>
-    </table>
-
-
-<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-<script>
-    const socket = io()
-
-    document.getElementById('form').onsubmit = e =>{
-        e.preventDefault()
-        const title = document.getElementById('title').value
-        const description = document.getElementById('description').value
-        const price = parseInt(document.getElementById('price').value)
-        const stock = parseInt(document.getElementById('stock').value)
-        const thumbnail = document.getElementById('thumbnail').value
-        const code = document.getElementById('code').value
-        const status = true
-        const newProd = {title, description, price, stock, thumbnail, code, status}
-        socket.emit('newProduct', newProd) 
-        document.getElementById('form').reset()
-    }
-    socket.on('reload', (prods)=>{
-        console.log('Reloading!')
-        const tbody = document.getElementById('tbody')
-        let html = ''
-            prods.forEach(prod => {
-                html += `   
-                    <tr>                 
-                        <th scope="row">${prod._id}</th>
-                        <td>${prod.title}</td>
-                        <td>${prod.description}</td>
-                        <td>${prod.price}</td>
-                        <td>${prod.stock}</td>
-                        <td>${prod.code}</td>
-                        <td>${prod.status}</td>
-                        <td><a href='api/products/delete/${prod._id}'>🗑️</a></td>
-                    </tr>
-                    `
-            })
-            html+= ''
-        tbody.innerHTML = html
-
-    })
-</script>
+<script src="/js/index.js"></script>

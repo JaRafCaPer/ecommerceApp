@@ -1,11 +1,18 @@
-import MessagesModel from './models/message.mongo.model.js';
+import ChatModel from "./models/messages.mongo.model.js";
 
-export default class MessagesMongo {
-  async retrieveMessages() {
-    return await MessagesModel.find().lean();
+export default class ChatsMongo {
+  async saveMessage(data) {
+    try {
+      return await ChatModel.create(data);
+    } catch (error) {
+      throw error;
+    }
   }
-
-  async createMessage(data) {
-    return await MessagesModel.create(data);
+  async getMessages() {
+    try {
+      return await ChatModel.find().lean().exec();
+    } catch (error) {
+      throw error;
+    }
   }
 }

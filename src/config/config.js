@@ -1,14 +1,20 @@
-import dotenv from 'dotenv'
-dotenv.config({path: '.env'})
+import { config } from "dotenv";
+config();
 
-export default  {
-    PORT: process.env.PORT,
-    MONGO_URI: process.env.MONGO_URI,
-    DB_NAME: process.env.DB_NAME,
-    CLIENT_ID_GITHUB: process.env.CLIENT_ID_GITHUB,
-    CLIENT_SECRET_GITHUB: process.env.CLIENT_SECRET_GITHUB,
-    CALLBACK_URL_GITHUB: process.env.CALLBACK_URL_GITHUB,
-    SECRET_JWT: process.env.SECRET_JWT,
-    PERSISTENCE: process.env.PERSISTENCE,
-    SECRET_KEY: "secret"
-}
+export default {
+  persistence: process.env.persistence,
+  port: process.env.port || 8080,
+  url: process.env.url,
+  dbName: process.env.dbName,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  GOOGLE_callbackURL: process.env.GOOGLE_callbackURL,
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  GITHUB_callbackurl: process.env.GITHUB_callbackurl,
+  ttl: process.env.ttl,
+  secret: process.env.secret,
+  privateKey: process.env.privateKey,
+  USER: process.env.USER,
+  PASS: process.env.PASS,
+};

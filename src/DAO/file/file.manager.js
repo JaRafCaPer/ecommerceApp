@@ -1,38 +1,35 @@
-import fs from 'fs'
+import fs from "fs";
 
-class FileManager{
-    constructor(path = './db/db.json'){
-        this.path = path
-    }
+export default class FileManager {
+  constructor(filename = "./db.json") {
+    this.filename = filename;
+  }
 
-    getNextId(list){
-        return (list.length == 0) ? 1 : list[list.length - 1]._id + 1
-    }
+  getNextId = (list) => (list.length == 0 ? 1 : list[list.length - 1].id + 1);
 
-    async get(){
-        return fs.promises.readFile(this.path, 'utf-8')
-        .then(r => JSON.parse(r))
-        .catch(e => {
-            return []
-        })
-    }
-    async getById(id){
-        const data = await this.get()
-        return data.find(d => d._id == id)
-    }
-    async add(data){
-        const list = await this.get()
-        data._id = this.getNextId(list)
-        list.push(data)
-        return fs.promises.writeFile(this.path, JSON.stringify(list)), data
-    }
-    async update(id, data){
-        console.log(data)
-        const list = await this.get()
-        const idx = list.findIndex(item => item._id == id )
-        list[idx] = data
-        return fs.promises.writeFile(this.path, JSON.stringify(list)), data
-    }
+  get = async () => {
+    return fs.promises
+      .readFile(this.filename, "utf-8")
+      .then((r) => JSON.parse(r))
+      .catch((e) => []);
+  };
+
+  getById = async (id) => {
+    const data = await this.get();
+    return data.find((d) => d.id == id);
+  };
+
+  add = async (data) => {
+    const list = await this.get();
+    data.id = this.getNextId(list);
+    list.push(data);
+    return fs.promises.writeFile(this.filename, JSON.stringify(list));
+  };
+
+  update = async (data) => {
+    const list = await this.get();
+    const idx = list.findIndex((a) => a.id == data.id);
+    list[idx] = data;
+    return fs.promises.writeFile(this.filename, JSON.stringify(list));
+  };
 }
-
-export default FileManager
