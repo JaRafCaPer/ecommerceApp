@@ -27,21 +27,17 @@ export default class ProductsMongo {
 
   async updateProduct(id, product) {
     try {
-      console.log("id mongo update", id);
-      console.log("product mongo update", product);
       const newProduct = await productModel.findById(id);
-      console.log("newProduct mongo update", newProduct);
+
       if (!newProduct) {
         throw new Error(`Product not found: ${id}`);
       } else {
         // Actualiza solo los campos proporcionados en el objeto product
         if (product.stock !== undefined) {
           newProduct.stock = product.stock;
-          console.log( 'newProduct.stock', newProduct.stock)
         }
         if (product.title !== undefined) {
           newProduct.title = product.title;
-          console.log( 'newProduct.title', newProduct.title)
         }
         if (product.description !== undefined) {
           newProduct.description = product.description;
@@ -62,11 +58,10 @@ export default class ProductsMongo {
           newProduct.thumbnail = product.thumbnail;
         }
 
-        const productUpdated = await productModel.findByIdAndUpdate(
-          id,
-          {newProduct}
-        );
-        console.log("productUpdated mongo update", productUpdated);
+        const productUpdated = await productModel.findByIdAndUpdate(id, {
+          newProduct,
+        });
+
         return productUpdated;
       }
     } catch (error) {

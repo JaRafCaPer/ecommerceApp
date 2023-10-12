@@ -141,15 +141,23 @@ export default class CartService {
       cart.products.forEach((product) => {
         total += product.pid.price * product.quantity;
       });
-
+      const products = cart.products.map((product) => {
+        console.log('product create Ticket', product)
+        return { pid: product.pid._id, title: product.pid.title , code: product.pid.code, quantity: product.quantity };
+      });
+      console.log('products create Ticket', products)
       const ticket = {
         code: uniqueTicketCode,
         purchase_datetime: purchaseDatetime,
+        products: products,
         amount: total,
         purchaser: user.email,
       };
+      console.log('ticket create Ticket', ticket)
       const ticketDTO = new TicketDTO(ticket);
+      console.log("ticketDTO", ticketDTO);
       const savedTicket = await this.ticketDAO.createTicket(ticketDTO);
+      console.log("savedTicket", savedTicket);
       return savedTicket;
     } catch (error) {
       throw error;
