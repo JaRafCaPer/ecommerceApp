@@ -93,13 +93,11 @@ export const getTicketsByUserById = async (req, res) => {
 
     let cart = await cartService.getCartById(user.cartId);
     const cartProducts = cart.products;
-    console.log("cart products ticket", cartProducts);
 
     const productsExceedingStock = [];
 
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
-      console.log("product ticket", product);
 
       if (!product) {
         throw new Error(`Product not found: ${cartProduct.pid}`);
@@ -125,24 +123,19 @@ export const getTicketsByUserById = async (req, res) => {
     }
 
     const ticket = await cartService.createAndSaveTicket(user);
-    console.log("cart controller ticket", ticket);
 
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
-      console.log("cart controller validacion stock product", product);
 
       if (product) {
         const newStock = product.stock - cartProduct.quantity;
-        console.log("newstock", newStock);
 
         await productService.updateProduct(product._id, { stock: newStock });
-        console.log("cart controller validacion stock product2", product);
       }
-      
     }
-    cart = await cartService.updateCartById(user.cartId, { products: [] });
-    
-    res.status(200).json({ message: "Purchase successful", ticket: ticket});
+    await cartService.updateCartById(user.cartId, { products: [] });
+
+    res.status(200).json({ message: "Purchase successful", ticket: ticket });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

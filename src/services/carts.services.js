@@ -31,7 +31,7 @@ export default class CartService {
   async updateCartById(id, cart) {
     try {
       const cartUpdated = await this.cartDAO.updateCartById(id, cart);
-      return new CartDTO(cartUpdated);
+      return cartUpdated;
     } catch (error) {
       throw error;
     }
