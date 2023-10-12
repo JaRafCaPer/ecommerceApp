@@ -6,16 +6,20 @@
 <body>
   <h1>Your Shopping Cart</h1>
   <ul>
-    {{#each cart.products}}
+      
+    <p class="pid"> Status:{{status}}</p>
+  
+
+    {{#each products}}
       <li>
-        <h3>{{this.item.name}}</h3>
-        <p>Price: ${{this.item.price}}</p>
+        <h3>{{pid.title}}</h3>
+        <p>Price: ${{pid.price}}</p>
         <p>Quantity: {{this.quantity}}</p>
-        <p>Description: {{this.item.description}}</p>
-        <p>Category: {{this.item.category}}</p>
-        <p>Status: {{this.item.status}}</p>
-        <p>Stock: {{this.item.stock}}</p>
-        <img src="{{this.item.image}}" alt="{{this.item.name}}">
+        <p>Description: {{pid.description}}</p>
+        <p>Category: {{pid.category}}</p>
+        <p>Status: {{pid.status}}</p>
+        <p>Stock: {{pid.stock}}</p>
+        <img src="{{pid.thumbnail}}" alt="{{this.products.name}}">
       </li>
     {{/each}}
   </ul>

@@ -1,10 +1,16 @@
-<h1>Login</h1>
-<br>
-<form action="/api/session/login" method="post">
-    Email: <input type="text" name="email"> 
-    Password: <input type="password" name="password"> <br>
-    
-    <button class="btn btn-success" type="submit">Enviar</button>
+<form action="/api/session/login" method="post" class="d-flex justify-content-center mt-2" id="login">
+    <div class="w-25">
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+            {{!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+        </div>
+        <div class="form-group mb-2">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+        </div>
+        <button type="submit" class="btn btn-secondary">Submit</button>
+        <button class="btn btn-secondary"><a href="/login-github" class="text-white text-decoration-none">Login using GitHub</a></button>
+    </div>
 </form>
 
-<a class="btn btn-info" href="/register">Registrarse</a>
