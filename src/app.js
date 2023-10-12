@@ -9,7 +9,7 @@ import passport from "passport";
 import MongoStore from "connect-mongo";
 import initializePassport from "./config/passport.config.js";
 import ProductsMongo from "./DAO/mongo/products.mongo.js";
-
+import { addLogger } from "./loggers/logger.js";
 import productRoutes from "./routes/products.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
@@ -19,14 +19,14 @@ import sessionRoutes from "./routes/session.routes.js";
 const PORT = config.PORT;
 const PERSISTENCE = config.PERSISTENCE;
 const app = express();
-
+ 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-
+app.use(addLogger)
 app.use(
   session({
     store: MongoStore.create({

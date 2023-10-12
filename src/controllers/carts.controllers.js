@@ -90,19 +90,22 @@ export const getCartUserById = async (req, res) => {
 export const getTicketsByUserById = async (req, res) => {
   try {
     const { user } = req.user;
-
     let cart = await cartService.getCartById(user.cartId);
+    if (!cart) {
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not products",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(req.user),
+      });
+    }else {
     const cartProducts = cart.products;
-
     const productsExceedingStock = [];
-
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
-
       if (!product) {
         throw new Error(`Product not found: ${cartProduct.pid}`);
       }
-
       if (cartProduct.quantity > product.stock) {
         cartProduct.quantity = product.stock;
         productsExceedingStock.push({
@@ -113,7 +116,6 @@ export const getTicketsByUserById = async (req, res) => {
         console.log("product exceeding ticket", productsExceedingStock);
       }
     }
-
     if (productsExceedingStock.length > 0) {
       const errorMessages = productsExceedingStock.map(
         (product) =>
@@ -136,7 +138,7 @@ export const getTicketsByUserById = async (req, res) => {
     await cartService.updateCartById(user.cartId, { products: [] });
 
     res.status(200).json({ message: "Purchase successful", ticket: ticket });
-  } catch (error) {
+  }} catch (error) {
     res.status(500).json({ error: error.message });
   }
 };

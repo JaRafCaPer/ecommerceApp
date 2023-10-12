@@ -13,3 +13,6 @@ export const generateUserErrorInfo = (userExist) =>{
 export const generateTicketErrorInfo = () =>{
     return "Not products in the cart"
 }
+export const generateMessageErrorInfo = () =>{
+    return "Not messages in the chat"
+}

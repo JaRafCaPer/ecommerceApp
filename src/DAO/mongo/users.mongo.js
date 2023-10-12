@@ -1,22 +1,27 @@
 import userModel from "./models/user.mongo.models.js";
 import cartModel from "./models/carts.mongo.models.js";
+import CustomError from "../../errors/CustomError.js";
+import EErrors from "../../errors/enums.js";
+import { generateUserErrorInfo } from "../../errors/info.js";
 
 
 export default class UsersMongo {
     async createUser(req) {
         try {
             let user = req;
-            console.log("usermongo Createuser", user)
             const newCart = await cartModel.create({ items: [], total: 0 });
             user.cartId = newCart._id;
             const userAdded = await userModel.create(user);
-            console.log("newCart", newCart)
-            console.log("userAdded1", userAdded)
-            console.log("userAdded2", userAdded)
+            
 
             return userAdded;
         } catch (error) {
-            throw error;
+            CustomError.createError({
+                name: "Error",
+                message: "User not added",
+                code: EErrors.USER_NOT_ADDED,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 
@@ -26,7 +31,12 @@ export default class UsersMongo {
         try {
             return await userModel.findById(id).lean().exec();
         } catch (error) {
-            throw error;
+            CustomError.createError({
+                name: "Error",
+                message: "User not found",
+                code: EErrors.USER_NOT_FOUND,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 
@@ -34,7 +44,12 @@ export default class UsersMongo {
         try {
             return await userModel.find().lean().exec();
         } catch (error) {
-            throw error;
+           CustomError.createError({
+                name: "Error",
+                message: "Users not found",
+                code: EErrors.USERS_NOT_FOUND,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 
@@ -45,7 +60,12 @@ export default class UsersMongo {
             console.log("user mongo", user)
             return user
         } catch (error) {
-            throw error;
+            CustomError.createError({
+                name: "Error",
+                message: "User not found",
+                code: EErrors.USER_NOT_FOUND,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 
@@ -53,7 +73,12 @@ export default class UsersMongo {
         try {
             return await userModel.findByIdAndUpdate(id, user);
         } catch (error) {
-            throw error;
+            CustomError.createError({
+                name: "Error",
+                message: "User not updated",
+                code: EErrors.USER_NOT_UPDATED,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 
@@ -61,7 +86,12 @@ export default class UsersMongo {
         try {
             return await userModel.findByIdAndDelete(id);
         } catch (error) {
-            throw error;
+           CustomError.createError({
+                name: "Error",
+                message: "User not deleted",
+                code: EErrors.USER_NOT_DELETED,
+                info: generateUserErrorInfo(user),
+            });
         }
     }
 }

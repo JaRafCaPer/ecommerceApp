@@ -1,6 +1,13 @@
 import CartDTO from "../DTO/cart.dto.js";
 import TicketDTO from "../DTO/ticket.dto.js";
 import { v4 as uuidv4 } from "uuid";
+import CustomError from "../errors/CustomError.js";
+import EErrors from "../errors/enums.js";
+import {
+  generateCartErrorInfo,
+  generateProductsErrorInfo,
+  generateTicketErrorInfo,
+} from "../errors/info.js";
 
 export default class CartService {
   constructor(cartDAO, productDAO, userDAO, ticketDAO) {
@@ -15,7 +22,12 @@ export default class CartService {
       const cart = await this.cartDAO.createCart();
       return cart;
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not created",
+        code: EErrors.CART_NOT_CREATED,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -24,7 +36,12 @@ export default class CartService {
       const cart = await this.cartDAO.getCartById(cartId);
       return cart;
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not exists",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -33,7 +50,12 @@ export default class CartService {
       const cartUpdated = await this.cartDAO.updateCartById(id, cart);
       return cartUpdated;
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not updated",
+        code: EErrors.CART_NOT_UPDATED,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -42,7 +64,12 @@ export default class CartService {
       const cartDeleted = await this.cartDAO.deleteCartById(id);
       return new CartDTO(cartDeleted);
     } catch (error) {
-      throw error;
+     CustomError.createError({
+        name: "Error",
+        message: "Cart not deleted",
+        code: EErrors.CART_NOT_DELETED,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -57,6 +84,14 @@ export default class CartService {
       }
 
       const product = await this.productDAO.getProductById(pid);
+      if (!product) {
+        CustomError.createError({
+          name: "Error",
+          message: "Product not exists",
+          code: EErrors.PRODUCT_NOT_EXISTS,
+          info: generateProductsErrorInfo(product),
+        });
+      }
       const productExist = cart.products.find(
         (product) => product.pid._id.toString() === pid.toString()
       );
@@ -67,9 +102,12 @@ export default class CartService {
           const quantityToAdd = Math.min(quantity, availableStock);
           productExist.quantity += quantityToAdd;
         } else {
-          throw new Error(
-            `Insufficient stock to add ${quantity} units of ${product.name}. Available stock: ${availableStock}`
-          );
+          CustomError.createError({
+            name: "Error",
+            message: "Insufficient stock to add product",
+            code: EErrors.STOCK_NOT_AVAILABLE,
+            info: generateProductsErrorInfo(product),
+          });
         }
       } else {
         if (quantity > 0 && product.stock > 0) {
@@ -77,15 +115,23 @@ export default class CartService {
           cart.products.push({ pid, quantity: quantityToAdd });
           await this.cartDAO.updateCartById(cartId, cart);
         } else {
-          throw new Error(
-            `Insufficient stock to add ${quantity} units of ${product.name}. Available stock: ${product.stock}`
-          );
+          CustomError.createError({
+            name: "Error",
+            message: "Insufficient stock to add product",
+            code: EErrors.STOCK_NOT_AVAILABLE,
+            info: generateProductsErrorInfo(product),
+          });
         }
       }
 
       return cart;
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not added to cart",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -102,7 +148,12 @@ export default class CartService {
         }
       }
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not decreased from cart",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -113,7 +164,12 @@ export default class CartService {
         await this.cartDAO.updateCartById(cid, { products: [] });
       }
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not deleted from cart",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
 
@@ -129,7 +185,12 @@ export default class CartService {
       });
       return { cart, totalCompra };
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not exists",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
     }
   }
   async createAndSaveTicket(user) {
@@ -138,14 +199,26 @@ export default class CartService {
       const purchaseDatetime = new Date();
       let total = 0;
       const cart = await this.getCartById(user.cartId);
+      if (!cart) {
+        CustomError.createError({
+          name: "Error",
+          message: "Cart not exists",
+          code: EErrors.CART_NOT_FOUND,
+          info: generateCartErrorInfo(cart),
+        });
+      }else {
       cart.products.forEach((product) => {
         total += product.pid.price * product.quantity;
       });
       const products = cart.products.map((product) => {
-        console.log('product create Ticket', product)
-        return { pid: product.pid._id, title: product.pid.title , code: product.pid.code, quantity: product.quantity };
+        return {
+          pid: product.pid._id,
+          title: product.pid.title,
+          code: product.pid.code,
+          quantity: product.quantity,
+        };
       });
-      console.log('products create Ticket', products)
+
       const ticket = {
         code: uniqueTicketCode,
         purchase_datetime: purchaseDatetime,
@@ -153,14 +226,24 @@ export default class CartService {
         amount: total,
         purchaser: user.email,
       };
-      console.log('ticket create Ticket', ticket)
       const ticketDTO = new TicketDTO(ticket);
-      console.log("ticketDTO", ticketDTO);
       const savedTicket = await this.ticketDAO.createTicket(ticketDTO);
-      console.log("savedTicket", savedTicket);
+      if (!savedTicket) {
+        CustomError.createError({
+          name: "Error",
+          message: "Ticket not saved",
+          code: EErrors.NOT_PRODUCTS_TICKET,
+          info: generateTicketErrorInfo(savedTicket),
+        });
+      }
       return savedTicket;
-    } catch (error) {
-      throw error;
+    }} catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Ticket not created",
+        code: EErrors.NOT_PRODUCTS_TICKET,
+        info: generateTicketErrorInfo(savedTicket),
+      });
     }
   }
 }

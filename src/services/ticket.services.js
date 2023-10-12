@@ -1,4 +1,7 @@
 import TicketDTO from "../DTO/ticket.dto.js";
+import CustomError from "../errors/CustomError.js";
+import EErrors from "../errors/enums.js";
+import { generateTicketErrorInfo } from "../errors/info.js";
 
 export default class TicketService{
     constructor(ticketDAO){
@@ -9,7 +12,12 @@ export default class TicketService{
             const ticketAdded = await this.ticketDAO.createTicket(ticket);
             return ticketAdded;
         }catch(error){
-            throw error;
+            CustomError.createError({   
+                name: 'Error',
+                message: 'Ticket not added',
+                code: EErrors.TICKET_NOT_ADDED,
+                info: generateTicketErrorInfo(ticket),
+            });
         }
     }
 
@@ -18,7 +26,12 @@ export default class TicketService{
             const tickets = await this.ticketDAO.getTickets();
             return tickets;
         }catch(error){
-            throw error;
+           CustomError.createError({
+                name: 'Error',
+                message: 'Tickets not found',
+                code: EErrors.TICKETS_NOT_FOUND,
+                info: generateTicketErrorInfo(tickets),
+            });
         }
     }
 }

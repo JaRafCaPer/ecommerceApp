@@ -3,6 +3,7 @@ import {dirname} from 'path'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from './config/config.js'
+import { faker } from "@faker-js/faker";
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -18,6 +19,18 @@ export const isValidPassword = (user, password)=>{
     return bcrypt.compareSync(password, user.password) //solo devuelve true o false
 }
 
+export const generateProducts = () => {
+    return {
+      title: faker.commerce.productName(),
+      price: faker.commerce.price(),
+      category: faker.commerce.department(),
+      stock: faker.number.int(),
+      id: faker.database.mongodbObjectId(),
+      thumbnail: faker.image.url(),
+      code: faker.number.int(),
+  
+    }
+  }
 
 export const generateToken = user =>{
     return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '36h'})

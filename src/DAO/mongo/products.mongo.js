@@ -1,11 +1,19 @@
+import CustomError from "../../errors/CustomError.js";
 import productModel from "./models/products.mongo.models.js";
+import EErrors from "../../errors/enums.js";
+import { generateProductsErrorInfo } from "../../errors/info.js";
 
 export default class ProductsMongo {
   async addProduct(product) {
     try {
       return await productModel.create(product);
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not added",
+        code: EErrors.PRODUCT_NOT_ADDED,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
 
@@ -13,7 +21,12 @@ export default class ProductsMongo {
     try {
       return await productModel.findById(id).lean().exec();
     } catch (error) {
-      throw error;
+     CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
 
@@ -21,7 +34,12 @@ export default class ProductsMongo {
     try {
       return await productModel.find().lean().exec();
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Products not found",
+        code: EErrors.PRODUCTS_NOT_FOUND,
+        info: generateProductsErrorInfo(products),
+      });
     }
   }
 
@@ -61,11 +79,24 @@ export default class ProductsMongo {
         const productUpdated = await productModel.findByIdAndUpdate(id, {
           newProduct,
         });
+        if (!productUpdated) {
+          CustomError.createError({
+            name: "Error",
+            message: "Product not updated",
+            code: EErrors.PRODUCT_NOT_UPDATED,
+            info: generateProductsErrorInfo(product),
+          });
+        }
 
         return productUpdated;
       }
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not updated",
+        code: EErrors.PRODUCT_NOT_UPDATED,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
 
@@ -73,7 +104,12 @@ export default class ProductsMongo {
     try {
       return await productModel.findByIdAndDelete(id);
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not deleted",
+        code: EErrors.PRODUCT_NOT_DELETED,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
 
@@ -81,18 +117,33 @@ export default class ProductsMongo {
     try {
       return await productModel.findOne({ code }).lean().exec();
     } catch (error) {
-      throw error;
+     CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
   getProductsOrder = async (sort) => {
+    try {
     const productsOrders = await productModel.aggregate([
       {
         $sort: { price: sort },
       },
     ]);
     return productsOrders;
-  };
+  } catch (error) {
+    CustomError.createError({
+      name: "Error",
+      message: "Product not found",
+      code: EErrors.PRODUCT_NOT_FOUND,
+      info: generateProductsErrorInfo(product),
+    });
+  }
+}
   getProductsMatch = async (key, value, sort) => {
+    try{
     const productMatch = await productModel.aggregate([
       {
         $match: { category: value[0] },
@@ -102,7 +153,15 @@ export default class ProductsMongo {
       },
     ]);
     return productMatch;
-  };
+  } catch (error) {
+    CustomError.createError({
+      name: "Error",
+      message: "Product not found",
+      code: EErrors.PRODUCT_NOT_FOUND,
+      info: generateProductsErrorInfo(product),
+    });
+  }
+}
   getProductsPaginate = async (page, limit, queryParams, sortParam) => {
     try {
       let query = {};
@@ -134,23 +193,38 @@ export default class ProductsMongo {
         return { products };
       }
     } catch (err) {
-      throw err;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
     }
   };
 
-  async getProductsLimit(limit) {
+getProductsLimit =   async (limit) => {
     try {
       const products = await productModel.find().lean().exec();
       return products.slice(0, limit);
     } catch (e) {
-      throw e;
+      CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
-  async getCategories() {
+ getCategories =  async () => {
     try {
       return await productModel.distinct("category");
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "Categories not found",
+        code: EErrors.CATEGORIES_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
     }
   }
 }

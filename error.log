@@ -1,0 +1,22 @@
+{"level":"http","message":"GET /loggerTest - 13:05:42","timestamp":"2023-10-12T18:05:42.342Z"}
+{"level":"info","message":"Info","timestamp":"2023-10-12T18:05:42.418Z"}
+{"level":"debug","message":"Debug","timestamp":"2023-10-12T18:05:42.419Z"}
+{"level":"http","message":"Http","timestamp":"2023-10-12T18:05:42.419Z"}
+{"level":"error","message":"Error","timestamp":"2023-10-12T18:05:42.420Z"}
+{"level":"warning","message":"Warning","timestamp":"2023-10-12T18:05:42.420Z"}
+{"level":"http","message":"GET /static/css/style.css - 13:06:12","timestamp":"2023-10-12T18:06:12.971Z"}
+{"level":"http","message":"POST /api/session/login - 13:06:15","timestamp":"2023-10-12T18:06:15.364Z"}
+{"level":"http","message":"GET /static/css/style.css - 13:06:58","timestamp":"2023-10-12T18:06:58.290Z"}
+{"level":"http","message":"GET /login-github - 13:06:59","timestamp":"2023-10-12T18:06:59.729Z"}
+{"level":"http","message":"GET /githubcallback?code=3c35d0a536ee618e1b70 - 13:07:00","timestamp":"2023-10-12T18:07:00.269Z"}
+{"level":"http","message":"GET /api/products - 13:07:01","timestamp":"2023-10-12T18:07:01.283Z"}
+{"level":"http","message":"GET /static/css/style.css - 13:07:02","timestamp":"2023-10-12T18:07:02.058Z"}
+{"level":"http","message":"GET /mocking - 13:07:09","timestamp":"2023-10-12T18:07:09.248Z"}
+{"level":"http","message":"GET /mockingproducts - 13:07:20","timestamp":"2023-10-12T18:07:20.067Z"}
+{"level":"http","message":"GET /mockingproducts - 13:07:45","timestamp":"2023-10-12T18:07:45.707Z"}
+{"level":"http","message":"GET /mockingproducts - 13:09:04","timestamp":"2023-10-12T18:09:04.255Z"}
+{"level":"http","message":"GET /mockingproducts - 13:12:22","timestamp":"2023-10-12T18:12:22.589Z"}
+{"level":"http","message":"GET /mockingproducts - 13:12:44","timestamp":"2023-10-12T18:12:44.579Z"}
+{"level":"http","message":"GET /mockingproducts - 13:12:57","timestamp":"2023-10-12T18:12:57.910Z"}
+{"level":"http","message":"GET /mockingproducts - 13:13:46","timestamp":"2023-10-12T18:13:46.101Z"}
+{"level":"http","message":"GET /mockingproducts - 13:14:13","timestamp":"2023-10-12T18:14:13.787Z"}

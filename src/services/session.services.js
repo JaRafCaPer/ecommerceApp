@@ -1,4 +1,7 @@
 import UserDTO from "../DTO/user.dto.js";
+import CustomError from "../errors/CustomError.js";
+import EErrors from "../errors/enums.js";
+import { generateUserErrorInfo } from "../errors/info.js";
 
 import { isValidPassword, createHash } from "../utils.js";
 
@@ -14,14 +17,29 @@ export default class SessionService {
       const user = await this.userDAO.getUserByEmail(email);
       console.log('user in service', user);
       if (!user) {
-        throw new Error("User not found");
+        CustomError.createError({
+          name: "Error",
+          message: "User not found",
+          code: EErrors.USER_NOT_EXISTS,
+          info: generateUserErrorInfo(user),
+        });
       }
       if (!isValidPassword(user, password)) {
-        throw new Error("Incorrect password");
+        CustomError.createError({
+          name: "Error",
+          message: "Password not valid",
+          code: EErrors.PASSWORD_NOT_VALID,
+          info: generateUserErrorInfo(user),
+        })
       }
       return new UserDTO(user);
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "User not found",
+        code: EErrors.USER_NOT_EXISTS,
+        info: generateUserErrorInfo(user),
+      });
     }
   }
 
@@ -43,15 +61,30 @@ export default class SessionService {
       
       return new UserDTO(userRegister);
     } catch (error) {
-      throw error;
+      CustomError.createError({
+        name: "Error",
+        message: "User not registered",
+        code: EErrors.USER_NOT_REGISTERED,
+        info: generateUserErrorInfo(user),
+      });
     }
   }
 
   async getUserCurrent(user) {
-    console.log("user current in session service", user);
-    const userCurrent = new UserDTO(user.user);
-    console.log("user current in session service", userCurrent);
-    return userCurrent;
+    try {
+      const userCurrent = new UserDTO(user.user);
+      return userCurrent;
+    }
+    catch(error){
+      CustomError.createError({
+        name: "Error",
+        message: "User not found",
+        code: EErrors.USER_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
+    }
+    
+    
     
   }
 }

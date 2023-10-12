@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { generateProducts } from "../utils.js";
 
 const router = Router();
 
@@ -54,4 +55,21 @@ router.get(
   }
 );
 
+router.get("/mockingproducts", async (req, res) => {
+  let products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push(generateProducts());
+  }
+  res.send({ status: "success", payload: products });
+});
+
+router.get("/loggerTest", (req, res) => {
+  req.logger.info("Info");
+  req.logger.debug("Debug");
+  req.logger.http("Http");
+  req.logger.error("Error");
+  req.logger.fatal("Fatal");
+  req.logger.warning("Warning");
+  res.send("Logger testing");
+});
 export default router;

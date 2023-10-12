@@ -1,4 +1,7 @@
 import MessageDTO from '../DTO/message.dto.js';
+import CustomError from '../errors/CustomError.js';
+import EErrors from '../errors/enums.js';
+import { generateMessageErrorInfo } from '../errors/info.js';
 
 export default class MessageService {
     constructor(messageDAO) {
@@ -9,7 +12,12 @@ export default class MessageService {
             const messageSaved = await this.messageDAO.saveMessage(message);
             return new MessageDTO(messageSaved);
         }catch(error){
-            throw error;
+            CustomError.createError({
+                name: 'Error',
+                message: 'Message not saved',
+                code: EErrors.MESSAGE_NOT_SAVED,
+                info: generateMessageErrorInfo(message),
+            });
         }
     }
     async getMessages(){
@@ -17,7 +25,12 @@ export default class MessageService {
             const messages = await this.messageDAO.getMessages();
             return messages;
         }catch(error){
-            throw error;
+           CustomError.createError({
+                name: 'Error',
+                message: 'Messages not found',
+                code: EErrors.MESSAGES_NOT_FOUND,
+                info: generateMessageErrorInfo(messages),
+            });
         }
     }
 }
