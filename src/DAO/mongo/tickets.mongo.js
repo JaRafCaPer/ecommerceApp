@@ -3,7 +3,7 @@ import ticketModel from "./models/tickets.mongo.models.js";
 export default class TicketsMongo {
   async createTicket(ticket) {
     try {
-      console.log("ticket mongo", ticket);
+      
       return await ticketModel.create(ticket);
     } catch (error) {
       throw error;

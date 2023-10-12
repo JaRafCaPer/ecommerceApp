@@ -21,14 +21,13 @@ export default class CartService {
 
   async getCartById(cartId) {
     try {
-      
       const cart = await this.cartDAO.getCartById(cartId);
       return cart;
     } catch (error) {
       throw error;
     }
   }
-  
+
   async updateCartById(id, cart) {
     try {
       const cartUpdated = await this.cartDAO.updateCartById(id, cart);
@@ -51,27 +50,39 @@ export default class CartService {
     try {
       const cartId = user.cartId;
       let cart = await this.cartDAO.getCartById(cartId);
-      console.log("cartId cart service", cartId);
-      console.log("cart cart service", cart);
-      
+
       if (!cart) {
         cart = await this.cartDAO.createCart();
         user.cartId = cart._id;
       }
-     
-      console.log(pid)
+
       const product = await this.productDAO.getProductById(pid);
       const productExist = cart.products.find(
-        (product) => product.pid._id.toString() == pid.toString()
+        (product) => product.pid._id.toString() === pid.toString()
       );
+
       if (productExist) {
-        if (quantity > 0) {
-          productExist.quantity += quantity;
+        const availableStock = product.stock - productExist.quantity;
+        if (quantity > 0 && availableStock > 0) {
+          const quantityToAdd = Math.min(quantity, availableStock);
+          productExist.quantity += quantityToAdd;
+        } else {
+          throw new Error(
+            `Insufficient stock to add ${quantity} units of ${product.name}. Available stock: ${availableStock}`
+          );
         }
       } else {
-        cart.products.push({ pid, quantity });
-        await this.cartDAO.updateCartById(cartId, cart);
+        if (quantity > 0 && product.stock > 0) {
+          const quantityToAdd = Math.min(quantity, product.stock);
+          cart.products.push({ pid, quantity: quantityToAdd });
+          await this.cartDAO.updateCartById(cartId, cart);
+        } else {
+          throw new Error(
+            `Insufficient stock to add ${quantity} units of ${product.name}. Available stock: ${product.stock}`
+          );
+        }
       }
+
       return cart;
     } catch (error) {
       throw error;
@@ -116,24 +127,17 @@ export default class CartService {
       cart.products.forEach((product) => {
         totalCompra += product.pid.price * product.quantity;
       });
-      return { cart, totalCompra};
+      return { cart, totalCompra };
     } catch (error) {
       throw error;
     }
   }
   async createAndSaveTicket(user) {
     try {
-      
       const uniqueTicketCode = uuidv4();
- 
       const purchaseDatetime = new Date();
-      console.log("purchaseDatetime", purchaseDatetime) 
-      
       let total = 0;
-      console.log("user", user)
       const cart = await this.getCartById(user.cartId);
-      console.log("cart createTicket", cart)
-      
       cart.products.forEach((product) => {
         total += product.pid.price * product.quantity;
       });
@@ -141,19 +145,14 @@ export default class CartService {
       const ticket = {
         code: uniqueTicketCode,
         purchase_datetime: purchaseDatetime,
-        amount: total, 
-        purchaser: user.email 
+        amount: total,
+        purchaser: user.email,
       };
       const ticketDTO = new TicketDTO(ticket);
-        
-        console.log("ticketDTO", ticketDTO)
-      
       const savedTicket = await this.ticketDAO.createTicket(ticketDTO);
-      console.log("savedTicket", savedTicket)
       return savedTicket;
     } catch (error) {
       throw error;
     }
   }
-
 }

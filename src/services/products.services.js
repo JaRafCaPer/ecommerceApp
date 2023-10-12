@@ -27,7 +27,7 @@ export default class ProductService {
   async getProductById(id) {
     try {
       const product = await this.productDAO.getProductById(id);
-      return new ProductDTO(product);
+      return product;
     } catch (error) {
       throw error;
     }
