@@ -1,86 +1,11 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">
-          Register
-        </div>
-        <div class="card-body">
-          <form
-            class="d-flex flex-column"
-            action="/api/session/register"
-            method="post"
-          >
-            <label>First name:</label>
-            <input
-              type="text"
-              placeholder="Ingrese su nombre"
-              name="first_name"
-              required
-              style="width: 100%;"
-            />
-            <label>Last name:</label>
-            <input
-              type="text"
-              placeholder="Ingrese su apellido"
-              name="last_name"
-              required
-              style="width: 100%;"
-            />
-            <label>Age:</label>
-            <input
-              type="text"
-              placeholder="Ingrese su edad"
-              name="age"
-              min="18"
-              max="99"
-              required
-              style="width: 100%;"
-            />
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Ingrese su email"
-              required
-            />
-            <label>Password:</label>
-            <div class="div-password-login">
-              <span class="icon-eye">
-                <i class="fa-solid fa-eye-slash"></i>
-              </span>
-              <input
-                type="password"
-                name="password"
-                placeholder="password"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              class="btn"
-              style="background-color: aliceblue;width:100%;"
-            >Registrarme</button>
-            <div style="margin-top: 20px;text-align:center;">
-              <a
-                href="api/session/login"
-                style="margin-top:10px;text-align:center;color:white"
-              >¿Ya tenes cuenta? Inicia Sesión</a>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<h1>Register</h1>
 
-<!-- Agrega los enlaces a Bootstrap JS y las bibliotecas de Google y GitHub aquí -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script
-  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"
-></script>
-<script
-  src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-></script>
-<script src="/js/main.js"></script>
-<script src="/js/login.js"></script>
+<form action="/api/session/register" method="post">
+    First Name: <input type="text" name="first_name">
+    Last Name: <input type="text" name="last_name">
+    Age: <input type="text" name="age">
+    Email: <input type="text" name="email">
+    Password: <input type="text" name="password">
+
+    <button type="submit">Enviar</button>
+</form>

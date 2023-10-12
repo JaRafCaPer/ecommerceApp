@@ -1,22 +1,16 @@
-import { User, Product, Category, Message, Cart, Ticket } from "../DAO/factory.js";
+import { Product, Cart, User, Message, Ticket } from "../DAO/factory.js";
 
-import ProductRepository from "./products.repository.js";
-import CategoryRepository from "./category.repository.js";
-import MessageRepository from "./messages.repository.js";
-import CartRepository from "./carts.repository.js";
-import UserRepository from "./user.repository.js";
-import SessionRepository from "./session.repository.js";
-import TicketRepository from "./ticket.repository.js";
+import CartService from "./carts.services.js";
+import ProductService from "./products.services.js";
+import UserService from "./users.services.js";
+import MessageService from "./messages.services.js";
+import TicketService from "./ticket.services.js";
+import SessionService from "./session.services.js"
 
-export const productRepository = new ProductRepository(new Product());
-export const categoryRepository = new CategoryRepository(new Category());
-export const messageRepository = new MessageRepository(new Message());
-export const cartRepository = new CartRepository(
-  new Cart(),
-  new User(),
-  new Product(),
-  new Ticket()
-);
-export const userRepository = new UserRepository(new User(), new Cart());
-export const sessionRepository = new SessionRepository(new User());
-export const ticketRepository = new TicketRepository(new Ticket());
+export const cartService = new CartService( new Cart(), new Product(), new User(), new Ticket());
+export const productService = new ProductService(new Product());
+export const userService = new UserService(new User());
+export const messageService = new MessageService(new Message());
+export const ticketService = new TicketService(new Ticket());
+export const sessionService = new SessionService(new User(), new Cart());
+

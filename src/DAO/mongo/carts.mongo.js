@@ -1,45 +1,41 @@
-import CartModel from "./models/carts.mongo.model.js";
+import cartModel from "./models/carts.mongo.models.js";
 
 export default class CartsMongo {
   async createCart() {
     try {
-      const cart = { products: [] };
-      const cartCreated = await CartModel.create(cart);
-      return cartCreated;
+      const cart = await cartModel.create();
+      console.log("cart mongo create", cart);
+      return cart
     } catch (error) {
       throw error;
     }
   }
-  async getCartById(id) {
+
+  async getCartById(cartId) {
     try {
-      const cart = await CartModel.findById(id)
+      console.log("cartId cart mongo", cartId);
+      const newCartId = cartId;
+      return await cartModel
+        .findById(newCartId)
         .populate("products.pid")
         .lean()
         .exec();
-      if (cart) return cart;
-      return null;
     } catch (error) {
       throw error;
     }
   }
-  async updateCartById(id, data) {
+
+  async updateCartById(id, cart) {
     try {
-      const cart = await this.getCartById(id);
-      if (cart) {
-        const cartUpdated = await CartModel.findByIdAndUpdate(id, data);
-        return cartUpdated;
-      }
-      return null;
+      return await cartModel.findByIdAndUpdate(id, cart);
     } catch (error) {
       throw error;
     }
   }
+
   async deleteCartById(id) {
     try {
-      const cart = await this.getCartById(id);
-      if (!cart) return null;
-      const cartDeleted = await cart.remove();
-      return cartDeleted;
+      return await cartModel.findByIdAndDelete(id);
     } catch (error) {
       throw error;
     }

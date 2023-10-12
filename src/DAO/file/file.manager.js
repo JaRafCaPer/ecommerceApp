@@ -1,35 +1,60 @@
-import fs from "fs";
+import fs from 'fs';
 
-export default class FileManager {
-  constructor(filename = "./db.json") {
-    this.filename = filename;
+class FileManager {
+  constructor(path = './db/db.json') {
+    this.path = path;
   }
 
-  getNextId = (list) => (list.length == 0 ? 1 : list[list.length - 1].id + 1);
+  getNextId(list) {
+    return list.length === 0 ? 1 : list[list.length - 1]._id + 1;
+  }
 
-  get = async () => {
-    return fs.promises
-      .readFile(this.filename, "utf-8")
-      .then((r) => JSON.parse(r))
-      .catch((e) => []);
-  };
+  async get() {
+    try {
+      const fileData = await fs.promises.readFile(this.path, 'utf-8');
+      return JSON.parse(fileData);
+    } catch (error) {
+      return [];
+    }
+  }
 
-  getById = async (id) => {
+  async getById(id) {
     const data = await this.get();
-    return data.find((d) => d.id == id);
-  };
+    return data.find((d) => d._id == id);
+  }
 
-  add = async (data) => {
+  async add(data) {
     const list = await this.get();
-    data.id = this.getNextId(list);
+    data._id = this.getNextId(list);
     list.push(data);
-    return fs.promises.writeFile(this.filename, JSON.stringify(list));
-  };
 
-  update = async (data) => {
+    try {
+      await fs.promises.writeFile(this.path, JSON.stringify(list));
+      return data;
+    } catch (error) {
+      throw error; // Manejar el error apropiadamente en tu aplicación
+    }
+  }
+
+  async update(id, data) {
     const list = await this.get();
-    const idx = list.findIndex((a) => a.id == data.id);
-    list[idx] = data;
-    return fs.promises.writeFile(this.filename, JSON.stringify(list));
-  };
+    const idx = list.findIndex((item) => item._id == id);
+
+    if (idx !== -1) {
+      list[idx] = data;
+      try {
+        await fs.promises.writeFile(this.path, JSON.stringify(list));
+        return data;
+      } catch (error) {
+        throw error; // Manejar el error apropiadamente en tu aplicación
+      }
+    } else {
+      return null; // Puedes retornar null u otro valor para indicar que no se encontró el objeto.
+    }
+  }
+  async writeData(data) {
+    return fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
+  }
 }
+
+export default FileManager;

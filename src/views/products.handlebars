@@ -1,188 +1,85 @@
-<nav
-  class="navbar navbar-expand-lg navbar-dark bg-primary"
-  style="padding: 10px 20px;"
->
-  <div class="container-fluid">
-    <a href="/">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="2em"
-        viewBox="0 0 576 512"
-      >
-        <!-- Tu logotipo o icono aquí -->
-      </svg>
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2rem"
-              viewBox="0 0 512 512"
-            >
-              <!-- Icono y texto de Menage -->
-            </svg>
-            <p>Home</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./realTimeProducts">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2rem"
-              viewBox="0 0 512 512"
-            >
-              <!-- Icono y texto de Menage -->
-            </svg>
-            <p>Manage</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/api/cart/user">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2rem"
-              viewBox="0 0 576 512"
-            >
-              <!-- Icono y texto de Cart -->
-            </svg>
-            <p>Cart</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/api/chat">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2rem"
-              viewBox="0 0 512 512"
-            >
-              <!-- Icono y texto de Support -->
-            </svg>
-            <p>Support</p>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a href="/profile">
-            <div
-              style="display: flex; justify-content:space-evenly;align-items:center;"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="2rem"
-                viewBox="0 0 448 512"
-              >
-                <!-- Icono de perfil -->
-              </svg>
-            </div>
-            <p style="font-size: 2.1rem;color:white;margin-right:10px;">
-              {{first_name}}
-              {{last_name}}
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/api/session/logout" style="margin-left:1rem;">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2rem"
-              viewBox="0 0 512 512"
-            >
-              <!-- Icono y texto de Logout -->
-            </svg>
-            <p>Logout</p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
 
-<section class="container mt-3" style="margin: 0 auto;">
-  <div class="row">
-    <div class="col-lg-6" style="margin: 0 auto;">
-      <h2 class="titulo-categoria">Categorias</h2>
-      <form id="form-category">
-        <div class="mb-3">
-          <label for="category" class="form-label">Seleccione una categoría</label>
-          <select id="category" name="category" class="form-select" required>
-            <option selected disabled>Seleccione una opción</option>
-            {{#each category}}
-              <option value="{{name}}">{{name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="price" class="form-label">Ordenar por precio</label>
-          <select id="price" name="sort" class="form-select" required>
-            <option selected disabled>Seleccione una opción</option>
-            <option value="1">Menor Precio</option>
-            <option value="-1">Mayor Precio</option>
-            <option value="0">No ordenar</option>
-          </select>
-        </div>
-        <div class="d-flex flex-column">
-          <button class="btn btn-primary" type="submit">FILTRAR</button>
-          <a class="" href="/" style="width: 100%;">
-            <button
-              class="btn btn-primary"
-              style="width: 100%;margin-top:20px"
-            >Volver</button>
-          </a>
-        </div>
-      </form>
-    </div>
-    <h2 style="text-align: center;margin-top:20px;">TODOS LOS PRODUCTOS</h2>
-  </div>
-</section>
+<body style="background-color: aliceblue;";>
+  
 
-<section
-  class="cards contenedor"
-  id="cards-product"
-  style="margin-bottom: 20px;"
->
-  {{#each products}}
-    <div class="card" style="width: 30rem;">
-      <img class="card-img-top" src="{{thumbail}}" alt="Card image cap" />
-      <div class="card-body">
-        <h5 class="card-title">{{title}}</h5>
-        <p class="card-stock">Stock: {{stock}}</p>
-        <p class="card-price">${{price}}</p>
-        <p class="_id">ID: {{_id}}</p>
-        <a
-          class="btn"
-          style="text-decoration: none;margin-top:2rem;color:white;"
-          href="/api/cart/pid/{{_id}}"
-        >Add to cart</a>
+<h2>Products</h2>
+<a href="/form-products">Agregar Producto</a>
+<h3 class="text-center display-2">Welcome {{user.rol}}: {{user.first_name}} {{user.last_name}} </h3>
+<div class="row"> 
+ <form id="formulario">
+    <select type="number" id="query-limit">
+          <option value="">Products per Page</option>
+          <option value="{{limit}}">10</option>
+          <option value="{{limit}}">25</option>
+          <option value="{{limit}}">50</option>
+    </select>
+  <div class="pagination">
+        <span>Page {{products.products.page}} of {{products.products.totalCompraPages}}</span>
+        {{#if hasPrevPage}}
+            <a href="?page={{prevPage}}">Anterior</a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="?page={{nextPage}}">Siguiente</a>
+        {{/if}}
+    </div>
+  <input type="hidden" name="sort-order" id="sort-order" value="-1">
+  <button type="submit">Cargar</button>
+  <select name="sort-select" id="sort-select">
+    <option value="ascendente">Min price Up</option>
+    <option value="descendente">Max price Up</option>
+  </select>
+
+  <select name="category" id="category-select">
+    <option value="">Todas las categorías</option>
+    {{#each categories}}
+      <option value="{{category}}">{{this}}</option>
+    {{/each}}
+  </select>
+</form>
+
+  </div>
+<div class="row">
+  {{#each products.products.docs}}
+  <div class="col-sm-3 p-3">
+    <div class="card" >
+      <img class="card-img-top" style="width: auto; height:300px;"; src="{{thumbnail}}" alt="{{name}}">
+      <div class="card-body" style="background-color: rgb(6, 27, 25); color:white " >
+        <h5 class="card-title display-8">{{{title}}}</h5>
+        <p class="card-text text-truncate" >{{description}}</p>
+        <a href="/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
+
+    <form action="/api/cart/{{@root.cartId}}/products/{{_id}}"  method="POST">
+      <input type="hidden" name="products[0][item]" value="{{_id}}">
+      <input type="number" name="quantity" value="1" min="1" max="100">
+      <button type="submit" class="btn btn-success">Agregar al carrito</button>
+    </form>
+  
+
       </div>
     </div>
-  {{/each}}
-</section>
-
-{{cid}}
-
-<section class="pagination contenedor3">
-  <div class="pagination-container">
-    {{#if productsPrev}}
-      <a href={{productsPrev}}>Anterior</a>
-    {{/if}}
-    {{#if productsNext}}
-      <a href={{productsNext}}>Siguiente</a>
-    {{/if}}
   </div>
-</section>
+  {{/each}}
+</div>
+<script>
+   const sortOrderSelect = document.getElementById('sort-select');
+  const sortOrderHiddenInput = document.getElementById('sort-order');
 
-<script src="/js/home.js"></script>
+  sortOrderSelect.addEventListener('change', () => {
+    const selectedValue = sortOrderSelect.value;
+    const sortOrder = selectedValue === 'ascendente' ? 1 : selectedValue === 'descendente' ? -1 : 0;
+    sortOrderHiddenInput.value = sortOrder;
+  });
+
+  document.getElementById('formulario').onsubmit = (e) => {
+    e.preventDefault();
+    const limit = document.getElementById('query-limit').value;
+    const page = document.getElementById('query-page').value;
+    const sortOrder = sortOrderHiddenInput.value;
+    const categorySelect = document.getElementById('category-select');
+    const category = categorySelect.value;
+
+    const url = `/api/products?limit=${limit}&page=${page}&sort=${sortOrder}&query=category,${category}`;
+    window.location.href = url;
+  };
+  </script>
+</body>

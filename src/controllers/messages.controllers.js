@@ -1,22 +1,19 @@
-import { messageRepository } from "../services/index.js";
+import { messageService } from "../services/index.js";
 
 export const getMessages = async (req, res) => {
   try {
-    console.log(req.user.user);
-    if (req.user.user.rol === "user") {
-      const messages = await messageRepository.getMessages();
-      res.status(200).render("chat", { messages });
-    } else {
-      throw new Error("No authorized");
-    }
+    const messages = await messageService.getMessages();
+    res.status(200).render("chat", { messages });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 export const saveMessage = async (req, res) => {
   try {
-    const message = await messageRepository.saveMessage(req.body);
-    res.status(201).json(message);
+    const message = req.body;
+    const messageSaved = await messageService.saveMessage(message);
+    res.status(201).json(messageSaved);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
