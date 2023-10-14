@@ -1,4 +1,9 @@
 import { productService } from "../services/index.js";
+import CustomError from "../errors/CustomError.js";
+import EErrors from "../errors/enums.js";
+import {
+  generateProductsErrorInfo,
+} from "../errors/info.js";
 
 export const getProducts = async (req, res) => {
     try {
@@ -42,6 +47,8 @@ export const getProducts = async (req, res) => {
     }
 
 }
+
+
 export const getProductById = async (req, res) => {
     try {
         const quees = req.query;
@@ -55,8 +62,21 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const product = await productService.addProduct(req.body);
-        res.status(201).json(product);
+        
+        const newProduct = {
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price,
+            stock: req.body.stock,
+            category: req.body.category,
+            thumbnail: req.body.thumbnail,
+            code: req.body.code,
+            status: true,
+        };
+        console.log('Controller product create body:', newProduct);
+        const product = await productService.addProduct(newProduct);
+        console.log('Controller product create:', product);
+        res.status(200).render("addProducts", { product });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

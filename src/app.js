@@ -1,6 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import __dirname from "./utils.js";
+import initializeSocketIO from "./public/js/sokets.js";
 import { Server } from "socket.io";
 import config from "./config/config.js";
 import cookieParser from "cookie-parser";
@@ -56,44 +57,15 @@ app.use("/api/session", sessionRoutes);
 app.use("/api/chat", chatRoutes);
 
 const runServer = () => {
-  const productMongo = new ProductsMongo();
+ 
   const httpServer = app.listen(
     PORT,
     console.log(`✅Server listening in the port: ${PORT}`),
     PERSISTENCE,
     console.log(`✅Persistence: ${PERSISTENCE}`)
   );
-  const io = new Server(httpServer);
-  io.on("connection", (socket) => {
-    console.log("Client connected succesly");
-    socket.on("new-product", async (data) => {
-      try {
-        await productMongo.addProduct(data);
-        const products = await productMongo.getProducts();
-        io.emit("reload-table", products);
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    socket.on("delete-product", async (id) => {
-      try {
-        await productMongo.deleteProduct(id);
-        const products = await productMongo.getProducts();
-        io.emit("reload-table", products);
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    socket.on("message", async (data) => {
-      await messageRepository.saveMessage(data);
-      //Envia el back
-      const messages = await messageRepository.getMessages();
-      io.emit("messages", messages);
-    });
-    socket.on("disconnect", () => {
-      console.log(`User ${socket.id} disconnected`);
-    });
-  });
+  initializeSocketIO(httpServer);
+
 };
 
 runServer();

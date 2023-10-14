@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { showResetPasswordForm, resetPassword } from "../controllers/session.controllers.js";
 import { generateProducts } from "../utils.js";
 
 const router = Router();
@@ -72,4 +73,12 @@ router.get("/loggerTest", (req, res) => {
   req.logger.warning("Warning");
   res.send("Logger testing");
 });
+
+// Route to show the reset password form
+router.get('/reset-password', showResetPasswordForm);
+
+// Route to process password reset
+router.post('/reset-password', resetPassword);
+
+
 export default router;

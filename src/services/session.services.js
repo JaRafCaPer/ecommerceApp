@@ -6,8 +6,9 @@ import { generateUserErrorInfo } from "../errors/info.js";
 import { isValidPassword, createHash } from "../utils.js";
 
 export default class SessionService {
-  constructor(userDAO) {
+  constructor(userDAO, tokenDAO) {
     this.userDAO = userDAO;
+    this.tokenDAO = tokenDAO;
   }
   async loginUser(req) {
     try {
@@ -83,8 +84,20 @@ export default class SessionService {
         info: generateUserErrorInfo(user),
       });
     }
-    
-    
-    
+  }
+
+  async findToken(token) {
+    try {
+      const tokenFound = await this.userDAO.getToken(token);
+      console.log("tokenFound in service", tokenFound);
+      return tokenFound;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Token not found",
+        code: EErrors.TOKEN_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
+    }
   }
 }

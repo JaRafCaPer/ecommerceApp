@@ -9,11 +9,16 @@ export default class ProductService {
   constructor(productDAO) {
     this.productDAO = productDAO;
   }
-  async addProduct(product) {
+  async addProduct(req) {
     try {
-      const product = await this.productDAO.getProductByCode(product.code);
-      if (!product) {
+      const product = req;
+      console.log("product in addproduct:", product);
+      const productCode =  await this.productDAO.getProductByCode(product.code);
+      console.log("productCode in addproduct:", productCode);
+      if (!productCode) {
+        console.log("no existe el producto");
         const productAdded = await this.productDAO.addProduct(product);
+        console.log("productAdded in addproduct:", productAdded);
         return new ProductDTO(productAdded);
       } else {
         CustomError.createError({

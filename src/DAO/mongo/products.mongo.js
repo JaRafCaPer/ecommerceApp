@@ -4,9 +4,13 @@ import EErrors from "../../errors/enums.js";
 import { generateProductsErrorInfo } from "../../errors/info.js";
 
 export default class ProductsMongo {
-  async addProduct(product) {
+  async addProduct(req) {
     try {
-      return await productModel.create(product);
+      const product = req;
+      console.log("product in addproduct mongo::", product);
+      const newProduct = await productModel.create(product);
+      console.log("newProduct in addproduct mongo:", newProduct);
+      return newProduct
     } catch (error) {
       CustomError.createError({
         name: "Error",
