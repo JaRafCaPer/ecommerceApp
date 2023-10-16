@@ -64,7 +64,7 @@ export default class CartService {
       const cartDeleted = await this.cartDAO.deleteCartById(id);
       return new CartDTO(cartDeleted);
     } catch (error) {
-     CustomError.createError({
+      CustomError.createError({
         name: "Error",
         message: "Cart not deleted",
         code: EErrors.CART_NOT_DELETED,
@@ -82,8 +82,15 @@ export default class CartService {
         cart = await this.cartDAO.createCart();
         user.cartId = cart._id;
       }
-
       const product = await this.productDAO.getProductById(pid);
+      if (user.email === product.owner) {
+        CustomError.createError({
+          name: "Error",
+          message: "You can't add your own product to cart",
+          code: EErrors.CART_NOT_FOUND,
+          info: generateCartErrorInfo(cart),
+        });
+      }
       if (!product) {
         CustomError.createError({
           name: "Error",
@@ -206,38 +213,39 @@ export default class CartService {
           code: EErrors.CART_NOT_FOUND,
           info: generateCartErrorInfo(cart),
         });
-      }else {
-      cart.products.forEach((product) => {
-        total += product.pid.price * product.quantity;
-      });
-      const products = cart.products.map((product) => {
-        return {
-          pid: product.pid._id,
-          title: product.pid.title,
-          code: product.pid.code,
-          quantity: product.quantity,
-        };
-      });
-
-      const ticket = {
-        code: uniqueTicketCode,
-        purchase_datetime: purchaseDatetime,
-        products: products,
-        amount: total,
-        purchaser: user.email,
-      };
-      const ticketDTO = new TicketDTO(ticket);
-      const savedTicket = await this.ticketDAO.createTicket(ticketDTO);
-      if (!savedTicket) {
-        CustomError.createError({
-          name: "Error",
-          message: "Ticket not saved",
-          code: EErrors.NOT_PRODUCTS_TICKET,
-          info: generateTicketErrorInfo(savedTicket),
+      } else {
+        cart.products.forEach((product) => {
+          total += product.pid.price * product.quantity;
         });
+        const products = cart.products.map((product) => {
+          return {
+            pid: product.pid._id,
+            title: product.pid.title,
+            code: product.pid.code,
+            quantity: product.quantity,
+          };
+        });
+
+        const ticket = {
+          code: uniqueTicketCode,
+          purchase_datetime: purchaseDatetime,
+          products: products,
+          amount: total,
+          purchaser: user.email,
+        };
+        const ticketDTO = new TicketDTO(ticket);
+        const savedTicket = await this.ticketDAO.createTicket(ticketDTO);
+        if (!savedTicket) {
+          CustomError.createError({
+            name: "Error",
+            message: "Ticket not saved",
+            code: EErrors.NOT_PRODUCTS_TICKET,
+            info: generateTicketErrorInfo(savedTicket),
+          });
+        }
+        return savedTicket;
       }
-      return savedTicket;
-    }} catch (error) {
+    } catch (error) {
       CustomError.createError({
         name: "Error",
         message: "Ticket not created",

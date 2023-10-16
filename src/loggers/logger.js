@@ -25,7 +25,7 @@ const logger = winston.createLogger({
     new winston.transports.Console({
       level: "fatal",
       format: winston.format.combine(
-        //winston.format.colorize({ colors: customLevelsOptions.colors }),
+        winston.format.colorize({ colors: customLevelsOptions.colors }),
         winston.format.simple()
       ),
     }),

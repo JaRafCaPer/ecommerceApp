@@ -9,6 +9,9 @@ export default class ProductDTO {
     this.price = product.price;
     this.thumbnail = product.thumbnail || "";
     this.code = product.code || "0";
+    this.category = product.category || "default";
+    this.status = product.status || true;
+    this.owner = product.owner || "adminCoder@coder.com";
     this.stock = product.stock;
   }
 }

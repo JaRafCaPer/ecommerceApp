@@ -46,7 +46,7 @@ export default class UserService {
   async getUsers() {
     try {
       const users = await this.userDAO.getUsers();
-      return users;
+      return new UserDTO(users);
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -58,8 +58,12 @@ export default class UserService {
   }
   async updateUser(id, user) {
     try {
+      console.log ('entra a update user service')
+      console.log ('id', id)
+      console.log ('user', user)
       const userUpdated = await this.userDAO.updateUser(id, user);
-      return new UserDTO(userUpdated);
+      console.log ('user updated', userUpdated)
+      return userUpdated;
     } catch (error) {
       CustomError.createError({
         name: "Error",

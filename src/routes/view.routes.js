@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { generateProducts } from "../utils.js";
+import { getMessages, saveMessage } from "../controllers/messages.controllers.js";
 
 const router = Router();
 
@@ -72,4 +73,10 @@ router.get("/loggerTest", (req, res) => {
   req.logger.warning("Warning");
   res.send("Logger testing");
 });
+
+
+router.get('/chat', getMessages)
+router.post('/chat', saveMessage)
+
+
 export default router;

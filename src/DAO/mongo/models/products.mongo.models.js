@@ -1,4 +1,4 @@
-import e from "express";
+
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  descripcion: {
+  description: {
     type: String,
     required: true,
   },
@@ -36,10 +36,15 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  thumbail: {
+  thumbnail: {
     type: String,
     required: true,
   },
+  owner: {
+    type: String,
+    required: true,
+    default: "admin",
+  }
 });
 
 productSchema.plugin(mongoosePaginate);

@@ -1,9 +1,52 @@
-<div>
-    <i id="username"></i> <input id="chatbox">
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="logs"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/static/js/index.js"></script>
+<body>
+    <h1>Chat</h1>
+
+    <div id="chat-messages">
+        {{#each messages}}
+        <p><strong>{{user}}:</strong> {{message}}</p>
+        {{/each}}
+    </div>
+
+    <form id="chat-form">
+        <input type="text" id="message" placeholder="Your Message">
+        <button type="submit">Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let user = null;
+
+        socket.on('connect', () => {
+            user = prompt('Please enter your name:');
+        });
+
+        const chatForm = document.getElementById('chat-form');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = document.getElementById('message').value;
+            socket.emit('new-message', { user, message });
+            chatForm.reset();
+        });
+
+        socket.on('message-received', (data) => {
+            const { user, message } = data;
+            const messageElement = document.createElement('p');
+            messageElement.innerHTML = `<strong>${user}:</strong> ${message}`;
+            chatMessages.appendChild(messageElement);
+        });
+    </script>
+</body>
+
+</html>

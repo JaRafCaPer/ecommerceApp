@@ -46,7 +46,7 @@
       <div class="card-body" style="background-color: rgb(6, 27, 25); color:white " >
         <h5 class="card-title display-8">{{{title}}}</h5>
         <p class="card-text text-truncate" >{{description}}</p>
-        <a href="/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
+        <a href="/api/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
 
     <form action="/api/cart/{{@root.cartId}}/products/{{_id}}"  method="POST">
       <input type="hidden" name="products[0][item]" value="{{_id}}">

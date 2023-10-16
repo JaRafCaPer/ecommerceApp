@@ -1,19 +1,22 @@
 import ProductDTO from "../DTO/product.dto.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
-import {
-  generateProductsErrorInfo,
-} from "../errors/info.js";
+import { generateProductsErrorInfo } from "../errors/info.js";
 
 export default class ProductService {
-  constructor(productDAO) {
+  constructor(productDAO, userDAO) {
     this.productDAO = productDAO;
+    this.userDAO = userDAO;
   }
-  async addProduct(product) {
+  async addProduct(req) {
     try {
-      const product = await this.productDAO.getProductByCode(product.code);
-      if (!product) {
+      const product = req;
+
+      const productCode = await this.productDAO.getProductByCode(product.code);
+
+      if (!productCode) {
         const productAdded = await this.productDAO.addProduct(product);
+
         return new ProductDTO(productAdded);
       } else {
         CustomError.createError({
@@ -59,7 +62,7 @@ export default class ProductService {
       }
       return product;
     } catch (error) {
-     CustomError.createError({
+      CustomError.createError({
         name: "Error",
         message: "Product not found",
         code: EErrors.PRODUCT_NOT_FOUND,
@@ -82,10 +85,35 @@ export default class ProductService {
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProductById(pid, umail) {
     try {
-      const productDeleted = await this.productDAO.deleteProduct(id);
-      return new ProductDTO(productDeleted);
+      const ProductId = pid;
+      const userMail = umail;
+      console.log("user email in delete product service ", userMail);
+      console.log("productId in delete product service ", ProductId);
+      const userDel = await this.userDAO.getUserByEmail(userMail);
+      console.log("user in delete product service ", userDel);
+      if (!userDel) {
+        CustomError.createError({
+          name: "Error",
+          message: "User not found",
+          code: EErrors.USER_NOT_FOUND,
+          info: generateProductsErrorInfo(userDel),
+        });
+      }
+      if (userDel.rol === "admin") {
+        const product = await this.productDAO.deleteProduct(ProductId);
+        return new ProductDTO(product);
+      }
+      if (userDel.rol === "premium") {
+        const productPremium = await this.productDAO.getProductById(ProductId);
+        if (productPremium.owner === userDel.email) {
+          const product = await this.productDAO.deleteProduct(ProductId);
+          return new ProductDTO(product);
+        }
+      } else {
+        return "You are not authorized to delete this product";
+      }
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -95,20 +123,21 @@ export default class ProductService {
       });
     }
   }
+
   async getPaginatedProducts(page, limit, queryParams, sort) {
     try {
       const products = await this.productDAO.getProductsPaginate(
         page,
         limit,
         sort,
-        queryParams,
+        queryParams
       );
-     
+
       return {
-        products
+        products,
       };
     } catch (e) {
-     CustomError.createError({
+      CustomError.createError({
         name: "Error",
         message: "Products not found",
         code: EErrors.PRODUCTS_NOT_FOUND,
