@@ -14,6 +14,7 @@ import cartRoutes from "./routes/cart.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import viewsRoutes from "./routes/view.routes.js";
 import sessionRoutes from "./routes/session.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const PORT = config.PORT;
 const PERSISTENCE = config.PERSISTENCE;
@@ -53,6 +54,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/session", sessionRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/users",userRoutes);
 
 const runServer = () => {
  

@@ -4,94 +4,106 @@ import CustomError from "../../errors/CustomError.js";
 import EErrors from "../../errors/enums.js";
 import { generateUserErrorInfo } from "../../errors/info.js";
 
-
 export default class UsersMongo {
-    async createUser(req) {
-        try {
-            let user = req;
-            const newCart = await cartModel.create({ items: [], total: 0 });
-            user.cartId = newCart._id;
-            const userAdded = await userModel.create(user);
-            
+  async createUser(req) {
+    try {
+      let user = req;
+      const newCart = await cartModel.create({ items: [], total: 0 });
+      user.cartId = newCart._id;
+      const userAdded = await userModel.create(user);
 
-            return userAdded;
-        } catch (error) {
-            CustomError.createError({
-                name: "Error",
-                message: "User not added",
-                code: EErrors.USER_NOT_ADDED,
-                info: generateUserErrorInfo(user),
-            });
-        }
+      return userAdded;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not added",
+        code: EErrors.USER_NOT_ADDED,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 
-
-
-    async getUserById(id) {
-        try {
-            return await userModel.findById(id).lean().exec();
-        } catch (error) {
-            CustomError.createError({
-                name: "Error",
-                message: "User not found",
-                code: EErrors.USER_NOT_FOUND,
-                info: generateUserErrorInfo(user),
-            });
-        }
+  async getUserById(id) {
+    try {
+      return await userModel.findById(id).lean().exec();
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not found",
+        code: EErrors.USER_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 
-    async getUsers() {
-        try {
-            return await userModel.find().lean().exec();
-        } catch (error) {
-           CustomError.createError({
-                name: "Error",
-                message: "Users not found",
-                code: EErrors.USERS_NOT_FOUND,
-                info: generateUserErrorInfo(user),
-            });
-        }
+  async getUsers() {
+    try {
+      return await userModel.find().lean().exec();
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Users not found",
+        code: EErrors.USERS_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 
-    async getUserByEmail(email) {
-        try {
-            console.log("email mongo", email)
-            const user = await userModel.findOne({ email: email }).lean().exec();
-            console.log("user mongo", user)
-            return user
-        } catch (error) {
-            CustomError.createError({
-                name: "Error",
-                message: "User not found",
-                code: EErrors.USER_NOT_FOUND,
-                info: generateUserErrorInfo(user),
-            });
-        }
+  async getUserByEmail(email) {
+    try {
+      console.log("email mongo", email);
+      const user = await userModel.findOne({ email: email }).lean().exec();
+      console.log("user mongo", user);
+      return user;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not found",
+        code: EErrors.USER_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 
-    async updateUser(id, user) {
-        try {
-            return await userModel.findByIdAndUpdate(id, user);
-        } catch (error) {
-            CustomError.createError({
-                name: "Error",
-                message: "User not updated",
-                code: EErrors.USER_NOT_UPDATED,
-                info: generateUserErrorInfo(user),
-            });
-        }
+  async updateUser(id, user) {
+    try {
+      console.log("entra a update user mongo");
+      console.log("id", id);
+      console.log("user", user);
+      const userToUdp = {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        age: user.age,
+        rol: user.rol,
+      };
+      console.log("user to udp", userToUdp);
+      const userUpdate = await userModel
+        .findByIdAndUpdate(id,  userToUdp , { new: true })
+        .lean()
+        .exec();
+      console.log("user update Mongo21221", userUpdate);
+      return userUpdate;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not updated",
+        code: EErrors.USER_NOT_UPDATED,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 
-    async deleteUser(id) {
-        try {
-            return await userModel.findByIdAndDelete(id);
-        } catch (error) {
-           CustomError.createError({
-                name: "Error",
-                message: "User not deleted",
-                code: EErrors.USER_NOT_DELETED,
-                info: generateUserErrorInfo(user),
-            });
-        }
+  async deleteUser(id) {
+    try {
+      return await userModel.findByIdAndDelete(id);
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not deleted",
+        code: EErrors.USER_NOT_DELETED,
+        info: generateUserErrorInfo(user),
+      });
     }
+  }
 }
