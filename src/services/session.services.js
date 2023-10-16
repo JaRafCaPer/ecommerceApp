@@ -2,8 +2,19 @@ import UserDTO from "../DTO/user.dto.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateUserErrorInfo } from "../errors/info.js";
-
+import nodemailer from "nodemailer";
 import { isValidPassword, createHash } from "../utils.js";
+import config from "../config/config.js";
+import jwt from "jsonwebtoken";
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  
+  auth: {
+    user: config.USER,
+    pass: config.PASS,
+  },
+});
 
 export default class SessionService {
   constructor(userDAO, tokenDAO) {
@@ -71,6 +82,25 @@ export default class SessionService {
     }
   }
 
+  async getUserByEmail(email) {
+    try {
+      const user = await this.userDAO.getUserByEmail(email);
+      if (!user) {
+        CustomError.createError({
+          name: "Error",
+          message: "User not found by create error",
+          code: EErrors.USER_NOT_FOUND,
+          info: generateUserErrorInfo(user),
+        });
+      }
+      return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+
   async getUserCurrent(user) {
     try {
       const userCurrent = new UserDTO(user.user);
@@ -100,4 +130,82 @@ export default class SessionService {
       });
     }
   }
+
+  async resetPasswordForm(email, password, confirmPassword) {
+    const user = await this.userDAO.getUserByEmail(email);
+    if (!user) {
+      CustomError.createError({
+        name: "Error",
+        message: "User not found by create error",
+        code: EErrors.USER_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
+    }
+    if (password !== confirmPassword) {
+      return CustomError.createError({
+        name: "Error",
+        message: "Las contraseñas no coinciden",
+        code: EErrors.PASSWORD_NOT_VALID,
+        info: generateUserErrorInfo(user),
+      });
+    }
+    if (isValidPassword(user, password)) {
+      return CustomError.createError({
+        name: "Error",
+        message: "La contraseña ingresada no puede ser igual a la anterior",
+        code: EErrors.PASSWORD_NOT_VALID,
+        info: generateUserErrorInfo(user),
+      });
+    }
+    const newPassword = createHash(password);
+    user.password = newPassword;
+    await this.userDAO.updateUser(user._id, user);
+    return user;
+  }
+
+  async validUserSentEmailPassword(email) {
+    const user = await this.userDAO.getUserByEmail(email);
+    console.log("user in validUserSentEmailPassword", user);
+    if (user) {
+        const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
+        console.log("token", token);
+        // const mailOptions = {
+        //   from: config.USER,
+        //   to: email,
+        //   subject: "Restablecer tu contraseña",
+        //   html: `Haz click en el siguiente link para restablecer tu contraseña: http://localhost:8080/api/session/resetPasswordForm/${token}`,
+        // };
+        // console.log("mailOptions", mailOptions);
+      try {
+        const result = transporter.sendMail({
+          from: config.USER,
+          to: email,
+          subject: "Restablecer tu contraseña",
+          html: `Haz click en el siguiente link para restablecer tu contraseña: http://localhost:8080/api/session/resetPasswordForm/${token}`,
+        },
+        function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+            return info.response;
+          }
+        })
+        console.log("reset", result);
+        
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "Error",
+      //   message: "Email not send",
+      //   code: EErrors.USER_RESET_PASSWORD_EMAIL_ERROR,
+      //   info: generateUserErrorInfo(user),
+      // });
+    }
+    
+    return user;
+  }
+
+
+
+}
 }

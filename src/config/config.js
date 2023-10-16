@@ -10,5 +10,8 @@ export default  {
     CALLBACK_URL_GITHUB: process.env.CALLBACK_URL_GITHUB,
     SECRET_JWT: process.env.SECRET_JWT,
     PERSISTENCE: process.env.PERSISTENCE,
-    SECRET_KEY: "secret"
+    SECRET_KEY: process.env.SECRET_KEY,
+    USER: process.env.USER,
+    PASS: process.env.PASS,
+    AMBIENT: process.env.AMBIENT,
 }

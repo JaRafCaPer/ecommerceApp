@@ -7,9 +7,9 @@ export default class ProductsMongo {
   async addProduct(req) {
     try {
       const product = req;
-      console.log("product in addproduct mongo::", product);
+     
       const newProduct = await productModel.create(product);
-      console.log("newProduct in addproduct mongo:", newProduct);
+      
       return newProduct
     } catch (error) {
       CustomError.createError({

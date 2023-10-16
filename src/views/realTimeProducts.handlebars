@@ -21,6 +21,9 @@
     <label for="code">Code:</label>
     <input type="text" name="code" id="code" required></br>
 
+    <label for="owner">Owner:</label>
+    <input type="text" name="owner" id="owner" required></br>
+
     <label for="status">Status:</label>
     <select name="status" id="status" >
         <option value="true">Active</option>
@@ -39,6 +42,7 @@
                 <th scope="col">Description</th>
                 <th scope="col">Price</th>
                 <th scope="col">Stock</th>
+                <th scope="col">Thumbnail</th>
                 <th scope="col">Code</th>
                 <th scope="col">Status</th>
             </tr>
@@ -71,11 +75,13 @@
         const description = document.getElementById('description').value
         const price = parseInt(document.getElementById('price').value)
         const stock = parseInt(document.getElementById('stock').value)
+        const category = document.getElementById('category').value
+        const owner = document.getElementById('owner').value
         const thumbnail = document.getElementById('thumbnail').value
         const status = document.getElementById('status').value
         const code = document.getElementById('code').value
         const status = true
-        const newProd = {title, description, price, stock, thumbnail, code, status}
+        const newProd = {title, description, price, stock, thumbnail, owner, category, code, status}
         socket.emit('new-product', newProd)
         document.getElementById('form').reset()
     }

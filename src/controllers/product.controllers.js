@@ -5,6 +5,7 @@ import {
   generateProductsErrorInfo,
 } from "../errors/info.js";
 
+
 export const getProducts = async (req, res) => {
     try {
         
@@ -51,9 +52,10 @@ export const getProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     try {
-        const quees = req.query;
-        console.log(quees);
-        const product = await productService.getProductById(req.params.id);
+        const productToDetailId = req.params.pid;
+        const user = req.user;
+        const cartId = user.user.cartId;
+        const product = await productService.getProductById(productToDetailId);
         res.status(200).render("productDetails", { product,user ,cartId });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -62,7 +64,7 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        
+        const user = req.user;
         const newProduct = {
             title: req.body.title,
             description: req.body.description,
@@ -70,13 +72,16 @@ export const createProduct = async (req, res) => {
             stock: req.body.stock,
             category: req.body.category,
             thumbnail: req.body.thumbnail,
+            owner: req.body.owner,
             code: req.body.code,
             status: true,
         };
-        console.log('Controller product create body:', newProduct);
+        console.log('newProduct in createProduct controller',newProduct)
+        console.log('user in createProduct controller',user)
+       
         const product = await productService.addProduct(newProduct);
-        console.log('Controller product create:', product);
-        res.status(200).render("addProducts", { product });
+       
+        res.status(200).render("realTimeProduct", { product });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -92,12 +97,43 @@ export const updateProductById = async (req, res) => {
 }
 
 export const deleteProductById = async (req, res) => {
-    try {
-        const product = await productService.deleteProductById(req.params.id);
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+
+
+    
+        try {
+            const user = req.user;
+            const productId = req.params.id;
+            console.log('user in delete product controller ',user)
+            console.log('productIn in delete product controller ',productId)
+            const product = await productService.deleteProductById(productId, user.id);
+            res.status(200).json(product);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    
+    
+    
+    // try {
+    //     const productToDelete = await productService.getProductById(req.params.id);
+    //     const user = await userService.getUserById(req.user.id);
+    //     if (!user) {
+    //         throw new CustomError(EErrors.USER_NOT_FOUND, generateProductsErrorInfo(req.params.id));
+    //     }
+    //     if (user.rol === "admin"){
+    //         const product = await productService.deleteProductById(productToDelete);
+    //         res.status(200).json(product);
+    //     }
+    //     if (user.rol === "premium"){
+    //         const productPremium = await productService.getProductById(productToDelete);
+    //         if(productPremium.owner === user.email){
+    //             const product = await productService.deleteProductById(productToDelete);
+    //             res.status(200).json(product);}
+    //     }
+        
+    //     res.status(200).json(product);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
 
 
 }

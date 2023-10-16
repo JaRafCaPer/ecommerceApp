@@ -12,8 +12,8 @@ export const getMessages = async (req, res) => {
 export const saveMessage = async (req, res) => {
   try {
     const message = req.body;
-    const messageSaved = await messageService.saveMessage(message);
-    res.status(201).json(messageSaved);
+    const messages = await messageService.saveMessage(message);
+    res.status(201).redirect("/api/chat", { messages });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

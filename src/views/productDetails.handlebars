@@ -1,13 +1,75 @@
 <!-- product.docsDetails.handlebars -->
 <h2>{{product.name}}</h2>
-<img src="{{product.image}}" alt="">
+<img src="{{product.thumbnail}}" alt="">
 <p>Description: {{product.description}}</p>
 <p>Category: {{product.category}}</p>
 <p>Stock: {{product.stock}}</p>
 <p>Price: {{product.price}}</p>
 <!-- Agregar más detalles del product.docso si es necesario -->
-<form action="/api/carts/{{@root.cartId}}/products/{{product._id}}"  method="POST">
-      {{!-- <input type="hidden" name="products[0][item]" value="{{product._id}}"> --}}
-      <input type="number" name="quantity" value="1" min="1">
-      <button type="submit" class="btn btn-success">Agregar al carrito</button>
-    </form>
+<button class="btn btn-success" id="addToCartButton">Agregar al carrito</button>
+
+<!-- Quantity input field -->
+<input type="number" id="quantityInput" value="1" min="1">
+
+<!-- Add event listener for the "Add to Cart" button -->
+<script>
+  const addToCartButton = document.getElementById("addToCartButton");
+  const quantityInput = document.getElementById("quantityInput");
+
+  addToCartButton.addEventListener("click", async () => {
+    try {
+      const productId = "{{product._id}}"; // Replace with the actual product ID
+      const quantity = parseInt(quantityInput.value) || 1; // Get the quantity from the input field
+      const cartId = "{{cartId}}"; // Replace with the actual cart ID
+
+      // Send an AJAX request to add the product to the cart
+      const response = await fetch(`/api/cart/${cartId}/products/${productId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity }),
+      });
+
+      if (response.ok) {
+        // Product added to the cart successfully
+        alert("Product added to the cart!");
+      } else {
+        // Handle the error if needed
+        alert("Failed to add the product to the cart.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>
+
+<!-- Example button for deleting a product -->
+<button class="btn btn-danger" id="deleteProductButton">Delete</button>
+
+<!-- Add event listener for the "Delete" button -->
+<script>
+  const deleteProductButton = document.getElementById("deleteProductButton");
+
+  deleteProductButton.addEventListener("click", async () => {
+    try {
+      const productId = "{{product._id}}"; // Replace with the actual product ID
+
+      // Send an AJAX request to delete the product
+      const response = await fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // Product deleted successfully
+        alert("Product deleted!");
+        // Optionally, you can redirect to a different page or update the UI.
+      } else {
+        // Handle the error if needed
+        alert("Failed to delete the product.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>

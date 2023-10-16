@@ -30,6 +30,7 @@ const EErrors = {
     TICKET_NOT_FOUND: 29,
     TICKET_NOT_UPDATED: 30,
     TICKET_NOT_DELETED: 31,
+    USER_RESET_PASSWORD_EMAIL_ERROR: 32,
 
 }
 export default EErrors;

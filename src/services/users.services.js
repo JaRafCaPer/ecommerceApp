@@ -33,7 +33,7 @@ export default class UserService {
           info: generateUserErrorInfo(product),
         });
       }
-      return user;
+      return new UserDTO(user);
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -46,7 +46,7 @@ export default class UserService {
   async getUsers() {
     try {
       const users = await this.userDAO.getUsers();
-      return users;
+      return new UserDTO(users);
     } catch (error) {
       CustomError.createError({
         name: "Error",

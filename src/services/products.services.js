@@ -12,13 +12,13 @@ export default class ProductService {
   async addProduct(req) {
     try {
       const product = req;
-      console.log("product in addproduct:", product);
+      
       const productCode =  await this.productDAO.getProductByCode(product.code);
-      console.log("productCode in addproduct:", productCode);
+    
       if (!productCode) {
-        console.log("no existe el producto");
+       
         const productAdded = await this.productDAO.addProduct(product);
-        console.log("productAdded in addproduct:", productAdded);
+     
         return new ProductDTO(productAdded);
       } else {
         CustomError.createError({
@@ -87,7 +87,7 @@ export default class ProductService {
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProductById(pid, uid) {
     try {
       const productDeleted = await this.productDAO.deleteProduct(id);
       return new ProductDTO(productDeleted);
@@ -99,7 +99,38 @@ export default class ProductService {
         info: generateProductsErrorInfo(product),
       });
     }
+
+    // try {
+    //     const productToDelete = await this.productDAO.getProductById(pid);
+    //     const user = await this.userDAO.getUserById(uid);
+    //     if (!user) {
+    //         throw new CustomError(EErrors.USER_NOT_FOUND, generateProductsErrorInfo(req.params.id));
+    //     }
+    //     if (user.rol === "admin"){
+    //         const product = await productService.deleteProductById(productToDelete);
+    //         res.status(200).json(product);
+    //     }
+    //     if (user.rol === "premium"){
+    //         const productPremium = await productService.getProductById(productToDelete);
+    //         if(productPremium.owner === user.email){
+    //             const product = await productService.deleteProductById(productToDelete);
+    //             res.status(200).json(product);}
+    //     }
+        
+    //     res.status(200).json(product);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+
+
+
   }
+
+
+
+
+
+
   async getPaginatedProducts(page, limit, queryParams, sort) {
     try {
       const products = await this.productDAO.getProductsPaginate(

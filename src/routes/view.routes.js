@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-import { showResetPasswordForm, resetPassword } from "../controllers/session.controllers.js";
 import { generateProducts } from "../utils.js";
+import { getMessages, saveMessage } from "../controllers/messages.controllers.js";
 
 const router = Router();
 
@@ -74,11 +74,9 @@ router.get("/loggerTest", (req, res) => {
   res.send("Logger testing");
 });
 
-// Route to show the reset password form
-router.get('/reset-password', showResetPasswordForm);
 
-// Route to process password reset
-router.post('/reset-password', resetPassword);
+router.get('/chat', getMessages)
+router.post('/chat', saveMessage)
 
 
 export default router;

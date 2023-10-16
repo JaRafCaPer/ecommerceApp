@@ -9,11 +9,16 @@ const userModel = mongoose.model(
     age: String,
     password: String,
     cartId: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
+    status: {
+      type: "String",
+      enum: ["verified", "not verified"],
+      default: "not verified",
+    },
+    verificationCode: String,
     rol: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
-    },
+      enum: ["user", "admin","premium"],
+      default: "user",}
   })
 );
 

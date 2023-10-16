@@ -4,6 +4,10 @@ import {
   loginUser,
   registerUser,
   getUserCurrent,
+  resetearPassword,
+  restart,
+  resetPasswordForm,
+  validPassword
 } from "../controllers/session.controllers.js";
 
 const router = Router();
@@ -36,6 +40,15 @@ router.get("/login", (req, res) => {
   );
   
   router.get("/current",passport.authenticate("jwt", { session: false }), getUserCurrent);
+
+  router.get("/resetPassword",resetearPassword)
+
+  router.post("/restart",restart)
+
+  router.get("/resetPasswordForm/:token",resetPasswordForm)
+
+  router.post("/validPassword",validPassword)
+
   
   export default router;
   
