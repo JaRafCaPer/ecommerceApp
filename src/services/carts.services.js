@@ -34,6 +34,7 @@ export default class CartService {
   async getCartById(cartId) {
     try {
       const cart = await this.cartDAO.getCartById(cartId);
+      console.log("cart service", cart);
       return cart;
     } catch (error) {
       CustomError.createError({
@@ -75,20 +76,27 @@ export default class CartService {
 
   async addProductCartById(user, pid, quantity) {
     try {
-      const cartId = user.cartId;
-      let cart = await this.cartDAO.getCartById(cartId);
-
-      if (!cart) {
+      console.log("user cart service11111111111111111111", user);
+      console.log("pid cart service222222222222222222222222", pid);
+      console.log("quantity cart service333333333333333333333333", quantity);
+      if (user.rol === "admin") throw new Error("No authorized");
+      let cartId = user.cartId;
+      let cart;
+      if (cartId) {
+        cart = await this.cartDAO.getCartById(cartId);
+      } else {
         cart = await this.cartDAO.createCart();
-        user.cartId = cart._id;
+        user.cartId.push(cart._id);
+        await this.userDAO.updateUser(user._id, user);
+        cartId = cart._id;
       }
       const product = await this.productDAO.getProductById(pid);
-      if (user.email === product.owner) {
+      if (user.rol === "premium" && product.owner === user.email) {
         CustomError.createError({
           name: "Error",
-          message: "You can't add your own product to cart",
-          code: EErrors.CART_NOT_FOUND,
-          info: generateCartErrorInfo(cart),
+          message: "You can't buy your own products",
+          code: EErrors.NOT_BUY_OWN_PRODUCTS,
+          info: generateProductsErrorInfo(product),
         });
       }
       if (!product) {
@@ -99,46 +107,39 @@ export default class CartService {
           info: generateProductsErrorInfo(product),
         });
       }
-      const productExist = cart.products.find(
-        (product) => product.pid._id.toString() === pid.toString()
+      const productValidate = cart.products?.find(
+        (product) => product.pid._id.toString() == pid.toString()
       );
-
-      if (productExist) {
-        const availableStock = product.stock - productExist.quantity;
-        if (quantity > 0 && availableStock > 0) {
-          const quantityToAdd = Math.min(quantity, availableStock);
-          productExist.quantity += quantityToAdd;
-        } else {
+      if (productValidate) {
+        if (product.stock < quantity) {
           CustomError.createError({
             name: "Error",
-            message: "Insufficient stock to add product",
+            message: "Stock not available",
             code: EErrors.STOCK_NOT_AVAILABLE,
             info: generateProductsErrorInfo(product),
           });
         }
+        product.stock -= quantity;
+        productValidate.quantity += quantity;
       } else {
-        if (quantity > 0 && product.stock > 0) {
-          const quantityToAdd = Math.min(quantity, product.stock);
-          cart.products.push({ pid, quantity: quantityToAdd });
+        if (product.stock >= quantity) {
+          product.stock -= quantity;
+          cart.products.push({ pid, quantity });
           await this.cartDAO.updateCartById(cartId, cart);
         } else {
           CustomError.createError({
             name: "Error",
-            message: "Insufficient stock to add product",
+            message: "Stock not available",
             code: EErrors.STOCK_NOT_AVAILABLE,
             info: generateProductsErrorInfo(product),
           });
         }
       }
-
+      await this.cartDAO.updateCartById(cartId, cart);
+      await this.productDAO.updateProduct(pid, product);
       return cart;
     } catch (error) {
-      CustomError.createError({
-        name: "Error",
-        message: "Product not added to cart",
-        code: EErrors.CART_NOT_FOUND,
-        info: generateCartErrorInfo(cart),
-      });
+      throw error;
     }
   }
 

@@ -67,22 +67,18 @@ export default class UsersMongo {
 
   async updateUser(id, user) {
     try {
-      console.log("entra a update user mongo");
-      console.log("id", id);
-      console.log("user", user);
       const userToUdp = {
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
         age: user.age,
+        password: user.password,
         rol: user.rol,
       };
-      console.log("user to udp", userToUdp);
       const userUpdate = await userModel
-        .findByIdAndUpdate(id,  userToUdp , { new: true })
+        .findByIdAndUpdate(id, userToUdp, { new: true })
         .lean()
         .exec();
-      console.log("user update Mongo21221", userUpdate);
       return userUpdate;
     } catch (error) {
       CustomError.createError({

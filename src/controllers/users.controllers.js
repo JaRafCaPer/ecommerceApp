@@ -7,7 +7,6 @@ export const userPremium = async (req, res) => {
   try {
     const id = new mongoose.Types.ObjectId(req.params.uid);
     const user = await userService.getUserById(id);
-    console.log("user change", user);
     if (user) {
       if (user.rol === "admin") {
         CustomError.createError({
@@ -20,13 +19,11 @@ export const userPremium = async (req, res) => {
       if (user.rol === "user") {
         user.rol = "premium";
         const udpUser = await userService.updateUser(user._id, user);
-        console.log("user premium 2", udpUser);
         return res.render("profile", udpUser);
       }
       if (user.rol === "premium") {
         user.rol = "user";
         const udpUser = await userService.updateUser(user._id, user);
-        console.log("user premium 3",udpUser);
         return res.render("profile", udpUser);
       }
     } else {

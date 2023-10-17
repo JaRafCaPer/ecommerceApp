@@ -8,6 +8,7 @@ import {
   getTicketsByUserById
 } from "../controllers/carts.controllers.js";
 import {requireUser} from "../middleware/rol.verification.js";
+import { requirePremium } from "../middleware/rol.verification.js";
 
 import { Router } from "express";
 import passport from "passport";
@@ -43,7 +44,7 @@ router.get(
 
 router.post(
   "/:cid/products/:pid",
-  passport.authenticate("jwt", { session: false }),requireUser,
+  passport.authenticate("jwt", { session: false }),(requireUser || requirePremium),
   addProductCartById
 );
 

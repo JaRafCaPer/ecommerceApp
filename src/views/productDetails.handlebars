@@ -5,6 +5,7 @@
 <p>Category: {{product.category}}</p>
 <p>Stock: {{product.stock}}</p>
 <p>Price: {{product.price}}</p>
+<p>Seller: {{product.owner}}</p>
 <!-- Agregar más detalles del product.docso si es necesario -->
 <button class="btn btn-success" id="addToCartButton">Agregar al carrito</button>
 
@@ -63,7 +64,7 @@
       if (response.ok) {
         // Product deleted successfully
         alert("Product deleted!");
-        // Optionally, you can redirect to a different page or update the UI.
+       redirect("/products");
       } else {
         // Handle the error if needed
         alert("Failed to delete the product.");

@@ -58,11 +58,8 @@ export default class UserService {
   }
   async updateUser(id, user) {
     try {
-      console.log ('entra a update user service')
-      console.log ('id', id)
-      console.log ('user', user)
+     
       const userUpdated = await this.userDAO.updateUser(id, user);
-      console.log ('user updated', userUpdated)
       return userUpdated;
     } catch (error) {
       CustomError.createError({
