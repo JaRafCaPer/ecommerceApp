@@ -72,6 +72,7 @@ export default class UsersMongo {
         last_name: user.last_name,
         email: user.email,
         age: user.age,
+        password: user.password,
         rol: user.rol,
       };
       const userUpdate = await userModel

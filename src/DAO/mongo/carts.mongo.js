@@ -23,11 +23,13 @@ export default class CartsMongo {
     try {
       
       const newCartId = cartId;
-      return await cartModel
-        .findById(newCartId)
-        .populate("products.pid")
-        .lean()
-        .exec();
+      const newCart = await cartModel
+      .findById(newCartId)
+      .populate("products.pid")
+      .lean()
+      .exec();
+      console.log("cart mongo get", newCart);
+       return newCart
     } catch (error) {
       CustomError.createError({
         message: "Error getting cart",
