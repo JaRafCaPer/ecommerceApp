@@ -5,7 +5,7 @@
 <p>Category: {{product.category}}</p>
 <p>Stock: {{product.stock}}</p>
 <p>Price: {{product.price}}</p>
-<p>Seller: {{product.owner}}</p>
+
 <!-- Agregar más detalles del product.docso si es necesario -->
 <button class="btn btn-success" id="addToCartButton">Agregar al carrito</button>
 
@@ -45,32 +45,3 @@
   });
 </script>
 
-<!-- Example button for deleting a product -->
-<button class="btn btn-danger" id="deleteProductButton">Delete</button>
-
-<!-- Add event listener for the "Delete" button -->
-<script>
-  const deleteProductButton = document.getElementById("deleteProductButton");
-
-  deleteProductButton.addEventListener("click", async () => {
-    try {
-      const productId = "{{product._id}}"; // Replace with the actual product ID
-
-      // Send an AJAX request to delete the product
-      const response = await fetch(`/api/products/${productId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        // Product deleted successfully
-        alert("Product deleted!");
-       redirect("/products");
-      } else {
-        // Handle the error if needed
-        alert("Failed to delete the product.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
-</script>

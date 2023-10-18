@@ -3,40 +3,114 @@ import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateProductsErrorInfo } from "../errors/info.js";
 
-export const getProducts = async (req, res) => {
+export const getListProducts = async (req, res) => {
   try {
     const { user } = req.user;
-    const cartId = user.cartId;
-    console.log(user);
     const page = parseInt(req.query?.page || 1);
     const limit = parseInt(req.query?.limit || 10);
     const queryParams = req.query?.query || "";
+    const category = req.query.category || "";
     const sortParam = req.query?.sort || "";
 
     let products;
-    if (queryParams || sortParam || limit || page) {
-      products = await productService.getPaginatedProducts(
+
+    if (queryParams || sortParam || limit || page || category) {
+      products = await productService.getListProducts(
+        user.email,
         page,
         limit,
         queryParams,
-        sortParam
+        sortParam,
+        category
       );
-    } else {
-      products = await productService.getProduct();
     }
-
-    if (!products.products.products.docs) {
-      products = products.products;
-      products.docs = products.products;
-    } else {
-      products = products.products;
-    }
-
+    products = products.products;
     const categories = await productService.getCategories();
-    console.log("products al render en products controller", products);
-    res.status(200).render("products", { products, user, cartId, categories });
+    const productsPrev = products.products.prevLink;
+    const productsNext = products.products.nextLink;
+    const prevPage = products.products.prevPage;
+    const nextPage = products.products.nextPage;
+    const limitPage = products.products.limit;
+    const productsPrevValidate = products.products.prevPageValidate;
+    const productsNextValidate = products.products.nextPageValidate;
+    
+    res.status(200).render("listProducts", {
+      products,
+      user,
+      categories,
+      productsPrev,
+      productsNext,
+      productsPrevValidate,
+      productsNextValidate,
+      prevPage,
+      nextPage,
+      limitPage,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const getProducts = async (req, res) => {
+  try {
+    const { user } = req.user;
+    const { first_name, last_name, rol } = user;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const queryParams = req.query.query || "";
+    const category = req.query.category || "";
+    const sort = parseInt(req.query.sort) || "";
+  console.log("category in getProducts controller", category)
+    let products;
+    if (page || limit || queryParams || sort || category) {
+      
+      products = await productService.getProductsPaginate(
+        page,
+        limit,
+        queryParams,
+        sort,
+        category
+        
+      );
+    } else {
+      products = await productService.getProducts();
+    }
+    console.log("products in getProducts controller", products);
+    products = products.products;
+    const productsPrev = products.products.prevLink;
+    const productsNext = products.products.nextLink;
+    const prevPage = products.products.prevPage;
+    const nextPage = products.products.nextPage;
+    const limitPage = products.products.limit;
+    const productsPrevValidate = products.products.prevPageValidate;
+    const productsNextValidate = products.products.nextPageValidate;
+    console.log("productsPrevValidate in getProducts controller", productsPrev);
+    console.log("productsNextValidate in getProducts controller", productsNext);
+    console.log("productsPrev in getProducts controller", productsPrev);
+    console.log("productsNext in getProducts controller", productsNext);
+    console.log("prevPage in getProducts controller", prevPage);
+    console.log("nextPage in getProducts controller", nextPage);
+    console.log("limitPage in getProducts controller", limitPage);
+    console.log("productsPrevValidate in getProducts controller", productsPrevValidate);
+    console.log("productsNextValidate in getProducts controller", productsNextValidate);
+    const categories = await productService.getCategories();
+    res.render("products", {
+      products,
+      categories,
+      last_name,
+      first_name,
+      rol,
+      prevPage,
+      nextPage,
+      limitPage, 
+      productsPrev,
+      productsNext,
+      productsPrevValidate,
+      productsNextValidate,
+    });
+  } catch (error) {
+    req.logger.fatal("Error al obtener los productos");
+    res.send({ error: error.message });
   }
 };
 
@@ -66,12 +140,10 @@ export const createProduct = async (req, res) => {
       code: req.body.code,
       status: true,
     };
-    console.log("newProduct in createProduct controller", newProduct);
-    console.log("user in createProduct controller", user);
 
     const product = await productService.addProduct(newProduct);
-
-    res.status(200).render("realTimeProduct", { product });
+    console.log("product in createProduct controller", product);
+    res.status(200).redirect("/api/products/addproducts");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -99,6 +171,7 @@ export const deleteProductById = async (req, res) => {
       productId,
       user.email
     );
+    console.log("product in deleteProduct controller333333333333333333333333", product);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });

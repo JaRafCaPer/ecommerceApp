@@ -7,10 +7,10 @@ export default class ProductsMongo {
   async addProduct(req) {
     try {
       const product = req;
-     
+
       const newProduct = await productModel.create(product);
-      
-      return newProduct
+
+      return newProduct;
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -23,9 +23,78 @@ export default class ProductsMongo {
 
   async getProductById(id) {
     try {
-      return await productModel.findById(id).lean().exec();
+      const product = await productModel.findById(id).lean().exec();
+      console.log("product in getProductById mongo", product);
+      return product;
     } catch (error) {
-     CustomError.createError({
+      CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
+    }
+  }
+
+  getProductsOrder = async (sort) => {
+    const productsOrders = await ProductsModel.aggregate([
+      {
+        $sort: { price: sort },
+      },
+    ]);
+    return productsOrders;
+  };
+
+  async getProductByOwner(owner, page, limit, queryParams, sort, category) {
+    try {
+      let query = {};
+      if(owner || category){
+        query = {
+          owner: {owner}, 
+          category: {category}, 
+        };
+      }
+
+      if (queryParams) {
+        const field = queryParams.split(",")[0];
+        let value = queryParams.split(",")[1];
+        if (!isNaN(parseInt(value))) value = parseInt(value);
+        query[field] = value;
+      }
+      let products = await productModel.paginate(
+        query,
+        {
+          page,
+          limit,
+          sort: { price: sort },
+          lean: true,
+        });
+
+        products.prevLink = products.hasPrevPage
+        ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.nextLink = products.hasNextPage
+        ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.prevPageValidate = products.hasPrevPage
+        ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.nextPageValidate = products.hasNextPage
+        ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      
+
+      const productsPrev = products.prevLink;
+      const productsNext = products.nextLink;
+      const productsPrevValidate = products.prevPageValidate;
+      const productsNextValidate = products.nextPageValidate;
+      console.log("products in getProductByOwner mongo", products);
+      console.log("productsPrev in getProductByOwner mongo", productsPrev);
+      return {
+        products,
+      };
+    } catch (err) {
+      CustomError.createError({
         name: "Error",
         message: "Product not found",
         code: EErrors.PRODUCT_NOT_FOUND,
@@ -36,7 +105,9 @@ export default class ProductsMongo {
 
   async getProducts() {
     try {
-      return await productModel.find().lean().exec();
+      const products = await productModel.find().lean().exec();
+      console.log("products in getProducts mongo", products);
+      return products;
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -121,7 +192,7 @@ export default class ProductsMongo {
     try {
       return await productModel.findOne({ code }).lean().exec();
     } catch (error) {
-     CustomError.createError({
+      CustomError.createError({
         name: "Error",
         message: "Product not found",
         code: EErrors.PRODUCT_NOT_FOUND,
@@ -131,72 +202,13 @@ export default class ProductsMongo {
   }
   getProductsOrder = async (sort) => {
     try {
-    const productsOrders = await productModel.aggregate([
-      {
-        $sort: { price: sort },
-      },
-    ]);
-    return productsOrders;
-  } catch (error) {
-    CustomError.createError({
-      name: "Error",
-      message: "Product not found",
-      code: EErrors.PRODUCT_NOT_FOUND,
-      info: generateProductsErrorInfo(product),
-    });
-  }
-}
-  getProductsMatch = async (key, value, sort) => {
-    try{
-    const productMatch = await productModel.aggregate([
-      {
-        $match: { category: value[0] },
-      },
-      {
-        $sort: { price: sort },
-      },
-    ]);
-    return productMatch;
-  } catch (error) {
-    CustomError.createError({
-      name: "Error",
-      message: "Product not found",
-      code: EErrors.PRODUCT_NOT_FOUND,
-      info: generateProductsErrorInfo(product),
-    });
-  }
-}
-  getProductsPaginate = async (page, limit, queryParams, sortParam) => {
-    try {
-      let query = {};
-      let sortQuery = {};
-
-      if (queryParams) {
-        const field = queryParams.split(",")[0];
-        let value = queryParams.split(",")[1];
-        if (!isNaN(parseInt(value))) value = parseInt(value);
-        query[field] = value;
-      }
-      let products = await productModel.paginate(query, {
-        page,
-        limit,
-        sort: sortQuery,
-        lean: true,
-      });
-
-      // Agregamos lógica para filtrar por categoría si se seleccionó una categoría válida
-      if (query.category && query.category !== "") {
-        query["category"] = query.category;
-      } else {
-        delete query.category; // Si no se seleccionó ninguna categoría, eliminamos el filtro de categoría
-      }
-      // Agregamos lógica para ordenar por precio
-      if (sortParam === "asc" || sortParam === "desc") {
-        sortQuery["price"] = sortParam === "asc" ? 1 : -1;
-      } else {
-        return { products };
-      }
-    } catch (err) {
+      const productsOrders = await productModel.aggregate([
+        {
+          $sort: { price: sort },
+        },
+      ]);
+      return productsOrders;
+    } catch (error) {
       CustomError.createError({
         name: "Error",
         message: "Product not found",
@@ -205,8 +217,79 @@ export default class ProductsMongo {
       });
     }
   };
+  getProductsMatch = async (key, value, sort) => {
+    try {
+      const productMatch = await productModel.aggregate([
+        {
+          $match: { category: value[0] },
+        },
+        {
+          $sort: { price: sort },
+        },
+      ]);
+      return productMatch;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
+    }
+  };
+  async getProductsPaginate  (page, limit, queryParams, sort, category) {
+    try {
+        let query = {};
+        
+        if (category) {
+          query = { category };
+        }else{ query = {}}
+     
+      console.log("query in getProductsPaginate mongo", query)
+      if (queryParams) {
+        const field = queryParams.split(",")[0];
+        let value = queryParams.split(",")[1];
+        if (!isNaN(parseInt(value))) value = parseInt(value);
+        query[field] = value;
+      }
+      console.log("sort value in getProductsPaginate mongo", sort)
+      let products = await productModel.paginate(query, {
+        page,
+        limit,
+        sort: { price: sort },
+        lean: true,
+      });
+      
+     
+      products.prevLink = products.hasPrevPage
+        ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.nextLink = products.hasNextPage
+        ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.prevPageValidate = products.hasPrevPage
+        ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      products.nextPageValidate = products.hasNextPage
+        ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
+        : "";
+      
+      console.log('esta a punto de salir de getProductsPaginate')
+      
+      const productsPrev = products.prevLink;
+      const productsNext = products.nextLink;
+      const productsPrevValidate = products.prevPageValidate;
+      const productsNextValidate = products.nextPageValidate;
+      
+      return {
+        products,
+      };
+    } catch (err) {
+      throw err;
+    }
+  };
 
-getProductsLimit =   async (limit) => {
+  getProductsLimit = async (limit) => {
     try {
       const products = await productModel.find().lean().exec();
       return products.slice(0, limit);
@@ -218,8 +301,8 @@ getProductsLimit =   async (limit) => {
         info: generateProductsErrorInfo(product),
       });
     }
-  }
- getCategories =  async () => {
+  };
+  getCategories = async () => {
     try {
       return await productModel.distinct("category");
     } catch (error) {
@@ -230,5 +313,5 @@ getProductsLimit =   async (limit) => {
         info: generateProductsErrorInfo(product),
       });
     }
-  }
+  };
 }

@@ -11,13 +11,14 @@ export default class ProductService {
   async addProduct(req) {
     try {
       const product = req;
-
+      
       const productCode = await this.productDAO.getProductByCode(product.code);
-
+      console.log("product code in add product service", productCode);
       if (!productCode) {
+        console.log("entra al if service");
         const productAdded = await this.productDAO.addProduct(product);
-
-        return new ProductDTO(productAdded);
+        console.log("product added", productAdded);
+        return productAdded;
       } else {
         CustomError.createError({
           name: "Error",
@@ -38,6 +39,7 @@ export default class ProductService {
   async getProduct() {
     try {
       const products = await this.productDAO.getProducts();
+      console.log("products in get product service", products);
       return products;
     } catch (error) {
       CustomError.createError({
@@ -84,6 +86,29 @@ export default class ProductService {
       });
     }
   }
+  async getListProducts(userMail, page, limit, queryParams, sort, category) {
+    try {
+      const products = await this.productDAO.getProductByOwner(
+        userMail,
+        page,
+        limit,
+        queryParams,
+        sort,
+        category,
+       
+      );
+      return {
+        products,
+      };
+    } catch (e) {
+      CustomError.createError({
+        name: "Error",
+        message: "Products not found",
+        code: EErrors.PRODUCTS_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
+    }
+  }
 
   async deleteProductById(pid, umail) {
     try {
@@ -106,10 +131,14 @@ export default class ProductService {
         return new ProductDTO(product);
       }
       if (userDel.rol === "premium") {
+        console.log("entra al if de premium");
         const productPremium = await this.productDAO.getProductById(ProductId);
+        console.log("product premium", productPremium);
         if (productPremium.owner === userDel.email) {
+          console.log("entra al if de premium owner");
           const product = await this.productDAO.deleteProduct(ProductId);
-          return new ProductDTO(product);
+          console.log("product in delete product service premium owner", product);
+          return product;
         }
       } else {
         return "You are not authorized to delete this product";
@@ -124,17 +153,20 @@ export default class ProductService {
     }
   }
 
-  async getPaginatedProducts(page, limit, queryParams, sort) {
+  async getProductsPaginate(page, limit, queryParams, sort, category ) {
     try {
+      
       const products = await this.productDAO.getProductsPaginate(
         page,
         limit,
+        queryParams,
         sort,
-        queryParams
+        category
       );
-
+      
       return {
         products,
+    
       };
     } catch (e) {
       CustomError.createError({

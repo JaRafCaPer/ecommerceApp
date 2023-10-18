@@ -11,7 +11,7 @@ export const loginUser = async (req, res) => {
     if (user == null) return res.redirect("/login");
     
     const access_token = generateToken(user);
-    
+    console.log('userin login', user)
     res
       .cookie("keyCookieForJWT", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,

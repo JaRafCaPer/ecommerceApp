@@ -4,6 +4,7 @@ import {
   createProduct,
   updateProductById,
   deleteProductById,
+  getListProducts,
 } from "../controllers/product.controllers.js";
 import {requireAdmin, requireUser, requirePremium } from "../middleware/rol.verification.js";
 
@@ -20,17 +21,21 @@ router.get(
 );
 
 router.get(
-  "/addProducts",
-  passport.authenticate("jwt", { session: false }),requireUser,(req, res) => {
+  "/addproducts",
+  passport.authenticate("jwt", { session: false }),requirePremium,(req, res) => {
     
+    let user = req.user;
+    user = user.user
+    console.log('user in addproducts', user) 
     res.render("realTimeProducts", {
-      title: "Agregar Producto",
+     user
     });
   });
 
 
-router.post("/addProducts", createProduct);
+router.post("/addproducts", createProduct);
 
+router.get('/listproducts', passport.authenticate("jwt", { session: false }), getListProducts)
 
 router.get(
   "/:pid",
