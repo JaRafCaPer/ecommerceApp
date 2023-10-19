@@ -1,41 +1,92 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="card" style="background-color: coral;">
-        <div class="card-header" style="color: white;" >
-          <h3>Perfil de Usuario</h3>
-        </div>
-        <div class="card-body">
-          <div class="container">
-            <div class="d-flex flex-wrap" style="gap:20px">
-              <div class="col-md-6">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
 
-                <label>First name:</label>
-                <h3 style="color: white;">{{first_name}}</h3>
-                <label>Last name:</label>
-                <h3 style="color: white;">{{last_name}}</h3>
-                <label>Age:</label>
-                <h3 style="color: white;">{{age}}</h3>
-              </div>
-              <div class="col-md-6">
-                <label>Email:</label>
-                <h3 style="color: white;">{{email}}</h3>
-                <label>Rol:</label>
-                <h3 style="color: white;">{{rol}}</h3>
-              </div>
+        .container {
+            margin-top: 5rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+        }
+
+        .card-header {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            background-color: #fff;
+        }
+
+        .user-info {
+            padding: 20px;
+        }
+
+        .user-info h5 {
+            font-weight: bold;
+        }
+
+        .btn2 {
+            background-color: #b38f59;
+            color: antiquewhite;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Profile Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="user-info">
+                        <h5>First Name:</h5>
+                        <p>{{first_name}}</p>
+                        <h5>Last Name:</h5>
+                        <p>{{last_name}}</p>
+                        <h5>Age:</h5>
+                        <p>{{age}}</p>
+                        <h5>Email:</h5>
+                        <p>{{email}}</p>
+                        <h5>Role:</h5>
+                        <p>{{rol}}</p>
+                    </div>
+                    <div class="text-center">
+                        <a href="/api/session/logout" class="btn btn2">Logout</a>
+                        <a href="/api/products/listproducts" class="btn btn2">Manage Your Products</a>
+                        <a href="/api/users/premium/{{_id}}" class="btn btn2">Change User's Role</a>
+                        <a href="/api/session/ticket/user" class="btn btn2">Tickets</a>
+                        <a href="/api/products/" class="btn btn2">Products</a>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex justify-content-around">
-              <a href="/api/session/logout" style="color: white;">Logout</a>
-              <a href="/api/users/premium/{{_id}}" style="color:white;">Change User's rol</a>
-              <a href="/api/products/" style="color:white;">Products</a>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<script
-  src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

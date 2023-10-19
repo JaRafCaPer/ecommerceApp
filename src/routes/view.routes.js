@@ -74,7 +74,6 @@ router.get("/loggerTest", (req, res) => {
   res.send("Logger testing");
 });
 
-
 router.get('/chat', getMessages)
 router.post('/chat', saveMessage)
 

@@ -1,85 +1,168 @@
-<body style="background-color: aliceblue;" ;>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: aliceblue;
+        }
 
-  <h2>Products</h2>
-  <a href="/form-products">Agregar Producto</a>
-  <h3 class="text-center display-2">Welcome
-    {{user.rol}}:
-    {{user.first_name}}
-    {{user.last_name}}
-  </h3>
-  <div class="row">
-    <form id="formulario">
-      <select type="number" id="query-limit">
-        <option value="">Products per Page</option>
-        <option value="{{limit}}">10</option>
-        <option value="{{limit}}">25</option>
-        <option value="{{limit}}">50</option>
-      </select>
-      <div class="pagination">
-        <span>Page
-          {{products.products.page}}
-          of
-          {{products.products.totalCompraPages}}</span>
-        {{#if hasPrevPage}}
-          <a href="?page={{prevPage}}">Anterior</a>
-        {{/if}}
-        {{#if hasNextPage}}
-          <a href="?page={{nextPage}}">Siguiente</a>
-        {{/if}}
-      </div>
-      <input type="hidden" name="sort-order" id="sort-order" value="-1" />
-      <button type="submit">Cargar</button>
-      <select name="sort-select" id="sort-select">
-        <option value="ascendente">Min price Up</option>
-        <option value="descendente">Max price Up</option>
-      </select>
+        .container {
+            margin-top: 4rem;
+        }
 
-      <select name="category" id="category-select">
-        <option value="">Todas las categorías</option>
-        {{#each categories}}
-          <option value="{{category}}">{{this}}</option>
-        {{/each}}
-      </select>
-    </form>
+        .pagination {
+            max-width: 20%;
+            margin: 0 auto;
+        }
 
-  </div>
-  <div class="row">
-    {{#each products.products.docs}}
-      <div class="col-sm-3 p-3">
-        <div class="card">
-          <img
-            class="card-img-top"
-            style="width: auto; height:300px;"
-            ;
-            src="{{thumbnail}}"
-            alt="{{name}}"
-          />
-          <div
-            class="card-body"
-            style="background-color: rgb(6, 27, 25); color:white "
-          >
-            <h5 class="card-title display-8">{{{title}}}</h5>
-            <p class="card-text text-truncate">{{description}}</p>
-            <a href="/api/products/{{_id}}" class="btn btn-primary">Ver detalles</a>
+        .pagination a {
+            text-decoration: none;
+        }
 
-            <form
-              action="/api/cart/{{@root.cartId}}/products/{{_id}}"
-              method="POST"
-            >
-              <input type="hidden" name="products[0][item]" value="{{_id}}" />
-              <input
-                type="number"
-                name="quantity"
-                value="1"
-                min="1"
-                max="100"
-              />
-              <button type="submit" class="btn btn-success">Agregar al carrito</button>
-            </form>
+        .filter-form {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-          </div>
+        .filter-form select {
+            width: 100%;
+            margin-right: 10px;
+        }
+
+        .product-card {
+            border: none;
+            border-radius: 15px;
+            background-color: rgba(82, 90, 5, 0.773);
+            color: antiquewhite;
+            margin: 1rem;
+            height: 100%;
+            width: 100%;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 300px;
+        }
+
+        .product-card .card-title {
+            font-size: medium;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .product-card .card-text {
+            text-truncate: ellipsis;
+        }
+
+        .quantity-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-input {
+            width: 5rem;
+        }
+
+        .add-to-cart-btn {
+            background-color: rgb(5, 107, 5);
+            color: antiquewhite;
+            margin-top: 1rem;
+        }
+
+        .details-btn {
+            background-color: #b38f59;
+            color: antiquewhite;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Products</h2>
+    <h3 class="text-center display-4">Welcome {{user.rol}}: {{user.first_name}} {{user.last_name}}</h3>
+
+    <div class="row">
+        <form id="formulario" class="filter-form">
+            <div class="form-group col-md-3">
+                <select class="form-control" id="query-limit">
+                    <option value="">Products per Page</option>
+                    <option value="10">10</option>
+                    <option value="24">24</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <select name="sort-select" id="sort-select" class="form-control">
+                    <option value="1">Min price Up</option>
+                    <option value="-1">Max price Up</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <select name="category" id="category-select" class="form-control">
+                    <option value="">All Categories</option>
+                    {{#each categories}}
+                    <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group col">
+                <button type="submit" class="btn btn-primary">Load</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        {{#each products.products.docs}}
+        <div class="col-md-3 p-3">
+            <div class="card product-card">
+                <img class="card-img-top" src="{{thumbnail}}" alt="{{name}}">
+                <div class="card-body">
+                    <a href="/api/products/{{_id}}" class="card-title">{{{title}}}</a>
+                    <p class="card-text text-truncate">{{description}}</p>
+                    <p class="card-text">${{price}}</p>
+                    <form action="/api/cart/{{@root.user.cartId}}/products/{{_id}}" method="POST">
+                        <input type="hidden" name="products[0][item]" value="{{_id}}" />
+                        <div class="quantity-form">
+                            <p class="card-text">Quantity:</p>
+                            <input type="number" name="quantity" value="1" min="1" max="100" class="form-control quantity-input">
+                        </div>
+                        <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                        <a href="/api/products/{{_id}}" class="btn details-btn">View Details</a>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
-    {{/each}}
-  </div>
+        {{/each}}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    const formulario = document.getElementById('formulario');
+
+    formulario.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the values of the selection fields
+        const page = document.getElementById('query-page').value;
+        const sortOrder = document.getElementById('sort-select').value;
+        const limit = document.getElementById('query-limit').value;
+        const category = document.getElementById('category-select').value;
+
+        // Build the URL with query parameters
+        const url = `/api/products?page=${page}&sort=${sortOrder}&limit=${limit}&category=${category}`;
+
+        // Redirect to the new URL
+        window.location.href = url;
+    });
+</script>
 </body>
+</html>

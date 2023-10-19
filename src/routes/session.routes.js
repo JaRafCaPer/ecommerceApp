@@ -7,6 +7,7 @@ import {
   resetearPassword,
   restart,
   resetPasswordForm,
+  getTicketByUser,
   validPassword
 } from "../controllers/session.controllers.js";
 
@@ -35,11 +36,12 @@ router.get("/login", (req, res) => {
     passport.authenticate("jwt", { session: false }),
     async (req, res) => {
       const { user } = req.user;
-      console.log('profile user:', user);
       res.render("profile", user);
     }
-  );
-  
+  ); 
+  router.get("/ticket/user",
+  passport.authenticate("jwt",{ session: false }), getTicketByUser);
+
   router.get("/current",passport.authenticate("jwt", { session: false }), getUserCurrent);
 
   router.get("/resetPassword",resetearPassword)
