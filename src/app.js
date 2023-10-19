@@ -15,6 +15,20 @@ import chatRoutes from "./routes/chat.routes.js";
 import viewsRoutes from "./routes/view.routes.js";
 import sessionRoutes from "./routes/session.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from 'swagger-ui-express'
+
+const swaggerOptions = {
+    definition:{
+      openapi: '3.0.1',
+      info:{
+          title: 'Documentation for eshop',
+          description: 'Is a back-end for an ecommerce project',
+      }
+    },
+      apis: [`${__dirname}/docs/**/*.yaml`]
+   
+}
 
 const PORT = config.PORT;
 const PERSISTENCE = config.PERSISTENCE;
@@ -48,6 +62,9 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser("keyCookieForJWT"));
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions)
+app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs))
 
 app.use("/", viewsRoutes);
 app.use("/api/products", productRoutes);
