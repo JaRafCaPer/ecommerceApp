@@ -88,6 +88,7 @@ export default class ProductService {
   }
   async getListProducts(userMail, page, limit, queryParams, sort, category) {
     try {
+      console.log("entra a getlistproducts service");
       const products = await this.productDAO.getProductByOwner(
         userMail,
         page,

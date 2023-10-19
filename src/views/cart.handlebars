@@ -2,26 +2,86 @@
 <html>
 <head>
   <title>Shopping Cart</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      color: #333;
+      font-size: 28px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .purchase-button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+    .go-back-button {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Your Shopping Cart</h1>
-  <ul>
-      
-    <p class="pid"> Status:{{status}}</p>
-  
+  <div class="container">
+    <h1>Shopping Cart for {{user.first_name}}</h1>
+    <p class="pid">Status: {{cart.status}}</p>
 
-    {{#each products}}
-      <li>
-        <h3>{{pid.title}}</h3>
-        <p>Price: ${{pid.price}}</p>
-        <p>Quantity: {{this.quantity}}</p>
-        <p>Description: {{pid.description}}</p>
-        <p>Category: {{pid.category}}</p>
-        <p>Status: {{pid.status}}</p>
-        <p>Stock: {{pid.stock}}</p>
-        <img src="{{pid.thumbnail}}" alt="{{this.products.name}}">
-      </li>
-    {{/each}}
-  </ul>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+      {{#each cart.products}}
+        <tr>
+          <td>
+            <a href="/api/products/{{this.pid._id}}" class="card-title">{{this.pid.title}}</a>
+          </td>
+          <td>${{this.pid.price}}</td>
+          <td>{{this.pid.stock}}</td>
+          <td>{{this.quantity}}</td>
+          <td>${{this.subTotal}}</td>
+        </tr>
+      {{/each}}
+    </table>
+    <p>Total: ${{totalCompra}}</p>
+    
+    <a href="/api/cart/{{cart._id}}/purchase" class="purchase-button">Purchase</a>
+    <a href="/api/products" class="go-back-button">Go Back</a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

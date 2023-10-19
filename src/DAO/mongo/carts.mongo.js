@@ -28,7 +28,7 @@ export default class CartsMongo {
       .populate("products.pid")
       .lean()
       .exec();
-      console.log("cart mongo get", newCart);
+     
        return newCart
     } catch (error) {
       CustomError.createError({

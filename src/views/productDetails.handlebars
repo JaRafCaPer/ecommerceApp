@@ -1,47 +1,68 @@
-<!-- product.docsDetails.handlebars -->
-<h2>{{product.name}}</h2>
-<img src="{{product.thumbnail}}" alt="">
-<p>Description: {{product.description}}</p>
-<p>Category: {{product.category}}</p>
-<p>Stock: {{product.stock}}</p>
-<p>Price: {{product.price}}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{product.name}} Details</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4" style="background-color: rgba(82, 90, 5, 0.773); color:antiquewhite; ">
+    <h2 class="display-4">{{product.name}} Details</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <img src="{{product.thumbnail}}" alt="{{product.name}}" class="img-fluid">
+      </div>
+      <div class="col-md-8"> 
+        <p class="lead card-title display-4" >{{product.title}}</p>
+        <p class="lead">Description: {{product.description}}</p>
+        <p class="lead">Category: {{product.category}}</p>
+        <p class="lead">Stock: {{product.stock}}</p>
+        <p class="lead">Price: ${{product.price}}</p>
+        <div class="row">
+        <label for="quantityInput" class="col-sm-2 mt-2">Quantity:</label>
+        <input type="number" id="quantityInput" value="1" min="1" class="col-sm-1 mt-2 form-control" placeholder="Quantity">
+        </div>
+        <button class="btn row-sm-auto mt-3" id="addToCartButton" style="background-color: #b38f59;color:antiquewhite;margin-bottom:1rem;">Add to Cart</button>
+        
 
-<!-- Agregar más detalles del product.docso si es necesario -->
-<button class="btn btn-success" id="addToCartButton">Agregar al carrito</button>
+        <script>
+          const addToCartButton = document.getElementById("addToCartButton");
+          const quantityInput = document.getElementById("quantityInput");
 
-<!-- Quantity input field -->
-<input type="number" id="quantityInput" value="1" min="1">
+          addToCartButton.addEventListener("click", async () => {
+            try {
+              const productId = "{{product._id}}"; // Replace with the actual product ID
+              const quantity = parseInt(quantityInput.value) || 1; // Get the quantity from the input field
+              const cartId = "{{cartId}}"; // Replace with the actual cart ID
 
-<!-- Add event listener for the "Add to Cart" button -->
-<script>
-  const addToCartButton = document.getElementById("addToCartButton");
-  const quantityInput = document.getElementById("quantityInput");
+              // Send an AJAX request to add the product to the cart
+              const response = await fetch(`/api/cart/${cartId}/products/${productId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ quantity }),
+              });
 
-  addToCartButton.addEventListener("click", async () => {
-    try {
-      const productId = "{{product._id}}"; // Replace with the actual product ID
-      const quantity = parseInt(quantityInput.value) || 1; // Get the quantity from the input field
-      const cartId = "{{cartId}}"; // Replace with the actual cart ID
+              if (response.ok) {
+                // Product added to the cart successfully
+                alert("Product added to the cart!");
+              } else {
+                // Handle the error if needed
+                alert("Failed to add the product to the cart.");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </div>
 
-      // Send an AJAX request to add the product to the cart
-      const response = await fetch(`/api/cart/${cartId}/products/${productId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ quantity }),
-      });
-
-      if (response.ok) {
-        // Product added to the cart successfully
-        alert("Product added to the cart!");
-      } else {
-        // Handle the error if needed
-        alert("Failed to add the product to the cart.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
-</script>
-
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -17,6 +17,24 @@ export default class TicketsMongo {
       });
   }
 }
+  async getTicketByUser(mail) {
+    try {
+      console.log("mail in mongo", mail);
+      const userMail = {purchaser: mail}
+      const tickets = await ticketModel.find(userMail).lean().exec();
+      console.log("tickets in mongo", tickets);
+      return tickets;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Ticket not found",
+        code: EErrors.TICKET_NOT_FOUND,
+        info: generateTicketErrorInfo(ticket),
+      });
+    }
+  }
+
+
   async getTickets() {
     try {
       return await ticketModel.find().lean().exec();

@@ -73,8 +73,12 @@ export const deleteProductCartById = async (req, res) => {
 export const getCartUserById = async (req, res) => {
   try {
     const { user } = req.user;
-    const cart = await cartService.getCartUserById(user);
-    res.status(200).json(cart);
+   
+    let cart = await cartService.getCartUserById(user);
+    const totalCompra = cart.totalCompra;
+    cart=cart.cart
+    console.log("cart controller", cart);
+    res.status(200).render("cart", {cart, user, totalCompra});
   } catch (error) {
     CustomError.createError({
       name: "Error",
@@ -123,6 +127,7 @@ export const getTicketsByUserById = async (req, res) => {
     }
 
     const ticket = await cartService.createAndSaveTicket(user);
+    console.log("ticket controller", ticket);
 
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
@@ -135,7 +140,7 @@ export const getTicketsByUserById = async (req, res) => {
     }
     await cartService.updateCartById(user.cartId, { products: [] });
 
-    res.status(200).json({ message: "Purchase successful", ticket: ticket });
+    res.status(200).render("ticket", ticket );
   }} catch (error) {
     res.status(500).json({ error: error.message });
   }

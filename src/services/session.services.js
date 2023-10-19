@@ -17,9 +17,10 @@ const transporter = nodemailer.createTransport({
 });
 
 export default class SessionService {
-  constructor(userDAO, tokenDAO) {
+  constructor(userDAO, tokenDAO, ticketDAO) {
     this.userDAO = userDAO;
     this.tokenDAO = tokenDAO;
+    this.ticketDAO = ticketDAO;
   }
   async loginUser(req) {
     try {
@@ -162,6 +163,7 @@ export default class SessionService {
     await this.userDAO.updateUser(user._id, user);
     return user;
   }
+  
 
   async validUserSentEmailPassword(email) {
     const user = await this.userDAO.getUserByEmail(email);
@@ -204,8 +206,24 @@ export default class SessionService {
     
     return user;
   }
-
-
-
 }
+
+async getTicketByUser(user) {
+  try {
+    console.log("user in service getTickets", user);
+    const mail = user.email;
+    console.log("mail in service getTickets", mail);
+    const tickets = await this.ticketDAO.getTicketByUser(mail);
+    console.log("ticket in service", tickets);
+    return tickets;
+  } catch (error) {
+    CustomError.createError({
+      name: "Error",
+      message: "Ticket not found",
+      code: EErrors.TICKET_NOT_FOUND,
+      info: generateUserErrorInfo(user),
+    });
+  }
+}
+
 }

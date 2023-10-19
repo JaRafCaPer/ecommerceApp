@@ -34,7 +34,6 @@ export default class CartService {
   async getCartById(cartId) {
     try {
       const cart = await this.cartDAO.getCartById(cartId);
-      console.log("cart service", cart);
       return cart;
     } catch (error) {
       CustomError.createError({
@@ -191,6 +190,11 @@ export default class CartService {
       cart.products.forEach((product) => {
         totalCompra += product.pid.price * product.quantity;
       });
+      let subTotal = 0;
+      cart.products.forEach((product) => {
+        product.subTotal = product.pid.price * product.quantity;
+      });
+      console.log("cart service", cart,"totalCompra",totalCompra,"subTotal",subTotal);
       return { cart, totalCompra };
     } catch (error) {
       CustomError.createError({

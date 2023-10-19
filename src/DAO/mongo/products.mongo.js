@@ -23,8 +23,10 @@ export default class ProductsMongo {
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id).lean().exec();
-      console.log("product in getProductById mongo", product);
+     
+      const pid = id;
+      const product = await productModel.findOne({ _id: pid }).lean().exec();
+     
       return product;
     } catch (error) {
       CustomError.createError({
@@ -48,11 +50,13 @@ export default class ProductsMongo {
   async getProductByOwner(owner, page, limit, queryParams, sort, category) {
     try {
       let query = {};
-      if(owner || category){
+      if(owner){
         query = {
-          owner: {owner}, 
-          category: {category}, 
+          owner
         };
+      }
+      if (category) {
+        query = { owner, category };
       }
 
       if (queryParams) {
@@ -69,7 +73,7 @@ export default class ProductsMongo {
           sort: { price: sort },
           lean: true,
         });
-
+        console.log("products in getProductByOwner mongo", products);
         products.prevLink = products.hasPrevPage
         ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
@@ -200,6 +204,7 @@ export default class ProductsMongo {
       });
     }
   }
+  
   getProductsOrder = async (sort) => {
     try {
       const productsOrders = await productModel.aggregate([

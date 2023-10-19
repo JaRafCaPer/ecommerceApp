@@ -15,6 +15,7 @@ export const getListProducts = async (req, res) => {
     let products;
 
     if (queryParams || sortParam || limit || page || category) {
+      console.log("entra a getlistproducts controller");
       products = await productService.getListProducts(
         user.email,
         page,
@@ -60,7 +61,7 @@ export const getProducts = async (req, res) => {
     const queryParams = req.query.query || "";
     const category = req.query.category || "";
     const sort = parseInt(req.query.sort) || "";
-  console.log("category in getProducts controller", category)
+  
     let products;
     if (page || limit || queryParams || sort || category) {
       
@@ -75,7 +76,7 @@ export const getProducts = async (req, res) => {
     } else {
       products = await productService.getProducts();
     }
-    console.log("products in getProducts controller", products);
+   
     products = products.products;
     const productsPrev = products.products.prevLink;
     const productsNext = products.products.nextLink;
@@ -84,16 +85,9 @@ export const getProducts = async (req, res) => {
     const limitPage = products.products.limit;
     const productsPrevValidate = products.products.prevPageValidate;
     const productsNextValidate = products.products.nextPageValidate;
-    console.log("productsPrevValidate in getProducts controller", productsPrev);
-    console.log("productsNextValidate in getProducts controller", productsNext);
-    console.log("productsPrev in getProducts controller", productsPrev);
-    console.log("productsNext in getProducts controller", productsNext);
-    console.log("prevPage in getProducts controller", prevPage);
-    console.log("nextPage in getProducts controller", nextPage);
-    console.log("limitPage in getProducts controller", limitPage);
-    console.log("productsPrevValidate in getProducts controller", productsPrevValidate);
-    console.log("productsNextValidate in getProducts controller", productsNextValidate);
+      
     const categories = await productService.getCategories();
+    console.log("user in getproducts", user)
     res.render("products", {
       products,
       categories,
@@ -107,10 +101,12 @@ export const getProducts = async (req, res) => {
       productsNext,
       productsPrevValidate,
       productsNextValidate,
+      user,
     });
   } catch (error) {
     req.logger.fatal("Error al obtener los productos");
-    res.send({ error: error.message });
+    res.send({ error: error.message })
+    ;
   }
 };
 
@@ -119,6 +115,7 @@ export const getProductById = async (req, res) => {
     const productToDetailId = req.params.pid;
     const user = req.user;
     const cartId = user.user.cartId;
+
     const product = await productService.getProductById(productToDetailId);
     res.status(200).render("productDetails", { product, user, cartId });
   } catch (error) {
@@ -142,7 +139,7 @@ export const createProduct = async (req, res) => {
     };
 
     const product = await productService.addProduct(newProduct);
-    console.log("product in createProduct controller", product);
+    
     res.status(200).redirect("/api/products/addproducts");
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -164,16 +161,17 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   try {
     const user = req.user.user;
-    console.log("user in deleteProduct controller 1", user);
+    
     const productId = req.params.pid;
-    console.log("productId in deleteProduct controller", productId);
+    
     const product = await productService.deleteProductById(
       productId,
       user.email
     );
-    console.log("product in deleteProduct controller333333333333333333333333", product);
+    
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+

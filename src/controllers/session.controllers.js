@@ -96,3 +96,15 @@ export const validPassword = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getTicketByUser = async (req, res) => {
+  try {
+    const user = req.user.user;
+    console.log("user in controller", user);
+    const tickets = await sessionService.getTicketByUser(user);
+    console.log("ticket in controller", tickets);
+    res.status(200).render("tickets",  tickets );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
