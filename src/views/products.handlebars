@@ -85,8 +85,9 @@
 <body>
 <div class="container">
     <h2>Products</h2>
-    <h3 class="text-center display-4">Welcome {{user.rol}}: {{user.first_name}} {{user.last_name}}</h3>
+<h3 class="text-center display-4">Welcome {{user.rol}}: {{user.first_name}} {{user.last_name}}</h3>
 
+<div class="container">
     <div class="row">
         <form id="formulario" class="filter-form">
             <div class="form-group col-md-3">
@@ -97,12 +98,14 @@
                     <option value="50">50</option>
                 </select>
             </div>
+
             <div class="form-group col-md-3">
                 <select name="sort-select" id="sort-select" class="form-control">
                     <option value="1">Min price Up</option>
                     <option value="-1">Max price Up</option>
                 </select>
             </div>
+
             <div class="form-group col-md-3">
                 <select name="category" id="category-select" class="form-control">
                     <option value="">All Categories</option>
@@ -112,13 +115,37 @@
                 </select>
             </div>
             <div class="form-group col">
-                <button type="submit" class="btn btn-primary">Load</button>
+                <button type="submit" class="btn btn-primary load-button">Load</button>
             </div>
+
         </form>
+        <nav aria-label="Page navigation" class="pagination-container">
+                <ul class="pagination justify-content-center">
+                    <h6 class="">Page:</h6>
+                    <li class="page-item">
+                        
+                        {{#if productsPrev}}
+                        <p class="col">{{prevPage}}</p>
+                        <a class="col page-link" href="{{productsPrev}}" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        {{/if}}
+                    </li>
+                    <li class="page-item">
+                        {{#if productsNext}}
+                        <p>{{nextPage}}</p>
+                        <a class="page-link" href="{{productsNext}}" aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        {{/if}}
+                    </li>
+                </ul>
+            </nav>
     </div>
+</div>
 
     <div class="row">
-        {{#each products.products.docs}}
+        {{#each products.docs}}
         <div class="col-md-3 p-3">
             <div class="card product-card">
                 <img class="card-img-top" src="{{thumbnail}}" alt="{{name}}">
@@ -146,23 +173,23 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    const formulario = document.getElementById('formulario');
+   const formulario = document.getElementById('formulario');
 
-    formulario.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
+formulario.addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
 
-        // Get the values of the selection fields
-        const page = document.getElementById('query-page').value;
-        const sortOrder = document.getElementById('sort-select').value;
-        const limit = document.getElementById('query-limit').value;
-        const category = document.getElementById('category-select').value;
+    // Get the values of the selection fields
+    const limit = document.getElementById('query-limit').value;
+    const sortOrder = document.getElementById('sort-select').value;
+    const category = document.getElementById('category-select').value;
 
-        // Build the URL with query parameters
-        const url = `/api/products?page=${page}&sort=${sortOrder}&limit=${limit}&category=${category}`;
+    // Build the URL with query parameters
+    const url = `/api/products?limit=${limit}&sort=${sortOrder}&category=${category}`;
 
-        // Redirect to the new URL
-        window.location.href = url;
-    });
+    // Redirect to the new URL
+    window.location.href = url;
+});
+
 </script>
 </body>
 </html>

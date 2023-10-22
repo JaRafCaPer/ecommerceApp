@@ -77,17 +77,17 @@ export const getProducts = async (req, res) => {
       products = await productService.getProducts();
     }
    
-    products = products.products;
-    const productsPrev = products.products.prevLink;
-    const productsNext = products.products.nextLink;
-    const prevPage = products.products.prevPage;
-    const nextPage = products.products.nextPage;
-    const limitPage = products.products.limit;
-    const productsPrevValidate = products.products.prevPageValidate;
-    const productsNextValidate = products.products.nextPageValidate;
+    products = products.products.products;
+    const productsPrev = products.prevLink;
+    const productsNext = products.nextLink;
+    const prevPage = products.prevPage;
+    const nextPage = products.nextPage;
+    const limitPage = products.limit;
+    const productsPrevValidate = products.prevPageValidate;
+    const productsNextValidate = products.nextPageValidate;
       
     const categories = await productService.getCategories();
-    console.log("user in getproducts", user)
+    console.log("products in controller",products)
     res.render("products", {
       products,
       categories,
