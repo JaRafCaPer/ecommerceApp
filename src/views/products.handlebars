@@ -120,26 +120,23 @@
 
         </form>
         <nav aria-label="Page navigation" class="pagination-container">
-                <ul class="pagination justify-content-center">
-                    <h6 class="">Page:</h6>
-                    <li class="page-item">
-                        
+                <div class="pagination justify-content-center">
+                    <h6 class="row-6">Page:</h6>
+                    <div class="page-item col-4">
                         {{#if productsPrev}}
-                        <p class="col">{{prevPage}}</p>
-                        <a class="col page-link" href="{{productsPrev}}" aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
+                        <a class="page-link" href="{{productsPrev}}" aria-label="Anterior" style="color: black;">
+                            <span aria-hidden="true">&laquo;{{prevPage}}</span>
                         </a>
                         {{/if}}
-                    </li>
-                    <li class="page-item">
+                    </div>
+                    <div class="page-item col-4">
                         {{#if productsNext}}
-                        <p>{{nextPage}}</p>
-                        <a class="page-link" href="{{productsNext}}" aria-label="Siguiente">
-                            <span aria-hidden="true">&raquo;</span>
+                        <a class="page-link" href="{{productsNext}}" aria-label="Siguiente" style="color: black;">
+                            <span aria-hidden="true" >&raquo;{{nextPage}}</span>
                         </a>
                         {{/if}}
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </nav>
     </div>
 </div>
