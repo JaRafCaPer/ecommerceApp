@@ -8,7 +8,7 @@ export default class CartsMongo {
   async createCart() {
     try {
       const cart = await cartModel.create();
-      console.log("cart mongo create", cart);
+   
       return cart
     } catch (error) {
       CustomError.createError({

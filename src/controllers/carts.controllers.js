@@ -16,7 +16,7 @@ export const getCartByID = async (req, res) => {
   try {
     const { user } = req.user;
     const cart = await cartService.getCartById(user.cartId);
-    console.log("Cart Controller: user: {0}, cart: {1}", user, cart);
+   
     res.status(200).render("cart", cart);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -77,7 +77,6 @@ export const getCartUserById = async (req, res) => {
     let cart = await cartService.getCartUserById(user);
     const totalCompra = cart.totalCompra;
     cart=cart.cart
-    console.log("cart controller", cart);
     res.status(200).render("cart", {cart, user, totalCompra});
   } catch (error) {
     CustomError.createError({
@@ -115,7 +114,7 @@ export const getTicketsByUserById = async (req, res) => {
           productName: product.title,
           availableStock: product.stock,
         });
-        console.log("product exceeding ticket", productsExceedingStock);
+        
       }
     }
     if (productsExceedingStock.length > 0) {
@@ -127,7 +126,7 @@ export const getTicketsByUserById = async (req, res) => {
     }
 
     const ticket = await cartService.createAndSaveTicket(user);
-    console.log("ticket controller", ticket);
+   
 
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
@@ -139,8 +138,8 @@ export const getTicketsByUserById = async (req, res) => {
       }
     }
     await cartService.updateCartById(user.cartId, { products: [] });
-
-    res.status(200).render("ticket", ticket );
+    
+    res.status(200).render("ticket", ticket);
   }} catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -152,13 +151,7 @@ export const updateProductCartById = async (req, res) => {
     const pid = req.params.pid;
     const idProduct = new Types.ObjectId(pid);
     const quantity = parseInt(req.body.quantity || 1);
-    console.log(
-      "Cart Controller: user: {0}, pid: {1}, quantity: {2}",
-      user,
-      pid,
-      quantity
-    );
-
+  
     await cartService.addProductCartById(user, idProduct, quantity);
     res.status(200).redirect("http://localhost:8080/api/cart/:cid");
   } catch (error) {

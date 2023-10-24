@@ -73,7 +73,7 @@ export default class ProductsMongo {
           sort: { price: sort },
           lean: true,
         });
-        console.log("products in getProductByOwner mongo", products);
+     
         products.prevLink = products.hasPrevPage
         ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
@@ -92,8 +92,7 @@ export default class ProductsMongo {
       const productsNext = products.nextLink;
       const productsPrevValidate = products.prevPageValidate;
       const productsNextValidate = products.nextPageValidate;
-      console.log("products in getProductByOwner mongo", products);
-      console.log("productsPrev in getProductByOwner mongo", productsPrev);
+    
       return {
         products,
       };
@@ -110,7 +109,7 @@ export default class ProductsMongo {
   async getProducts() {
     try {
       const products = await productModel.find().lean().exec();
-      console.log("products in getProducts mongo", products);
+  
       return products;
     } catch (error) {
       CustomError.createError({
@@ -124,60 +123,34 @@ export default class ProductsMongo {
 
   async updateProduct(id, product) {
     try {
-      const newProduct = await productModel.findById(id);
-
-      if (!newProduct) {
+      // Buscar el producto existente por ID
+      const existingProduct = await productModel.findById(id);
+  
+      if (!existingProduct) {
         throw new Error(`Product not found: ${id}`);
-      } else {
-        // Actualiza solo los campos proporcionados en el objeto product
-        if (product.stock !== undefined) {
-          newProduct.stock = product.stock;
-        }
-        if (product.title !== undefined) {
-          newProduct.title = product.title;
-        }
-        if (product.description !== undefined) {
-          newProduct.description = product.description;
-        }
-        if (product.code !== undefined) {
-          newProduct.code = product.code;
-        }
-        if (product.price !== undefined) {
-          newProduct.price = product.price;
-        }
-        if (product.status !== undefined) {
-          newProduct.status = product.status;
-        }
-        if (product.category !== undefined) {
-          newProduct.category = product.category;
-        }
-        if (product.thumbnail !== undefined) {
-          newProduct.thumbnail = product.thumbnail;
-        }
-
-        const productUpdated = await productModel.findByIdAndUpdate(id, {
-          newProduct,
-        });
-        if (!productUpdated) {
-          CustomError.createError({
-            name: "Error",
-            message: "Product not updated",
-            code: EErrors.PRODUCT_NOT_UPDATED,
-            info: generateProductsErrorInfo(product),
-          });
-        }
-
-        return productUpdated;
       }
+  
+      // Comparar las propiedades de existingProduct y product
+      for (const key in product) {
+        if (product.hasOwnProperty(key) && existingProduct[key] !== product[key]) {
+          existingProduct[key] = product[key];
+        }
+      }
+  
+      // Actualizar el producto en la base de datos
+      const productUpdated = await existingProduct.save();
+  
+      if (!productUpdated) {
+        throw new Error("Product not updated");
+      }
+  
+      return productUpdated;
     } catch (error) {
-      CustomError.createError({
-        name: "Error",
-        message: "Product not updated",
-        code: EErrors.PRODUCT_NOT_UPDATED,
-        info: generateProductsErrorInfo(product),
-      });
+      // Manejar errores y lanzar una excepción si es necesario
+      throw error;
     }
   }
+  
 
   async deleteProduct(id) {
     try {
@@ -250,14 +223,14 @@ export default class ProductsMongo {
           query = { category };
         }else{ query = {}}
      
-      console.log("query in getProductsPaginate mongo", query)
+   
       if (queryParams) {
         const field = queryParams.split(",")[0];
         let value = queryParams.split(",")[1];
         if (!isNaN(parseInt(value))) value = parseInt(value);
         query[field] = value;
       }
-      console.log("sort value in getProductsPaginate mongo", sort)
+   
       let products = await productModel.paginate(query, {
         page,
         limit,
@@ -279,7 +252,7 @@ export default class ProductsMongo {
         ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
       
-      console.log('esta a punto de salir de getProductsPaginate')
+    
       
       const productsPrev = products.prevLink;
       const productsNext = products.nextLink;
@@ -319,4 +292,20 @@ export default class ProductsMongo {
       });
     }
   };
+
+  searchProduct = async (search) => {
+    try {
+      const products = await productModel.find({
+        $text: { $search: search },
+      }).lean().exec();
+      return products;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Product not found",
+        code: EErrors.PRODUCT_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
+    }
+  }
 }

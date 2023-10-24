@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
     default: "admin",
   }
 });
-
+productSchema.index({title: 'text',description: 'text',category: 'text'});
 productSchema.plugin(mongoosePaginate);
 const productModel = mongoose.model(productCollection, productSchema);
 

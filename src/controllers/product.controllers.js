@@ -15,7 +15,7 @@ export const getListProducts = async (req, res) => {
     let products;
 
     if (queryParams || sortParam || limit || page || category) {
-      console.log("entra a getlistproducts controller");
+    
       products = await productService.getListProducts(
         user.email,
         page,
@@ -87,7 +87,7 @@ export const getProducts = async (req, res) => {
     const productsNextValidate = products.nextPageValidate;
       
     const categories = await productService.getCategories();
-    console.log("products in controller",products)
+  
     res.render("products", {
       products,
       categories,
@@ -174,4 +174,14 @@ export const deleteProductById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const searchProduct = async (req, res) => {
+  try {
+    const query = req.body.query;
+    const products = await productService.searchProduct(query);
+    res.status(200).render("search",{products});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 

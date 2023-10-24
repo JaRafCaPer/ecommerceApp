@@ -11,7 +11,6 @@ export default class UserService {
   async createUser(user) {
     try {
       const userAdded = await this.userDAO.createUser(user);
-      console.log("userAdded user service", userAdded);
       return userAdded;
     } catch (error) {
       CustomError.createError({

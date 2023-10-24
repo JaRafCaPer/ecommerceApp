@@ -54,23 +54,6 @@
       <p><strong>Total paid:</strong> ${{amount}}</p>
     </div>
 
-    <div class="ticket-section">
-      <h2>Products</h2>
-      <table>
-        <tr>
-          <th>Title</th>
-          <th>Code</th>
-          <th>Quantity</th>
-        </tr>
-        {{#each ticket.products}}
-        <tr>
-          <td>{{products.title}}</td>
-          <td>{{code}}</td>
-          <td>{{this.quantity}}</td>
-        </tr>
-        {{/each}}
-      </table>
-    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

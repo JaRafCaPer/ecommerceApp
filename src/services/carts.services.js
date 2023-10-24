@@ -75,9 +75,7 @@ export default class CartService {
 
   async addProductCartById(user, pid, quantity) {
     try {
-      console.log("user cart service11111111111111111111", user);
-      console.log("pid cart service222222222222222222222222", pid);
-      console.log("quantity cart service333333333333333333333333", quantity);
+    
       if (user.rol === "admin") throw new Error("No authorized");
       let cartId = user.cartId;
       let cart;
@@ -118,7 +116,6 @@ export default class CartService {
             info: generateProductsErrorInfo(product),
           });
         }
-        product.stock -= quantity;
         productValidate.quantity += quantity;
       } else {
         if (product.stock >= quantity) {
@@ -183,7 +180,7 @@ export default class CartService {
   async getCartUserById(user) {
     try {
       // const user = await this.userDAO.getUserByEmail(user.email);
-      console.log("user cart service", user);
+     
       let cartId = user.cartId;
       const cart = await this.cartDAO.getCartById(cartId);
       let totalCompra = 0;
@@ -194,7 +191,7 @@ export default class CartService {
       cart.products.forEach((product) => {
         product.subTotal = product.pid.price * product.quantity;
       });
-      console.log("cart service", cart,"totalCompra",totalCompra,"subTotal",subTotal);
+   
       return { cart, totalCompra };
     } catch (error) {
       CustomError.createError({

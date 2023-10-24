@@ -45,8 +45,6 @@ export const authToken = (req, res, next) =>{
     const token = authHeader
     jwt.verify(token, config.SECRET_JWT, (error, credentials) =>{
         if(error) return res.status(403).send({error: 'Not authorized'})
-        
-        console.log(credentials.user)
         req.user = credentials.user
         next()
     })
@@ -60,7 +58,7 @@ export const extractCookie = req =>{
 export const authorization = rol =>{
     return async(req, res, next)=>{
         const user = req.user
-        console.log(user)
+        
         if(!user) return res.status(401).send({error: 'Unauthorized'})
         if(user.rol !== rol) return res.status(403).send({error: 'Not enough permissions'})
         return next()

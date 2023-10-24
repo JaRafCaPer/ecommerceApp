@@ -6,12 +6,12 @@ import jwt from "jsonwebtoken";
 export const loginUser = async (req, res) => {
   try {
     const logData = req.body;
-    console.log("logData in sessionController", logData);
+  
     const user = await sessionService.loginUser(logData);
     if (user == null) return res.redirect("/login");
     
     const access_token = generateToken(user);
-    console.log('userin login', user)
+
     res
       .cookie("keyCookieForJWT", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -27,9 +27,9 @@ export const loginUser = async (req, res) => {
 export const registerUser = async (req, res) => {
   try {
     const userData = req.body;
-    console.log("userData in sessionController", userData);
+   
     const user = await sessionService.registerUser(userData);
-    console.log("user in sessionController1234", user);
+
   
     const access_token = generateToken(user);
     res
@@ -47,7 +47,7 @@ export const registerUser = async (req, res) => {
 export const getUserCurrent = async (req, res) => {
   try {
     const user = await sessionService.getUserCurrent(req.user);
-    console.log('current', user)
+  
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -66,7 +66,7 @@ export const resetearPassword = async (req, res) => {
 export const restart = async (req, res) => {
   const email = req.body.email;
    const result = await sessionService.validUserSentEmailPassword(email);
-   console.log("result in sessionController", result);
+  
   res.send({
     status: "success",
     message: "Email enviado con las instrucciones para cambiar la contraseña",
@@ -100,10 +100,10 @@ export const validPassword = async (req, res) => {
 export const getTicketByUser = async (req, res) => {
   try {
     const user = req.user.user;
-    console.log("user in controller", user);
+  
     const tickets = await sessionService.getTicketByUser(user);
-    console.log("ticket in controller", tickets);
-    res.status(200).render("tickets",  tickets );
+  
+    res.status(200).render("tickets",  {tickets} );
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -26,9 +26,9 @@ export default class SessionService {
     try {
       const email = req.email;
       const password = req.password;
-      console.log(email);
+     
       const user = await this.userDAO.getUserByEmail(email);
-      console.log('user in service', user);
+   
       if (!user) {
         CustomError.createError({
           name: "Error",
@@ -59,7 +59,7 @@ export default class SessionService {
   async registerUser(user) {
     try {
      const userFromController = user;
-      console.log("user in session service from controller", userFromController);
+   
       if (await this.userDAO.getUserByEmail(userFromController.email)) {
         throw new Error("Email already registered");
       }
@@ -70,7 +70,7 @@ export default class SessionService {
         userFromController.rol = "user";
       }
       const userRegister = await this.userDAO.createUser(userFromController);
-      console.log("user in session service", userRegister);
+     
       
       return new UserDTO(userRegister);
     } catch (error) {
@@ -120,7 +120,7 @@ export default class SessionService {
   async findToken(token) {
     try {
       const tokenFound = await this.userDAO.getToken(token);
-      console.log("tokenFound in service", tokenFound);
+   
       return tokenFound;
     } catch (error) {
       CustomError.createError({
@@ -167,17 +167,17 @@ export default class SessionService {
 
   async validUserSentEmailPassword(email) {
     const user = await this.userDAO.getUserByEmail(email);
-    console.log("user in validUserSentEmailPassword", user);
+  
     if (user) {
         const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
-        console.log("token", token);
+      
         // const mailOptions = {
         //   from: config.USER,
         //   to: email,
         //   subject: "Restablecer tu contraseña",
         //   html: `Haz click en el siguiente link para restablecer tu contraseña: http://localhost:8080/api/session/resetPasswordForm/${token}`,
         // };
-        // console.log("mailOptions", mailOptions);
+      
       try {
         const result = transporter.sendMail({
           from: config.USER,
@@ -193,15 +193,15 @@ export default class SessionService {
             return info.response;
           }
         })
-        console.log("reset", result);
+       
         
     } catch (error) {
-      // CustomError.createError({
-      //   name: "Error",
-      //   message: "Email not send",
-      //   code: EErrors.USER_RESET_PASSWORD_EMAIL_ERROR,
-      //   info: generateUserErrorInfo(user),
-      // });
+      CustomError.createError({
+        name: "Error",
+        message: "Email not send",
+        code: EErrors.USER_RESET_PASSWORD_EMAIL_ERROR,
+        info: generateUserErrorInfo(user),
+      });
     }
     
     return user;
@@ -210,11 +210,11 @@ export default class SessionService {
 
 async getTicketByUser(user) {
   try {
-    console.log("user in service getTickets", user);
+  
     const mail = user.email;
-    console.log("mail in service getTickets", mail);
+ 
     const tickets = await this.ticketDAO.getTicketByUser(mail);
-    console.log("ticket in service", tickets);
+   
     return tickets;
   } catch (error) {
     CustomError.createError({

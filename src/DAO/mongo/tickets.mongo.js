@@ -19,10 +19,10 @@ export default class TicketsMongo {
 }
   async getTicketByUser(mail) {
     try {
-      console.log("mail in mongo", mail);
+   
       const userMail = {purchaser: mail}
       const tickets = await ticketModel.find(userMail).lean().exec();
-      console.log("tickets in mongo", tickets);
+     
       return tickets;
     } catch (error) {
       CustomError.createError({

@@ -51,9 +51,9 @@ export default class UsersMongo {
 
   async getUserByEmail(email) {
     try {
-      console.log("email mongo", email);
+     
       const user = await userModel.findOne({ email: email }).lean().exec();
-      console.log("user mongo", user);
+   
       return user;
     } catch (error) {
       CustomError.createError({

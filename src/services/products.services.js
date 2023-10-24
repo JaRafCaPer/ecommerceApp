@@ -13,11 +13,11 @@ export default class ProductService {
       const product = req;
       
       const productCode = await this.productDAO.getProductByCode(product.code);
-      console.log("product code in add product service", productCode);
+     
       if (!productCode) {
-        console.log("entra al if service");
+     
         const productAdded = await this.productDAO.addProduct(product);
-        console.log("product added", productAdded);
+  
         return productAdded;
       } else {
         CustomError.createError({
@@ -39,7 +39,7 @@ export default class ProductService {
   async getProduct() {
     try {
       const products = await this.productDAO.getProducts();
-      console.log("products in get product service", products);
+    
       return products;
     } catch (error) {
       CustomError.createError({
@@ -88,7 +88,7 @@ export default class ProductService {
   }
   async getListProducts(userMail, page, limit, queryParams, sort, category) {
     try {
-      console.log("entra a getlistproducts service");
+   
       const products = await this.productDAO.getProductByOwner(
         userMail,
         page,
@@ -200,4 +200,17 @@ export default class ProductService {
       });
     }
   }
+  async searchProduct(queryParams) {
+    try {
+      const products = await this.productDAO.searchProduct(queryParams);
+      return products;
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Products not found",
+        code: EErrors.PRODUCTS_NOT_FOUND,
+        info: generateProductsErrorInfo(product),
+      });
+    }
+  } 
 }

@@ -12,7 +12,7 @@ import { saveMessage, getMessages } from "../../controllers/messages.controllers
         
         try {
           const newProduct = data;
-          console.log ("newProduct:", newProduct)
+         
           await createProduct(newProduct);
           const products = await getProducts();
           io.emit("reload-table", products);

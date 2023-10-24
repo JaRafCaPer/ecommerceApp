@@ -5,6 +5,7 @@ import {
   updateProductById,
   deleteProductById,
   getListProducts,
+  searchProduct,
 } from "../controllers/product.controllers.js";
 import {requireAdmin, requireUser, requirePremium } from "../middleware/rol.verification.js";
 
@@ -26,7 +27,6 @@ router.get(
     
     let user = req.user;
     user = user.user
-    console.log('user in addproducts', user) 
     res.render("realTimeProducts", {
      user
     });
@@ -61,6 +61,6 @@ router.delete(
   deleteProductById
 );
 
-
+router.post("/search", passport.authenticate("jwt", { session: false }), searchProduct);
 
 export default router;

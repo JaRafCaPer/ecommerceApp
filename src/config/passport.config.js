@@ -149,10 +149,10 @@ function initializePassport() {
             console.error("Password is not valid");
             return done(null, false);
           }
-          console.log("Login completed");
+          
           const token = generateToken(user);
           user.token = token;
-          console.log(user);
+        
           return done(null, user);
         } catch (error) {
           return done("Error logging in... " + error);
@@ -162,7 +162,7 @@ function initializePassport() {
   );
 
   passport.serializeUser((user, done) => {
-    console.log(user)
+   
     done(null, user._id);
   });
 

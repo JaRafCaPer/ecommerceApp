@@ -1,6 +1,6 @@
 // auth.middleware.js
 export function requireUser(req, res, next) {
-  console.log("req.user", req.user);
+
   const user = req.user;
   if (user.user.rol === "user") {
     next();
