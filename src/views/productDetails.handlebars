@@ -76,13 +76,17 @@
           <div class="product-info">
             <p>Description: {{product.description}}</p>
             <p>Category: {{product.category}}</p>
-            <p>Stock: {{product.stock}}</p>
+            <p>Status: <span class="{{#if product.status}}in-stock{{else}}out-of-stock{{/if}}">
+                {{#if product.status}}<p>Stock: {{product.stock}}</p>{{else}}Out of Stock{{/if}}
+            </span></p>
             <p>Price: ${{product.price}}</p>
             <div class="row">
               <label for="quantityInput" class="col-sm-2 mt-2">Quantity:</label>
               <input type="number" id="quantityInput" value="1" min="1" class="col-sm-1 mt-2 form-control quantity-input">
             </div>
+            {{#if product.status}}
             <button class="btn add-to-cart-btn" id="addToCartButton">Add to Cart</button>
+            {{/if}}
           </div>
         </div>
       </div>

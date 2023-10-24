@@ -23,10 +23,9 @@ export default class ProductsMongo {
 
   async getProductById(id) {
     try {
-     
       const pid = id;
       const product = await productModel.findOne({ _id: pid }).lean().exec();
-     
+
       return product;
     } catch (error) {
       CustomError.createError({
@@ -50,9 +49,9 @@ export default class ProductsMongo {
   async getProductByOwner(owner, page, limit, queryParams, sort, category) {
     try {
       let query = {};
-      if(owner){
+      if (owner) {
         query = {
-          owner
+          owner,
         };
       }
       if (category) {
@@ -65,16 +64,14 @@ export default class ProductsMongo {
         if (!isNaN(parseInt(value))) value = parseInt(value);
         query[field] = value;
       }
-      let products = await productModel.paginate(
-        query,
-        {
-          page,
-          limit,
-          sort: { price: sort },
-          lean: true,
-        });
-     
-        products.prevLink = products.hasPrevPage
+      let products = await productModel.paginate(query, {
+        page,
+        limit,
+        sort: { price: sort },
+        lean: true,
+      });
+
+      products.prevLink = products.hasPrevPage
         ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
       products.nextLink = products.hasNextPage
@@ -86,13 +83,12 @@ export default class ProductsMongo {
       products.nextPageValidate = products.hasNextPage
         ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
-      
 
       const productsPrev = products.prevLink;
       const productsNext = products.nextLink;
       const productsPrevValidate = products.prevPageValidate;
       const productsNextValidate = products.nextPageValidate;
-    
+
       return {
         products,
       };
@@ -109,7 +105,7 @@ export default class ProductsMongo {
   async getProducts() {
     try {
       const products = await productModel.find().lean().exec();
-  
+
       return products;
     } catch (error) {
       CustomError.createError({
@@ -125,32 +121,34 @@ export default class ProductsMongo {
     try {
       // Buscar el producto existente por ID
       const existingProduct = await productModel.findById(id);
-  
+
       if (!existingProduct) {
         throw new Error(`Product not found: ${id}`);
       }
-  
+
       // Comparar las propiedades de existingProduct y product
       for (const key in product) {
-        if (product.hasOwnProperty(key) && existingProduct[key] !== product[key]) {
+        if (
+          product.hasOwnProperty(key) &&
+          existingProduct[key] !== product[key]
+        ) {
           existingProduct[key] = product[key];
         }
       }
-  
+
       // Actualizar el producto en la base de datos
       const productUpdated = await existingProduct.save();
-  
+
       if (!productUpdated) {
         throw new Error("Product not updated");
       }
-  
+
       return productUpdated;
     } catch (error) {
       // Manejar errores y lanzar una excepción si es necesario
       throw error;
     }
   }
-  
 
   async deleteProduct(id) {
     try {
@@ -177,7 +175,7 @@ export default class ProductsMongo {
       });
     }
   }
-  
+
   getProductsOrder = async (sort) => {
     try {
       const productsOrders = await productModel.aggregate([
@@ -215,30 +213,30 @@ export default class ProductsMongo {
       });
     }
   };
-  async getProductsPaginate  (page, limit, queryParams, sort, category) {
+  async getProductsPaginate(page, limit, queryParams, sort, category) {
     try {
-        let query = {};
-        
-        if (category) {
-          query = { category };
-        }else{ query = {}}
-     
-   
+      let query = { status: true };
+
+      if (category) {
+        query = { category };
+      } else {
+        query = {};
+      }
+
       if (queryParams) {
         const field = queryParams.split(",")[0];
         let value = queryParams.split(",")[1];
         if (!isNaN(parseInt(value))) value = parseInt(value);
         query[field] = value;
       }
-   
+
       let products = await productModel.paginate(query, {
         page,
         limit,
         sort: { price: sort },
         lean: true,
       });
-      
-     
+
       products.prevLink = products.hasPrevPage
         ? `?page=${products.prevPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
@@ -251,21 +249,13 @@ export default class ProductsMongo {
       products.nextPageValidate = products.hasNextPage
         ? `?page=${products.nextPage}&sort=${sort}&limit=${limit}&category=${category}`
         : "";
-      
-    
-      
-      const productsPrev = products.prevLink;
-      const productsNext = products.nextLink;
-      const productsPrevValidate = products.prevPageValidate;
-      const productsNextValidate = products.nextPageValidate;
-      
       return {
         products,
       };
     } catch (err) {
       throw err;
     }
-  };
+  }
 
   getProductsLimit = async (limit) => {
     try {
@@ -295,9 +285,12 @@ export default class ProductsMongo {
 
   searchProduct = async (search) => {
     try {
-      const products = await productModel.find({
-        $text: { $search: search },
-      }).lean().exec();
+      const products = await productModel
+        .find({
+          $text: { $search: search },
+        })
+        .lean()
+        .exec();
       return products;
     } catch (error) {
       CustomError.createError({
@@ -306,6 +299,24 @@ export default class ProductsMongo {
         code: EErrors.PRODUCT_NOT_FOUND,
         info: generateProductsErrorInfo(product),
       });
+    }
+  };
+
+  async updateProductStatus(productId, newStatus) {
+    try {
+      const updatedProduct = await productModel.findByIdAndUpdate(
+        productId,
+        { status: newStatus }
+      ).lean().exec();
+  
+      if (!updatedProduct) {
+        throw new Error("Product not found");
+      }
+      
+      return updatedProduct;
+    } catch (error) {
+      
+      throw new Error("Failed to update product status");
     }
   }
 }

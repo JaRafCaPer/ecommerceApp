@@ -9,6 +9,26 @@
     <h1 class="mb-4">Product Management for Seller: {{user.first_name}}</h1>
     <a class="btn btn-success mb-3" href="/api/products/addProducts">Agregar productos</a>
     <p class="mb-3">Showing {{limitPage}} products on this page</p>
+     <nav aria-label="Page navigation" style="max-width: 20%; margin: 0 auto;">
+      
+      <ul class="pagination justify-content-center" style="gap: 5px"> 
+        <p class="justify-content-center">Page {{products.products.page}} of {{products.products.totalPages}}</p>
+        <li class="page-item">
+          {{#if productsPrev}}
+            <a class="page-link" href="{{productsPrev}}" aria-label="Anterior">
+              <span aria-hidden="true">&laquo;{{prevPage}}</span>
+            </a>
+          {{/if}}
+        </li>
+        <li class="page-item">
+          {{#if productsNext}}
+            <a class="page-link" href="{{productsNext}}" aria-label="Siguiente">
+              <span aria-hidden="true">&raquo;{{nextPage}}</span>
+            </a>
+          {{/if}}
+        </li>
+      </ul>
+    </nav>
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -17,6 +37,8 @@
           <th>Description</th>
           <th>Price</th>
           <th>Category</th>
+          <th>Owner</th>
+          <th>Status</th>
           <th>Stock</th>
           <th>Actions</th>
         </tr>
@@ -29,35 +51,26 @@
             <td>{{description}}</td>
             <td>{{price}}</td>
             <td>{{category}}</td>
+            <td>{{@root.user.first_name}}</td>
+            <td>
+              {{#if status}}
+                <span class="badge badge-success">Active</span>
+              {{else}}
+                <span class="badge badge-danger">Inactive</span>
+              {{/if}}
+              <select class="statusSelect" data-product-id="{{_id}}">
+                <option value="true" {{#if status}}selected{{/if}}>Active</option>
+                <option value="false" {{#unless status}}selected{{/unless}}>Inactive</option>
+              </select>
+            </td>
             <td>{{stock}}</td>
             <td>
-              <button class="btn btn-danger deleteProductButton" data-product-id="{{_id}}">Delete</button>
+              <button type="submit" class="btn btn-danger deleteProductButton" data-product-id="{{_id}}">Delete</button>
             </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
-    <div class="mt-3">
-      <p>Page {{products.products.page}} of {{products.products.totalPages}}</p>
-    </div>
-    <nav aria-label="Page navigation" style="max-width: 20%; margin: 0 auto;">
-      <ul class="pagination justify-content-center" style="gap: 5px">
-        <li class="page-item">
-          {{#if productsPrev}}
-            <a class="page-link" href="{{productsPrev}}" aria-label="Anterior">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          {{/if}}
-        </li>
-        <li class="page-item">
-          {{#if productsNext}}
-            <a class="page-link" href="{{productsNext}}" aria-label="Siguiente">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          {{/if}}
-        </li>
-      </ul>
-    </nav>
   </div>
 </body>
 </html>
@@ -84,6 +97,39 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           // Handle the error if needed
           alert("Failed to delete the product.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const statusSelects = document.querySelectorAll(".statusSelect");
+
+  statusSelects.forEach((select) => {
+    select.addEventListener("change", async () => {
+      const productId = select.getAttribute("data-product-id");
+      const newStatus = select.value;
+
+      try {
+        const response = await fetch(`/api/products/toggleStatus/${productId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.ok) {
+          // Handle the successful status update if needed
+          alert("Product status updated successfully!");
+          window.location.reload();
+        } else {
+          // Handle the error if needed
+          alert("Failed to update product status.");
         }
       } catch (error) {
         console.error("Error:", error);

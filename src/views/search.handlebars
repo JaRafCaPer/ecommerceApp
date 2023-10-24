@@ -63,9 +63,9 @@
             <p>Code: {{code}}</p>
             <p>Price: ${{price}}</p>
             <p>Status: <span class="{{#if status}}in-stock{{else}}out-of-stock{{/if}}">
-                {{#if status}}In Stock{{else}}Out of Stock{{/if}}
+                {{#if status}}<p>Stock: {{stock}}</p>{{else}}Out of Stock{{/if}}
             </span></p>
-            <p>Stock: {{stock}}</p>
+            
             <p>Category: {{category}}</p>
             <img src="{{thumbnail}}" alt="{{title}}">
         </li>

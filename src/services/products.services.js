@@ -11,13 +11,12 @@ export default class ProductService {
   async addProduct(req) {
     try {
       const product = req;
-      
+
       const productCode = await this.productDAO.getProductByCode(product.code);
-     
+
       if (!productCode) {
-     
         const productAdded = await this.productDAO.addProduct(product);
-  
+
         return productAdded;
       } else {
         CustomError.createError({
@@ -39,7 +38,7 @@ export default class ProductService {
   async getProduct() {
     try {
       const products = await this.productDAO.getProducts();
-    
+
       return products;
     } catch (error) {
       CustomError.createError({
@@ -88,15 +87,13 @@ export default class ProductService {
   }
   async getListProducts(userMail, page, limit, queryParams, sort, category) {
     try {
-   
       const products = await this.productDAO.getProductByOwner(
         userMail,
         page,
         limit,
         queryParams,
         sort,
-        category,
-       
+        category
       );
       return {
         products,
@@ -115,9 +112,9 @@ export default class ProductService {
     try {
       const ProductId = pid;
       const userMail = umail;
-   
+
       const userDel = await this.userDAO.getUserByEmail(userMail);
-     
+
       if (!userDel) {
         CustomError.createError({
           name: "Error",
@@ -149,9 +146,8 @@ export default class ProductService {
     }
   }
 
-  async getProductsPaginate(page, limit, queryParams, sort, category ) {
+  async getProductsPaginate(page, limit, queryParams, sort, category) {
     try {
-      
       const products = await this.productDAO.getProductsPaginate(
         page,
         limit,
@@ -159,10 +155,9 @@ export default class ProductService {
         sort,
         category
       );
-      
+
       return {
         products,
-    
       };
     } catch (e) {
       CustomError.createError({
@@ -212,5 +207,16 @@ export default class ProductService {
         info: generateProductsErrorInfo(product),
       });
     }
-  } 
+  }
+
+  async updateProductStatus(productId, status) {
+    try {
+      const product = await this.productDAO.updateProductStatus(productId, status);
+      return new ProductDTO(product);
+    } catch (error) {
+      // Handle the error if needed
+      throw new Error("Failed to update product status");
+    }
+  }
+
 }

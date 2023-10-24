@@ -6,6 +6,7 @@ import {
   deleteProductById,
   getListProducts,
   searchProduct,
+  updateProductStatus,
 } from "../controllers/product.controllers.js";
 import {requireAdmin, requireUser, requirePremium } from "../middleware/rol.verification.js";
 
@@ -62,5 +63,11 @@ router.delete(
 );
 
 router.post("/search", passport.authenticate("jwt", { session: false }), searchProduct);
+
+router.put(
+  "/toggleStatus/:pid",
+  passport.authenticate("jwt", { session: false }),requireAdmin,
+  updateProductStatus
+);
 
 export default router;

@@ -185,3 +185,15 @@ export const searchProduct = async (req, res) => {
   }
 }
 
+export const updateProductStatus = async (req, res) => {
+  try {
+    const productId = req.params.pid;
+    const status = req.body.status;
+    console.log(status);
+    const product = await productService.updateProductStatus(productId, status);
+    console.log(product);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
