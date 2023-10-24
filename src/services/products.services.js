@@ -115,10 +115,9 @@ export default class ProductService {
     try {
       const ProductId = pid;
       const userMail = umail;
-      console.log("user email in delete product service ", userMail);
-      console.log("productId in delete product service ", ProductId);
+   
       const userDel = await this.userDAO.getUserByEmail(userMail);
-      console.log("user in delete product service ", userDel);
+     
       if (!userDel) {
         CustomError.createError({
           name: "Error",
@@ -132,13 +131,9 @@ export default class ProductService {
         return new ProductDTO(product);
       }
       if (userDel.rol === "premium") {
-        console.log("entra al if de premium");
         const productPremium = await this.productDAO.getProductById(ProductId);
-        console.log("product premium", productPremium);
         if (productPremium.owner === userDel.email) {
-          console.log("entra al if de premium owner");
           const product = await this.productDAO.deleteProduct(ProductId);
-          console.log("product in delete product service premium owner", product);
           return product;
         }
       } else {
