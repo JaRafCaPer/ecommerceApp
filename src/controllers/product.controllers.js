@@ -137,10 +137,9 @@ export const createProduct = async (req, res) => {
       code: req.body.code,
       status: true,
     };
-
     const product = await productService.addProduct(newProduct);
-    
-    res.status(200).redirect("/api/products/addproducts");
+    console.log(product);
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -163,7 +162,7 @@ export const deleteProductById = async (req, res) => {
     const user = req.user.user;
     
     const productId = req.params.pid;
-    
+    console.log(productId);
     const product = await productService.deleteProductById(
       productId,
       user.email
