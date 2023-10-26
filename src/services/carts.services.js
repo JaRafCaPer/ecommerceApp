@@ -161,11 +161,13 @@ export default class CartService {
     }
   }
 
-  async deleteProductCartById(cid) {
+  async deleteProductCartById(cid, pid) {
     try {
+      console.log(cid + "cid service");
+      console.log(pid + "pid servicer");
       const cart = await this.cartDAO.getCartById(cid);
       if (cart) {
-        await this.cartDAO.updateCartById(cid, { products: [] });
+        await this.cartDAO.deleteProductCartById(cid, pid);
       }
     } catch (error) {
       CustomError.createError({

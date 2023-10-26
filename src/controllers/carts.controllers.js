@@ -61,10 +61,11 @@ export const deleteProductCartById = async (req, res) => {
   try {
     const { user } = req.user;
     const pid = req.params.pid;
-    const idProduct = new Types.ObjectId(pid);
-
-    await cartService.deleteProductCartById(user, idProduct);
-    res.status(200).redirect("http://localhost:8080/api/cart/:cid");
+    console.log(pid + "pid");
+    const cid = user.cartId;
+    console.log(cid + "cid");
+    await cartService.deleteProductCartById(cid, pid);
+    res.status(200).json({ message: "Product deleted from cart", cart: cid });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -53,6 +53,7 @@
   <div class="container">
     <h1>Shopping Cart for {{user.first_name}}</h1>
     <p class="pid">Status: {{cart.status}}</p>
+    <p class="pid">Cart ID: {{cart._id}}</p>
 
     <table>
       <tr>
@@ -71,6 +72,9 @@
           <td>{{this.pid.stock}}</td>
           <td>{{this.quantity}}</td>
           <td>${{this.subTotal}}</td>
+          <td>
+            <button type="submit" class="btn btn-danger removeProductButton" cart-id={{@root.cart._id}} data-product-id={{this.pid._id}}>Remove</button>
+          </td>
         </tr>
       {{/each}}
     </table>
@@ -83,5 +87,35 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const deleteButtons = document.querySelectorAll(".removeProductButton");
+
+      deleteButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          try { 
+            const productId = button.getAttribute("data-product-id");
+            const cartId = button.getAttribute("cart-id");
+
+            const response = await fetch(`/api/cart/${cartId}/delete/${productId}`, {
+              method: "DELETE",
+            });
+
+            if (response.ok) {
+              
+              alert("Product deleted!");
+              window.location.reload(); 
+            } else {
+              
+              alert("Failed to delete the product.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          }
+    });
+  });
+});
+</script>
+
 </body>
 </html>

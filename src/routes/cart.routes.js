@@ -26,8 +26,8 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   addProductCartById
 );
-router.get(
-  "/delete/:pid",
+router.delete(
+  "/:cid/delete/:pid",
   passport.authenticate("jwt", { session: false }),
   deleteProductCartById
 );
