@@ -50,7 +50,9 @@ export const addProductCartById = async (req, res) => {
     const { user } = req.user;
     const pid = req.params.pid;
     const quantity = parseInt(req.body.quantity || 1);
-    await cartService.addProductCartById(user, pid, quantity);
+    console.log("user", user,"pid:", pid, quantity)
+    const result = await cartService.addProductCartById(user, pid, quantity);
+    console.log("llegue", result );
     res.status(200).redirect("http://localhost:8080/api/products");
   } catch (error) {
     res.status(500).json({ error: error.message });

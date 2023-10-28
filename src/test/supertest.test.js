@@ -7,6 +7,49 @@ const requester =supertest("http://127.0.0.1:8080");
 
 describe ('testing the server', () => {
 
+    describe ("Cart Test", () => {
+        const userMock = {
+            first_name: faker.person.firstName(),
+            last_name: faker.person.lastName(),
+            email: faker.internet.email(),
+            age: faker.number.int(),
+            password: faker.internet.password(),
+            cartId: faker.database.mongodbObjectId()
+        };
+        const productMock = {
+            title: faker.commerce.productName(),
+            description: faker.commerce.productDescription(),
+            price: faker.commerce.price(),
+            category: faker.commerce.department(),
+            stock: faker.number.int(),
+            thumbnail: faker.image.url(),
+            code: faker.number.int(),
+            owner: faker.internet.email(),
+            _id: faker.database.mongodbObjectId()
+        };
+        const cartMock = {
+            _id: userMock.cartId,
+            products:[{
+                pid: productMock._id,
+                quantity: faker.number.int()
+            }],
+            total: faker.number.int(),
+            status: faker.datatype.boolean({ probability: 0.5 })
+        };
+
+        it ('In endpoint POST "/api/cart/:cid/products/:pid" must add a product to cart ', async() => {
+            const response = await requester.post('/api/cart/:cid/products/:pid').send({
+                pid: cartMock.products[0].pid,
+                quantity: cartMock.products[0].quantity,
+                userMock
+            });
+            console.log(response)
+            const {status, ok, _body} = response;
+            expect(ok).to.be.eq(true)
+            expect(_body).to.have.property('products.pid')
+        });
+    })
+
     describe ('Products Test',() => {
                 const productMock = {
 
