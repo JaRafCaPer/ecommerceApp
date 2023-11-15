@@ -47,12 +47,13 @@ export const deleteCartById = async (req, res) => {
 
 export const addProductCartById = async (req, res) => {
   try {
+    console.log("addProductCartById");
     const { user } = req.user;
     const pid = req.params.pid;
     const quantity = parseInt(req.body.quantity || 1);
-    console.log("user", user,"pid:", pid, quantity)
+    console.log("user", user, "pid", pid, "quantity", quantity);
     const result = await cartService.addProductCartById(user, pid, quantity);
-    console.log("llegue", result );
+    console.log(result);
     res.status(200).redirect("http://localhost:8080/api/products");
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -63,7 +64,7 @@ export const deleteProductCartById = async (req, res) => {
   try {
     const { user } = req.user;
     const pid = req.params.pid;
-    console.log(pid + "pid");
+    
     const cid = user.cartId;
     console.log(cid + "cid");
     await cartService.deleteProductCartById(cid, pid);
