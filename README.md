@@ -1,9 +1,6 @@
 # BackEnd-Project
 # Ecommerce Back End Coder House 2023 🌍
 
-![Work in Progress Badge](https://img.shields.io/badge/STATUS-WORK%20IN%20PROGRESS-green)
-![GitHub Org's stars](https://img.shields.io/github/stars/CharlyMoreno/ecommerce-coder-32125)
-
 ## Introduction
 
 Welcome to the Ecommerce Back End project, a culmination of the skills acquired during the CoderHouse 2023 program. This e-commerce solution is built using the MERN stack — MongoDB, Express, React, and Node.js.
@@ -40,13 +37,23 @@ The project is a versatile e-commerce platform designed for the seamless sale of
 - **Category Management**
 - **User Management:**
   - Supports roles such as Administrator, User and Premium.
+  - **Profile Administration:**
+    - Users can:
+      - Change their role from User to Premium.
+      - View all their tickets.
+      - Manage their personal information.
 - **Authentication:**
-  - Github and Google login, JWT for secure authentication.
+  - Github and JWT for secure authentication.
 - **Shopping Cart**
 - **Chat:**
   - Implemented using websockets.
 - **Purchase Tickets**
 - **User Password Reset**
+- **Product Administration Panel (Premium Users):**
+  - Premium users have access to a product administration panel with the following functionalities:
+    - Erase a product
+    - Add a product
+    - Enable/Disable a product
 
 
 ## Key Information
