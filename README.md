@@ -77,4 +77,3 @@ The project is a versatile e-commerce platform designed for the seamless sale of
 - ![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
 - ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 - ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
-- ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
