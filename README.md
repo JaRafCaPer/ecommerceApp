@@ -10,7 +10,7 @@ Welcome to the Ecommerce Back End project, a culmination of the skills acquired 
 <iframe src="https://giphy.com/embed/qgQUggAC3Pfv687qPC" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dommespace-domme-space-programador-qgQUggAC3Pfv687qPC">via GIPHY</a></p>
 <p align="center">
     <img
-    src="https://media.giphy.com/media/scZPhLqaVOM1qG4lT9/giphy.gif](https://giphy.com/gifs/dommespace-domme-space-programador-qgQUggAC3Pfv687qPC"
+    src="https://media.giphy.com/media/scZPhLqaVOM1qG4lT9/giphy.gif"
     alt="fullstackdeveloper"
     width="300px"
     height="300px"
