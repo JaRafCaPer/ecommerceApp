@@ -10,6 +10,7 @@ export default class UserService {
   }
   async createUser(user) {
     try {
+      console.log("user", user);
       const userAdded = await this.userDAO.createUser(user);
       return userAdded;
     } catch (error) {
@@ -84,14 +85,10 @@ export default class UserService {
     }
     async getUserByEmail(email) {
         try {
+          console.log("email", email);
         const user = await this.userDAO.getUserByEmail(email);
         if (!user) {
-            CustomError.createError({
-            name: "Error",
-            message: "User not exists",
-            code: EErrors.USER_NOT_EXISTS,
-            info: generateUserErrorInfo(product),
-            });
+            console.log("User not found");
         }
         return user;
         } catch (error) {

@@ -28,9 +28,7 @@ function initializePassport() {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const email = profile._json.email;
-         
           const user = await userService.getUserByEmail(email);
-         
           if (user) {
             console.log("User already exists " + profile._json.email);
             const token = generateToken(user);

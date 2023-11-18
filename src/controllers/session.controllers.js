@@ -29,15 +29,14 @@ export const registerUser = async (req, res) => {
     const userData = req.body;
    
     const user = await sessionService.registerUser(userData);
-
-  
+    console.log (user)
     const access_token = generateToken(user);
-    res
+    res.status(200)
       .cookie("keyCookieForJWT", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       })
-      .redirect("/login");
+      .json(user)
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

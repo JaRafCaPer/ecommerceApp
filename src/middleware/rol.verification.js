@@ -3,32 +3,32 @@ export function requireUser(req, res, next) {
 
   const user = req.user;
   if (user.user.rol === "user") {
-    next();
+    return next();
   }
   if (user.user.rol === "premium") {
-    next();
+    return next();
   } else {
-    res.status(403).json({ error: "Access denied. Only users are allowed." });
+    return res.status(403).json({ error: "Access denied. Only users are allowed." });
   }
 }
 
 export function requireAdmin(req, res, next) {
   const user = req.user;
   if (user.user.rol === "admin") {
-    next();
+    return next();
   }
   if (user.user.rol === "premium") {
-    next();
+    return next();
   } else {
-    res.status(403).json({ error: "Access denied. Only admins are allowed." });
+    return res.status(403).json({ error: "Access denied. Only admins are allowed." });
   }
 }
 
 export function requirePremium(req, res, next) {
   const user = req.user;
   if (user.user.rol === "premium") {
-    next();
+    return next();
   } else {
-    res.status(403).json({ error: "Access denied. Only premium are allowed." });
+    return res.status(403).json({ error: "Access denied. Only premium are allowed." });
   }
 }

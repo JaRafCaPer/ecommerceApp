@@ -79,6 +79,7 @@ export default class CartService {
       if (user.rol === "admin") throw new Error("No authorized");
       let cartId = user.cartId;
       let cart;
+      console.log("user", user, 'pid',pid, "quantity",quantity, "cartId",cartId, "cart",cart)
       if (cartId) {
         cart = await this.cartDAO.getCartById(cartId);
       } else {
