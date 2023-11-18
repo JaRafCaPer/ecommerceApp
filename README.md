@@ -39,16 +39,15 @@ The project is a versatile e-commerce platform designed for the seamless sale of
   - Includes websockets for real-time updates.
 - **Category Management**
 - **User Management:**
-  - Supports roles such as Administrator, User, and Premium.
+  - Supports roles such as Administrator, User and Premium.
 - **Authentication:**
   - Github and Google login, JWT for secure authentication.
 - **Shopping Cart**
-- **Support Chat:**
+- **Chat:**
   - Implemented using websockets.
 - **Purchase Tickets**
 - **User Password Reset**
-- **Email Verification:**
-  - Utilizes nodemailer for user email confirmation.
+
 
 ## Key Information
 
