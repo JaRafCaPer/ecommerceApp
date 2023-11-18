@@ -7,7 +7,7 @@
 ## Introduction
 
 Welcome to the Ecommerce Back End project, a culmination of the skills acquired during the CoderHouse 2023 program. This e-commerce solution is built using the MERN stack — MongoDB, Express, React, and Node.js.
-
+<iframe src="https://giphy.com/embed/qgQUggAC3Pfv687qPC" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dommespace-domme-space-programador-qgQUggAC3Pfv687qPC">via GIPHY</a></p>
 <p align="center">
     <img
     src="https://media.giphy.com/media/scZPhLqaVOM1qG4lT9/giphy.gif](https://giphy.com/gifs/dommespace-domme-space-programador-qgQUggAC3Pfv687qPC"
