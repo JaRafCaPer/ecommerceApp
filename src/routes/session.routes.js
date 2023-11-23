@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import  updateLastConnection  from "../middleware/lastConnectionMiddleware.js";
 import {
   loginUser,
   registerUser,
@@ -13,7 +14,7 @@ import {
 
 const router = Router();
 
-router.post("/login", loginUser);
+router.post("/login", updateLastConnection, loginUser);
 
 router.post("/register", registerUser);
 
@@ -25,7 +26,7 @@ router.get("/login", (req, res) => {
   
   router.get(
     "/logout",
-    passport.authenticate("jwt", { session: false }),
+    passport.authenticate("jwt", { session: false }), updateLastConnection,
     (req, res) => {
       res.clearCookie("keyCookieForJWT").redirect("/api/session/login");
     }

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { userPremium } from "../controllers/users.controllers.js";
+import { userPremium, uploadDocs } from "../controllers/users.controllers.js";
 
 
 const router = Router();
@@ -11,7 +11,9 @@ router.get(
   userPremium
 );
 
+router.post( "/:uid/documents", passport.authenticate("jwt", { session: false }), uploadDocs
 
+)
 
 
 
