@@ -14,7 +14,6 @@ const updateLastConnection = async (req, res, next) => {
       const id = user._id;
       user.lastConnection = new Date();
       const updatedUser = await userService.updateUser(id, user);
-      console.log("Updated user:", updatedUser);
       req.user = updatedUser;
       return next();
     } else {
