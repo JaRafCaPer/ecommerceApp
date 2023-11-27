@@ -37,7 +37,7 @@ export const registerUser = async (req, res) => {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       })
-      .json(user);
+      .redirect("/login");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
