@@ -73,8 +73,8 @@ router.get("/loggerTest", (req, res) => {
   res.send("Logger testing");
 });
 
-router.get('/chat', getMessages)
-router.post('/chat', saveMessage)
+router.get('/chat', passport.authenticate("jwt", { session: false }), getMessages)
+router.post('/chat', passport.authenticate("jwt", { session: false }), saveMessage)
 
 
 export default router;

@@ -9,7 +9,7 @@ export default class MessageService {
     }
     async saveMessage(message) {
         try{
-            const messageSaved = await this.messageDAO.saveMessage(message);
+            const messageSaved = await this.messageDAO.createMessage(message);
             return new MessageDTO(messageSaved);
         }catch(error){
             CustomError.createError({

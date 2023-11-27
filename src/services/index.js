@@ -6,7 +6,7 @@ import UserService from "./users.services.js";
 import MessageService from "./messages.services.js";
 import TicketService from "./ticket.services.js";
 import SessionService from "./session.services.js"
-import { ne } from "@faker-js/faker";
+
 
 export const cartService = new CartService( new Cart(), new Product(), new User(), new Ticket());
 export const productService = new ProductService(new Product(), new User());

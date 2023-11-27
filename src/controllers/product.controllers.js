@@ -121,7 +121,6 @@ export const getProductById = async (req, res) => {
     }
     const cartId = user.cartId;
     const product = await productService.getProductById(productToDetailId);
-    console.log(user, "usuario getproductbyid")
     res.status(200).render("productDetails", { product, user, cartId });
   } catch (error) {
     res.status(500).json({ error: error.message });

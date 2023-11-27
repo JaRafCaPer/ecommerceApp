@@ -1,9 +1,11 @@
 import { Server } from "socket.io";
 import { createProduct, deleteProductById, getProducts } from "../../controllers/product.controllers.js";
-import { saveMessage, getMessages } from "../../controllers/messages.controllers.js";
+import MessageService from "../../services/messages.services.js";
+import { messageService } from "../../services/index.js";
 
 
   function initializeSocketIO(httpServer) {
+    console.log("Initializing socket.io");
     const io = new Server(httpServer);
   
     io.on("connection", (socket) => {
@@ -31,16 +33,23 @@ import { saveMessage, getMessages } from "../../controllers/messages.controllers
         }
       });
   
-      socket.on("message", async (data) => {
-        await saveMessage(data);
-        const messages = await getMessages();
-        io.emit("messages", messages);
-      });
+      socket.on("new-message", async (data) => {
+        try {
+            const { user, message } = data;
+            const newMessage = { user, message };
+            await messageService.saveMessage(newMessage);
+        } catch (error) {
+            console.error("Error al guardar el mensaje:", error);
+        }
+
+        io.emit("message-received", data);
+    });
   
       socket.on("disconnect", () => {
         console.log(`User ${socket.id} disconnected`);
       });
     });
+    console.log("Socket.io initialized");
   }
   
 export default initializeSocketIO;
