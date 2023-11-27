@@ -11,6 +11,7 @@ import {
   generateToken,
 } from "../utils.js";
 
+
 const LocalStrategy = local.Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const JWTExtract = passportJWT.ExtractJwt;
@@ -32,7 +33,11 @@ function initializePassport() {
           if (user) {
             console.log("User already exists " + profile._json.email);
             const token = generateToken(user);
+            user.lastConnection = new Date();
+            const id = user._id;
+            await userService.updateUser(id, user);
             user.token = token;
+            console.log(user, "user");
             return done(null, user);
           } else {
             const fullName = profile._json.name;

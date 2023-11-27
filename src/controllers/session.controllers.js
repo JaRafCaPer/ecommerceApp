@@ -1,24 +1,24 @@
+import { ne } from "@faker-js/faker";
+import updateLastConnection from "../middleware/lastConnectionMiddleware.js";
 import { sessionService } from "../services/index.js";
 import { userService } from "../services/index.js";
 import { generateToken } from "../utils.js";
 import jwt from "jsonwebtoken";
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
   try {
     const logData = req.body;
-  
     const user = await sessionService.loginUser(logData);
     if (user == null) return res.redirect("/login");
-    
+    req.user = user;
     const access_token = generateToken(user);
-
     res
       .cookie("keyCookieForJWT", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       })
-      
       .redirect("/api/products");
+      return next();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -27,26 +27,26 @@ export const loginUser = async (req, res) => {
 export const registerUser = async (req, res) => {
   try {
     const userData = req.body;
-   
+
     const user = await sessionService.registerUser(userData);
-    console.log (user)
+    console.log(user);
     const access_token = generateToken(user);
-    res.status(200)
+    res
+      .status(200)
       .cookie("keyCookieForJWT", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       })
-      .json(user)
+      .json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-
 export const getUserCurrent = async (req, res) => {
   try {
     const user = await sessionService.getUserCurrent(req.user);
-  
+
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -64,8 +64,8 @@ export const resetearPassword = async (req, res) => {
 
 export const restart = async (req, res) => {
   const email = req.body.email;
-   const result = await sessionService.validUserSentEmailPassword(email);
-  
+  const result = await sessionService.validUserSentEmailPassword(email);
+
   res.send({
     status: "success",
     message: "Email enviado con las instrucciones para cambiar la contraseña",
@@ -99,11 +99,11 @@ export const validPassword = async (req, res) => {
 export const getTicketByUser = async (req, res) => {
   try {
     const user = req.user.user;
-  
+
     const tickets = await sessionService.getTicketByUser(user);
-  
-    res.status(200).render("tickets",  {tickets} );
+
+    res.status(200).render("tickets", { tickets });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};

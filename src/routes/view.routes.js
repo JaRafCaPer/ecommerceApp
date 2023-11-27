@@ -2,6 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import { generateProducts } from "../utils.js";
 import { getMessages, saveMessage } from "../controllers/messages.controllers.js";
+import updateLastConnection from "../middleware/lastConnectionMiddleware.js";
 
 const router = Router();
 
@@ -28,12 +29,11 @@ router.get(
 );
 
 router.get(
-  "/login-github",
+  "/login-github", 
   passport.authenticate("github", { scope: ["user:email"] }),
-  async (req, res) => {}
 );
 router.get(
-  "/githubcallback",
+  "/githubcallback", 
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
     res
@@ -42,7 +42,7 @@ router.get(
   }
 );
 
-router.get("/login", (req, res) => {
+router.get("/login",  (req, res) => {
   if (Object.keys(req.cookies).length != 0) return res.redirect("/api/products");
   res.render("login", {});
 });
