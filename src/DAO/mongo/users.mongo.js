@@ -51,10 +51,7 @@ export default class UsersMongo {
 
   async getUserByEmail(email) {
     try {
-      console.log("email mongo", email);
-     
       const user = await userModel.findOne({ email: email }).lean().exec();
-      
       return user;
     } catch (error) {
       CustomError.createError({
@@ -75,6 +72,7 @@ export default class UsersMongo {
         age: user.age,
         password: user.password,
         rol: user.rol,
+        lastConnection: user.lastConnection,
       };
       const userUpdate = await userModel
         .findByIdAndUpdate(id, userToUdp, { new: true })

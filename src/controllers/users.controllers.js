@@ -39,3 +39,19 @@ export const userPremium = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const uploadDocuments = async(req, res)=>{
+  const id = new mongoose.Types.ObjectId(req.params.uid);
+  const user = await userService.getUserById(id);
+  const files = req.files
+  if (user.rol === "admin") {
+    CustomError.createError({
+      message: "No authorized to upload documents",
+      code: EErrors.USER_NOT_AUTHORIZED,
+      status: 401,
+      info: generateCartErrorInfo({ pid }),
+    });}
+  const documents = await userService.uploadDocuments(id, files)
+  console.log(documents)
+  return res.json(req.files)
+}

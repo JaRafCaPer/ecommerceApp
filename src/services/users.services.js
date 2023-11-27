@@ -83,6 +83,18 @@ export default class UserService {
         });
         }
     }
+    async uploadDocuments(id, files){
+      const user = await this.dao.getUserById(id)
+      const profileFiles = files?.profile
+      const productsFiles = files?.products
+      const documentsFiles = files?.documents
+      productsFiles?.forEach(products=> user.documents.push({name: products.filename, reference: products.path}))
+      profileFiles?.forEach(p => user.documents.push({name: p.filename, reference: p.path}))
+      documentsFiles?.forEach(d => user.documents.push({name: d.filename, reference: d.path}))
+      const updatedUser = await this.dao.updateUser(user.id, user)
+      return updatedUser
+
+  }
     async getUserByEmail(email) {
         try {
           console.log("email", email);

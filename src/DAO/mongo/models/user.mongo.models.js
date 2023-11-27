@@ -15,6 +15,16 @@ const userModel = mongoose.model(
       default: "not verified",
     },
     verificationCode: String,
+    documents: 
+      {
+        name: String,
+        reference: String,
+      },
+    lastConnection: 
+      {
+        type: Date,
+        default: null,
+      },
     rol: {
       type: String,
       enum: ["user", "admin","premium"],
