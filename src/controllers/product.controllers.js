@@ -138,7 +138,7 @@ export const createProduct = async (req, res) => {
       status: true,
     };
     const product = await productService.addProduct(newProduct);
-    console.log(product);
+    
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -162,7 +162,7 @@ export const deleteProductById = async (req, res) => {
     const user = req.user.user;
     
     const productId = req.params.pid;
-    console.log(productId);
+    
     const product = await productService.deleteProductById(
       productId,
       user.email
@@ -188,9 +188,9 @@ export const updateProductStatus = async (req, res) => {
   try {
     const productId = req.params.pid;
     const status = req.body.status;
-    console.log(status);
+
     const product = await productService.updateProductStatus(productId, status);
-    console.log(product);
+    
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -175,7 +175,7 @@ export default class SessionService {
         //   from: config.USER,
         //   to: email,
         //   subject: "Restablecer tu contraseña",
-        //   html: `Haz click en el siguiente link para restablecer tu contraseña: http://localhost:8080/api/session/resetPasswordForm/${token}`,
+        //   html: `Haz click en el siguiente link para restablecer tu contraseña: https://backend-project-production-f542.up.railway.app/api/session/resetPasswordForm/${token}`,
         // };
       
       try {
@@ -183,7 +183,7 @@ export default class SessionService {
           from: config.USER,
           to: email,
           subject: "Restablecer tu contraseña",
-          html: `Haz click en el siguiente link para restablecer tu contraseña: http://localhost:8080/api/session/resetPasswordForm/${token}`,
+          html: `Haz click en el siguiente link para restablecer tu contraseña: https://backend-project-production-f542.up.railway.app/api/session/resetPasswordForm/${token}`,
         },
         function (error, info) {
           if (error) {

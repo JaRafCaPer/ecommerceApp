@@ -20,14 +20,13 @@ export default class CartsMongo {
   }
   async deleteProductCartById(cartId, productId) {
     try {
-      console.log("cartid",cartId);
-      console.log("productid",productId);
+   
       const cart = await cartModel.findByIdAndUpdate(
         cartId,
         { $pull: { products: { pid: productId } } },
         { new: true }
       );
-      console.log(cart);
+
       return cart;
     } catch (error) {
       CustomError.createError({

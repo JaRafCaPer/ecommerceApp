@@ -52,6 +52,6 @@ export const uploadDocuments = async(req, res)=>{
       info: generateCartErrorInfo({ pid }),
     });}
   const documents = await userService.uploadDocuments(id, files)
-  console.log(documents)
+ 
   return res.json(req.files)
 }

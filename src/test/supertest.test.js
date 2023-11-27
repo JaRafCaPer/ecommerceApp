@@ -50,8 +50,6 @@ describe ('testing the server', () => {
             const cartId = userReg.cartId;
             const response1 = await requester.post('/api/products/addproducts').send(productMock);
             const pid = response1._body._id;
-          
-            console.log("pid:", pid, "cartId:", cartId, "userReg:", userReg);
             const response2 = await requester.post(`/api/cart/${cartId}/products/${pid}`).send({quantity: 1}, userReg);
 
             // const {status2, ok2, _body2} = response2;

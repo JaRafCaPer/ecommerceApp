@@ -37,7 +37,7 @@ function initializePassport() {
             const id = user._id;
             await userService.updateUser(id, user);
             user.token = token;
-            console.log(user, "user");
+            
             return done(null, user);
           } else {
             const fullName = profile._json.name;

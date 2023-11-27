@@ -79,7 +79,7 @@ export default class CartService {
       if (user.rol === "admin") throw new Error("No authorized");
       let cartId = user.cartId;
       let cart;
-      console.log("user", user, 'pid',pid, "quantity",quantity, "cartId",cartId, "cart",cart)
+    
       if (cartId) {
         cart = await this.cartDAO.getCartById(cartId);
       } else {
@@ -164,8 +164,6 @@ export default class CartService {
 
   async deleteProductCartById(cid, pid) {
     try {
-      console.log(cid + "cid service");
-      console.log(pid + "pid servicer");
       const cart = await this.cartDAO.getCartById(cid);
       if (cart) {
         await this.cartDAO.deleteProductCartById(cid, pid);

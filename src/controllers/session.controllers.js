@@ -29,7 +29,7 @@ export const registerUser = async (req, res) => {
     const userData = req.body;
 
     const user = await sessionService.registerUser(userData);
-    console.log(user);
+    
     const access_token = generateToken(user);
     res
       .status(200)
