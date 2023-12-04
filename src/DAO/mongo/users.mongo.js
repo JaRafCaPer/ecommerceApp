@@ -50,11 +50,9 @@ export default class UsersMongo {
   }
   async getInactiveUsers(date) {
     try {
-      console.log(date);
       const result = await userModel.find({
         lastConnection: { $lt: date },
       });
-      console.log(result);
       return result;
     } catch (error) {
       CustomError.createError({
@@ -67,7 +65,7 @@ export default class UsersMongo {
   }
   async deleteUsers(date) {
     try {
-      console.log("delete users mongo");
+     
       const result =await userModel.deleteMany({
         lastConnection: { $lt: date },
       });

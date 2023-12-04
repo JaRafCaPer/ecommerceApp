@@ -79,21 +79,24 @@ export default class UserService {
       const date = new Date();
       date.setDate(date.getDate() - inactivePeriod);
       const inactiveUsers = await this.userDAO.getInactiveUsers(date);
+      
       if (inactiveUsers.length === 0) {
+       
         CustomError.createError({
           name: "Error",
-          message: "No inactive users",
-          code: EErrors.NO_INACTIVE_USERS,
+          message: "Users not found",
+          code: EErrors.USERS_NOT_FOUND,
           info: generateUserErrorInfo(inactiveUsers),
         });
       }
+      
       return {inactiveUsers, date};
     } catch (error) {
       CustomError.createError({
         name: "Error",
-        message: "Users not found",
+        message: "Inactive users not found",
         code: EErrors.USERS_NOT_FOUND,
-        info: generateUserErrorInfo(users),
+        info: generateUserErrorInfo,
       });
     }
     
