@@ -2,6 +2,18 @@ import ProductDTO from "../DTO/product.dto.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateProductsErrorInfo } from "../errors/info.js";
+import nodemailer from "nodemailer";
+import config from "../config/config.js";
+
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  
+  auth: {
+    user: config.USER,
+    pass: config.PASS,
+  },
+});
 
 export default class ProductService {
   constructor(productDAO, userDAO) {
@@ -130,6 +142,21 @@ export default class ProductService {
       if (userDel.rol === "premium") {
         const productPremium = await this.productDAO.getProductById(ProductId);
         if (productPremium.owner === userDel.email) {
+          const result = transporter.sendMail({
+            from: config.USER,
+            to: userMail,
+            subject: "Product deleted",
+            html: `A product has been deleted from your account. Please contact the administrator if you have any questions.`,
+          },
+          function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Email sent: " + info.response);
+              return info.response;
+            }
+          })
+
           const product = await this.productDAO.deleteProduct(ProductId);
           return product;
         }

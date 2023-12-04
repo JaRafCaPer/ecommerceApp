@@ -48,21 +48,31 @@ export default class UsersMongo {
       });
     }
   }
-  async getInactiveUsers() {
+  async getInactiveUsers(date) {
     try {
-      return await userModel.find({ active: false }).lean().exec();
+      console.log(date);
+      const result = await userModel.find({
+        lastConnection: { $lt: date },
+      });
+      console.log(result);
+      return result;
     } catch (error) {
       CustomError.createError({
         name: "Error",
-        message: "Users not found",
+        message: "inactive users not found",
         code: EErrors.USERS_NOT_FOUND,
         info: generateUserErrorInfo(user),
       });
     }
   }
-  async deleteUsers() {
+  async deleteUsers(date) {
     try {
-      return await userModel.deleteMany();
+      console.log("delete users mongo");
+      const result =await userModel.deleteMany({
+        lastConnection: { $lt: date },
+      });
+      console.log(result);
+      return result
     } catch (error) {
       CustomError.createError({
         name: "Error",

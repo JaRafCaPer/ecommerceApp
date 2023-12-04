@@ -171,19 +171,12 @@ export default class SessionService {
     if (user) {
         const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
       
-        // const mailOptions = {
-        //   from: config.USER,
-        //   to: email,
-        //   subject: "Restablecer tu contraseña",
-        //   html: `Haz click en el siguiente link para restablecer tu contraseña: https://backend-project-production-f542.up.railway.app/api/session/resetPasswordForm/${token}`,
-        // };
-      
       try {
         const result = transporter.sendMail({
           from: config.USER,
           to: email,
           subject: "Restablecer tu contraseña",
-          html: `Haz click en el siguiente link para restablecer tu contraseña: https://backend-project-production-f542.up.railway.app/api/session/resetPasswordForm/${token}`,
+          html: `Haz click en el siguiente link para restablecer tu contraseña: localhost:8080/api/session/resetPasswordForm/${token}`,
         },
         function (error, info) {
           if (error) {

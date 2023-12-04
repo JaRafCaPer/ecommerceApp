@@ -10,6 +10,7 @@ import { userService } from "../services/index.js";
 export const getUsers = async (req, res) => {
   try {
     const users = await userService.getUsers();
+    console.log('users:',users)
     return res.render("users", { users });
   } catch (error) {
     req.logger.fatal("Error al obtener los usuarios");
@@ -41,13 +42,21 @@ export const deleteUserById = async (req, res) => {
   }
 }
 
-
 export const deleteUsers = async (req, res) => {
   try {
-    const inactiveUsers = await userService.getInactiveUsers();
-    return res.render("users", { users });
+    const inactiveData = await userService.getInactiveUsers();
+    if (inactiveData.inactiveUsers.length > 0) {
+      const deletedUsers = await userService.deleteUsers(inactiveData);
+  
+      const inactiveUsers = inactiveData.inactiveUsers;
+      return res.render("deletedUsers", {inactiveUsers})
+    }
+    else {
+      req.logger.fatal("Error: No inactive users");
+      res.status(500).json({ error: error.message });
+    }
   } catch (error) {
-    req.logger.fatal("Error al eliminar los usuarios");
+    req.logger.fatal("Error deleting users");
     res.status(500).json({ error: error.message });
   }
 }

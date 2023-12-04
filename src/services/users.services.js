@@ -2,7 +2,19 @@ import UserDTO from "../DTO/user.dto.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateUserErrorInfo } from "../errors/info.js";
-import { addMinutes, isAfter } from 'date-fns'
+import nodemailer from "nodemailer";
+import config from "../config/config.js";
+import { ne } from "@faker-js/faker";
+
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  
+  auth: {
+    user: config.USER,
+    pass: config.PASS,
+  },
+});
 
 export default class UserService {
   constructor(userDAO, cartDAO) {
@@ -47,7 +59,10 @@ export default class UserService {
   async getUsers() {
     try {
       const users = await this.userDAO.getUsers();
-      return users;
+      console.log('users service:',users)
+      const userDTOs = users.map((user) => new UserDTO(user));
+      console.log('userDTOs service:',userDTOs)
+      return userDTOs;
     } catch (error) {
       CustomError.createError({
         name: "Error",
@@ -57,29 +72,65 @@ export default class UserService {
       });
     }
   }
-  async getInactiveUsers(inactivityPeriodInMinutes) {
+  async getInactiveUsers() {
     try {
-      const currentDate = new Date();
-      const thresholdDate = addMinutes(currentDate, -inactivityPeriodInMinutes);
-
-      const inactiveUsers = await this.userDAO.getUsers({
-        lastConnection: { $lt: thresholdDate },
-      });
-
-      return inactiveUsers;
+      
+      const inactivePeriod = 2;
+      const date = new Date();
+      date.setDate(date.getDate() - inactivePeriod);
+      const inactiveUsers = await this.userDAO.getInactiveUsers(date);
+      if (inactiveUsers.length === 0) {
+        CustomError.createError({
+          name: "Error",
+          message: "No inactive users",
+          code: EErrors.NO_INACTIVE_USERS,
+          info: generateUserErrorInfo(inactiveUsers),
+        });
+      }
+      return {inactiveUsers, date};
     } catch (error) {
       CustomError.createError({
-        name: 'Error',
-        message: 'Error al obtener usuarios inactivos',
-        code: EErrors.INACTIVE_USERS_ERROR,
-        info: generateUserErrorInfo(error),
+        name: "Error",
+        message: "Users not found",
+        code: EErrors.USERS_NOT_FOUND,
+        info: generateUserErrorInfo(users),
       });
     }
+    
   }
-  async deleteUsers() {
+  async deleteUsers(inactiveData) {
     try {
-      const users = await this.userDAO.deleteUsers();
-      return new UserDTO(users);
+      const users = inactiveData.inactiveUsers;
+      const date = inactiveData.date;
+      const deletedUsers = await this.userDAO.deleteUsers(date);
+      
+      if (users.length === 0) {
+        CustomError.createError({
+          name: "Error",
+          message: "No inactive users",
+          code: EErrors.NO_INACTIVE_USERS,
+          info: generateUserErrorInfo(users),
+        });
+      }
+      else {
+        users.forEach((users) => {
+          const result = transporter.sendMail({
+            from: config.USER,
+            to: users.email,
+            subject: "account deleted",
+            html: `your account have been deleted due to inactivity.`,
+          },
+          function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Email sent: " + info.response);
+              return info.response;
+            }
+          })
+        })
+        return new UserDTO(users);
+    }
     } catch (error) {
       CustomError.createError({
         name: "Error",
