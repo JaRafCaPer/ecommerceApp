@@ -6924,3 +6924,5 @@
 {"level":"http","message":"DELETE /api/users/ - 17:09:18","timestamp":"2023-12-04T22:09:18.240Z"}
 {"level":"http","message":"DELETE /api/users/ - 17:10:06","timestamp":"2023-12-04T22:10:06.955Z"}
 {"level":"http","message":"DELETE /api/users/ - 17:10:50","timestamp":"2023-12-04T22:10:50.029Z"}
+{"level":"http","message":"GET /api/users/ - 17:30:30","timestamp":"2023-12-04T22:30:30.232Z"}
+{"level":"http","message":"GET /api/users/ - 17:35:08","timestamp":"2023-12-04T22:35:08.033Z"}

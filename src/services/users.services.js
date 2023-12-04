@@ -59,9 +59,7 @@ export default class UserService {
   async getUsers() {
     try {
       const users = await this.userDAO.getUsers();
-      console.log('users service:',users)
       const userDTOs = users.map((user) => new UserDTO(user));
-      console.log('userDTOs service:',userDTOs)
       return userDTOs;
     } catch (error) {
       CustomError.createError({

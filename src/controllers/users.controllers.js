@@ -10,7 +10,6 @@ import { userService } from "../services/index.js";
 export const getUsers = async (req, res) => {
   try {
     const users = await userService.getUsers();
-    console.log('users:',users)
     return res.render("users", { users });
   } catch (error) {
     req.logger.fatal("Error al obtener los usuarios");
