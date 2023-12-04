@@ -15,11 +15,62 @@ const userModel = mongoose.model(
       default: "not verified",
     },
     verificationCode: String,
-    documents: 
+    documents: [
       {
-        name: String,
-        reference: String,
+        profile: {
+          name: {
+            type: String,
+            default: null,
+          },
+          reference: {
+            type: String,
+            default: null,
+          },
+        },
+        products: {
+          name: {
+            type: String,
+            default: null,
+          },
+          reference: {
+            type: String,
+            default: null,
+          },
+        },
+        documents:[{ 
+          identification: {
+          name: {
+            type: String,
+            default: null,
+          },
+          reference: {
+            type: String,
+            default: null,
+          },
+        },
+        state: {
+          name: {
+            type: String,
+            default: null,
+          },
+          reference: {
+            type: String,
+            default: null,
+          },
+        },
+        address: {
+          name: {
+            type: String,
+            default: null,
+          },
+          reference: {
+            type: String,
+            default: null,
+          }}
+        }
+          ],
       },
+    ],
     lastConnection: 
       {
         type: Date,

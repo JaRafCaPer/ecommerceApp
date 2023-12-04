@@ -1,22 +1,31 @@
 import multer from 'multer';
+import path from 'path';
+import __dirname from '../utils.js';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const { uid, documentType } = req.params;
+        const { uid } = req.params;
         let uploadPath = '';
 
-        if (documentType === 'profile') {
-            uploadPath = `uploads/profiles/${uid}`;
-        } else if (documentType === 'product') {
-            uploadPath = `uploads/products/${uid}`;
-        } else if (documentType === 'document') {
-            uploadPath = `uploads/documents/${uid}`;
+        if (file.fieldname === 'profile') {
+            uploadPath = path.join(__dirname, `./uploads/profiles/`);
+        } else if (file.fieldname === 'product') {
+            uploadPath = path.join(__dirname, `./uploads/products/`);
+        } else if (file.fieldname === 'dni') {
+            uploadPath = path.join(__dirname, `./uploads/documents/dni`);
+        } else if (file.fieldname === 'address') {
+            uploadPath = path.join(__dirname, `./uploads/documents/address`);
+        } else if (file.fieldname === 'state') {
+            uploadPath = path.join(__dirname, `./uploads/documents/state`);
+        } else {
+            return cb(new Error('Unexpected fieldname'));
         }
 
         cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, `${file.fieldname}-${uniqueSuffix}-${file.originalname}`);
     },
 });
 

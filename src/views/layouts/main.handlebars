@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
     <script src="https://kit.fontawesome.com/60f68411d6.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -17,32 +16,32 @@
 
 <body>
     
-    <nav class="navbar navbar-expand-lg bg-light shadow-lg p-3 mb-5 bg-light rounded " style="border-radius: 18px;">
-        <div class="container-fluid justify-content-evenly text-main-color">
-            <a class="navbar-brand" href="/">Eshop</a>
+    <nav class="navbar navbar-expand-lg shadow-lg p-3 mb-5 bg-light rounded " style="border-radius: 18px;">
+        <div class="container-fluid justify-content-evenly">
+            <a class="navbar-brand text-muted" href="/">Eshop</a>
             <ul class="navbar-nav flex-row">
                 <li class="nav-item p-2 ">
-                    <a class="nav-link" href="/api/session/login">Login</a>
+                    <a class="nav-link text-muted" href="/api/session/login">Login</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link text-muted" href="/register">Register</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link" href="/api/products">Products</a>
+                    <a class="nav-link text-muted" href="/api/products">Products</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link" href="/api/session/profile">Profile</a>
+                    <a class="nav-link text-muted" href="/api/session/profile">Profile</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link" href="/chat">Chat</a>
+                    <a class="nav-link text-muted" href="/chat">Chat</a>
                 <li class="nav-item p-2">
-                    <a class="nav-link" href="/api/session/logout">Logout</a>
+                    <a class="nav-link text-muted" href="/api/session/logout">Logout</a>
                 </li>
             </ul>
             <div class="d-flex align-items-center">
                 <form action="/api/products/search" method="post">
                     <input type="text" name="query" placeholder="Search for products">
-                    <button type="submit">Search</button>
+                    <button type="submit" class="btn btn-submit text-muted">Search</button>
                     </form>
                 
                 <a class="btn position-relative border border-secondary mx-2 " href="/api/cart/user">

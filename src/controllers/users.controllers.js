@@ -3,9 +3,57 @@ import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { userService } from "../services/index.js";
 
+
+
+
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await userService.getUsers();
+    return res.render("users", { users });
+  } catch (error) {
+    req.logger.fatal("Error al obtener los usuarios");
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const deleteUserById = async (req, res) => {
+  try {
+    const id = req.params.uid;
+    const user = await userService.getUserById(id);
+    if (user) {
+      if (user.rol === "admin") {
+        CustomError.createError({
+          message: "No authorized you can't delete an admin",
+          code: EErrors.USER_NOT_AUTHORIZED,
+          status: 401,
+          info: generateUserErrorInfo({ uid }),
+        });
+      }
+      else {
+       const deletedUser = await userService.deleteUserById(id);
+        return res.render("deletedUser", {deletedUser});
+      }
+    } 
+  } catch (error) {
+    req.logger.fatal("Error: User not deleted");
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+export const deleteUsers = async (req, res) => {
+  try {
+    const inactiveUsers = await userService.getInactiveUsers();
+    return res.render("users", { users });
+  } catch (error) {
+    req.logger.fatal("Error al eliminar los usuarios");
+    res.status(500).json({ error: error.message });
+  }
+}
 export const userPremium = async (req, res) => {
   try {
-    const id = new mongoose.Types.ObjectId(req.params.uid);
+    const id = req.params.uid;
     const user = await userService.getUserById(id);
     if (user) {
       if (user.rol === "admin") {
@@ -35,14 +83,20 @@ export const userPremium = async (req, res) => {
       });
     }
   } catch (error) {
-    req.logger.fatal("Error al cambiar a usuario premium");
+    req.logger.fatal("Error changing user to premium");
     res.status(500).json({ error: error.message });
   }
 };
 
 export const uploadDocuments = async(req, res)=>{
-  const id = new mongoose.Types.ObjectId(req.params.uid);
-  const user = await userService.getUserById(id);
+  console.log('llegue al controller upload')
+  console.log('req.params',req.params)
+  console.log('req.user',req.user)
+  console.log('req.files',req.files)
+  const id = req.params.uid;
+  const email = req.user.user.email;
+  const user = await userService.getUserByEmail(email);
+  console.log('user upload',user)
   const files = req.files
   if (user.rol === "admin") {
     CustomError.createError({
@@ -52,6 +106,35 @@ export const uploadDocuments = async(req, res)=>{
       info: generateCartErrorInfo({ pid }),
     });}
   const documents = await userService.uploadDocuments(id, files)
- 
   return res.json(req.files)
+}
+
+export const getAdminPanel = async (req, res) => {
+  try {
+    const email = req.user.user.email;
+    const user = await userService.getUserByEmail(email);
+    if (user) {
+      if (user.rol === "admin") {
+        const users = await userService.getUsers();
+        return res.render("adminPanel", { users });
+      } else {
+        CustomError.createError({
+          message: "No authorized",
+          code: EErrors.USER_NOT_AUTHORIZED,
+          status: 401,
+          info: generateCartErrorInfo({ pid }),
+        });
+      }
+    } else {
+      CustomError.createError({
+        message: "User not found",
+        code: EErrors.USER_NOT_EXISTS,
+        status: 404,
+        info: generateCartErrorInfo({ pid }),
+      });
+    }
+  } catch (error) {
+    req.logger.fatal("Error al obtener el panel de administración");
+    res.status(500).json({ error: error.message });
+  }
 }

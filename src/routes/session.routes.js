@@ -37,6 +37,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { user } = req.user;
+    console.log('user', user)
     res.render("profile", user);
   }
 );

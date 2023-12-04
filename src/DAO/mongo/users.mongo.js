@@ -48,6 +48,30 @@ export default class UsersMongo {
       });
     }
   }
+  async getInactiveUsers() {
+    try {
+      return await userModel.find({ active: false }).lean().exec();
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Users not found",
+        code: EErrors.USERS_NOT_FOUND,
+        info: generateUserErrorInfo(user),
+      });
+    }
+  }
+  async deleteUsers() {
+    try {
+      return await userModel.deleteMany();
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Users not deleted",
+        code: EErrors.USERS_NOT_DELETED,
+        info: generateUserErrorInfo(user),
+      });
+    }
+  }
 
   async getUserByEmail(email) {
     try {
@@ -89,7 +113,7 @@ export default class UsersMongo {
     }
   }
 
-  async deleteUser(id) {
+  async deleteUserById(id) {
     try {
       return await userModel.findByIdAndDelete(id);
     } catch (error) {

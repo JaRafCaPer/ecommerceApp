@@ -155,7 +155,7 @@ function initializePassport() {
           
           const token = generateToken(user);
           user.token = token;
-        
+          console.log(user, "user login");
           return done(null, user);
         } catch (error) {
           return done("Error logging in... " + error);

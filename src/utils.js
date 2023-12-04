@@ -16,7 +16,7 @@ export const createHash = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 export const isValidPassword = (user, password)=>{
-    return bcrypt.compareSync(password, user.password) //solo devuelve true o false
+    return bcrypt.compareSync(password, user.password)
 }
 
 export const generateProducts = () => {
@@ -33,7 +33,7 @@ export const generateProducts = () => {
   }
 
 export const generateToken = user =>{
-    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '36h'})
+    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '4h'})
 }
 
 export const authToken = (req, res, next) =>{
