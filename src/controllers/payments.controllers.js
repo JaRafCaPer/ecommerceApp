@@ -32,8 +32,8 @@ export const createSession = async (req, res) => {
             quantity: product.quantity,
         })),
         mode: 'payment',
-        success_url: `http://localhost:8080/api/payments/success?ticketId=${encodeURIComponent(ticket._id)}`,
-        cancel_url: `http://localhost:8080/api/payments/cancel?ticketId=${encodeURIComponent(ticket._id)}`,
+        success_url: `https://backend-project-production-f542.up.railway.app/api/payments/success?ticketId=${encodeURIComponent(ticket._id)}`,
+        cancel_url: `https://backend-project-production-f542.up.railway.app/api/payments/cancel?ticketId=${encodeURIComponent(ticket._id)}`,
     });
   return res.redirect(session.url); 
 }   
