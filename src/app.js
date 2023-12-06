@@ -15,6 +15,7 @@ import chatRoutes from "./routes/chat.routes.js";
 import viewsRoutes from "./routes/view.routes.js";
 import sessionRoutes from "./routes/session.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import paymentsRoutes from "./routes/payments.routes.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from 'swagger-ui-express'
 
@@ -72,6 +73,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/session", sessionRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/users",userRoutes);
+app.use("/api/payments", paymentsRoutes)
 
 const runServer = () => {
  

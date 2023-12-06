@@ -7,7 +7,7 @@ import { requireAdmin } from "../middleware/rol.verification.js";
 
 const router = Router();
 
-router.get("/",passport.authenticate("jwt", { session: false }), getUsers);
+router.get("/",passport.authenticate("jwt", { session: false }), requireAdmin, getUsers);
 
 router.get(
   "/premium/:uid",

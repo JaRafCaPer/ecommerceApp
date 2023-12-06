@@ -34,4 +34,33 @@ export default class TicketService{
             });
         }
     }
+
+    async getTicketById(id){
+        try{
+            const ticket = await this.ticketDAO.getTicketById(id);
+            return ticket;
+        }catch(error){
+            CustomError.createError({
+                name: 'Error',
+                message: 'Ticket not found',
+                code: EErrors.TICKET_NOT_FOUND,
+                info: generateTicketErrorInfo(id),
+            });
+        }
+    }
+
+    async updateTicketById(id, ticket){
+        try{
+            const ticketUpdated = await this.ticketDAO.updateTicketById(id, ticket);
+            console.log("service:",ticketUpdated);
+            return ticketUpdated;
+        }catch(error){
+            CustomError.createError({
+                name: 'Error',
+                message: 'Ticket not updated',
+                code: EErrors.TICKET_NOT_UPDATED,
+                info: generateTicketErrorInfo(ticket),
+            });
+        }
+    }
 }

@@ -25,6 +25,10 @@ const ticketSchema = mongoose.Schema({
         type: Number,
         required: true,
       },
+      price: {
+        type: Number,
+        required: true,
+      },
     },
   ],
   amount: {
@@ -34,6 +38,11 @@ const ticketSchema = mongoose.Schema({
   purchaser: {
     type: String,
     required: true,
+  },
+  purchase_status: {
+    type: String,
+    enum: ["pending", "completed", "cancelled"],
+    default: "pending",
   },
 });
 

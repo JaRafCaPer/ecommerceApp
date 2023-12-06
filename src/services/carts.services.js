@@ -226,6 +226,7 @@ export default class CartService {
             title: product.pid.title,
             code: product.pid.code,
             quantity: product.quantity,
+            price: product.pid.price,
           };
         });
 

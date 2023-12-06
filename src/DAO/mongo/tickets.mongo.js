@@ -59,7 +59,7 @@ export default class TicketsMongo {
        });
     }
   }
-  async updateTicket(id, data) {
+  async updateTicketById(id, data) {
     try {
         const ticket = await ticketModel.findById(id);
         if (!ticket) null;

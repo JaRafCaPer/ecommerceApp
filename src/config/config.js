@@ -14,4 +14,5 @@ export default  {
     USER: process.env.USER,
     PASS: process.env.PASS,
     AMBIENT: process.env.AMBIENT,
+    STRIPE_API_KEY: process.env.STRIPE_API_KEY
 }

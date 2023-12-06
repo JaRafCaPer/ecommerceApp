@@ -131,7 +131,7 @@ export const getTicketsByUserById = async (req, res) => {
 
     const ticket = await cartService.createAndSaveTicket(user);
    
-
+    
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
 
@@ -141,9 +141,9 @@ export const getTicketsByUserById = async (req, res) => {
         await productService.updateProduct(product._id, { stock: newStock });
       }
     }
-    await cartService.updateCartById(user.cartId, { products: [] });
-    
-    res.status(200).render("ticket", ticket);
+    // await cartService.updateCartById(user.cartId, { products: [] });
+    const redirectUrl = `/api/payments/create-checkout-session?ticketId=${encodeURIComponent(ticket._id)}&totalAmount=${encodeURIComponent(ticket.totalAmount)}`;
+    res.status(200).redirect(redirectUrl);
   }} catch (error) {
     res.status(500).json({ error: error.message });
   }
