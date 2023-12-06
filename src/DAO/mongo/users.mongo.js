@@ -69,7 +69,6 @@ export default class UsersMongo {
       const result =await userModel.deleteMany({
         lastConnection: { $lt: date },
       });
-      console.log(result);
       return result
     } catch (error) {
       CustomError.createError({

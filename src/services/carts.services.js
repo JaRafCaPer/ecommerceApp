@@ -177,7 +177,29 @@ export default class CartService {
       });
     }
   }
-
+  async getCartUserEmail(email) {
+    try {
+      const user = await this.userDAO.getUserByEmail(email);
+      let cartId = user.cartId;
+      const cart = await this.cartDAO.getCartById(cartId);
+      let totalCompra = 0;
+      cart.products.forEach((product) => {
+        totalCompra += product.pid.price * product.quantity;
+      });
+      let subTotal = 0;
+      cart.products.forEach((product) => {
+        product.subTotal = product.pid.price * product.quantity;
+      });
+      return { cart, totalCompra };
+    } catch (error) {
+      CustomError.createError({
+        name: "Error",
+        message: "Cart not exists",
+        code: EErrors.CART_NOT_FOUND,
+        info: generateCartErrorInfo(cart),
+      });
+    }
+  }
   async getCartUserById(user) {
     try {
       // const user = await this.userDAO.getUserByEmail(user.email);

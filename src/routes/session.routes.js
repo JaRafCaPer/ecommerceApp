@@ -11,6 +11,7 @@ import {
   validPassword,
 } from "../controllers/session.controllers.js";
 import updateLastConnection from "../middleware/lastConnectionMiddleware.js";
+import { getTicketById } from "../controllers/carts.controllers.js";
 
 const router = Router();
 
@@ -37,7 +38,6 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { user } = req.user;
-    console.log('user', user)
     res.render("profile", user);
   }
 );
@@ -46,7 +46,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   getTicketByUser
 );
-
+router.get(
+  "/ticket/user/:tid",
+  passport.authenticate("jwt", { session: false }),
+  getTicketById
+);
 router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),

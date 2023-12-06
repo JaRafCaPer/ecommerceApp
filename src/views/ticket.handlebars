@@ -51,8 +51,12 @@
       <p><strong>Ticket Code:</strong> {{code}}</p>
       <p><strong>Purchase Date & Time:</strong> {{purchase_datetime}}</p>
       <p><strong>Purchaser:</strong> {{purchaser}}</p>
-      <p><strong>Total paid:</strong> ${{amount}}</p>
+      <p><strong>Total:</strong> ${{amount}}</p>
+      <p><strong>Purchase status: </strong>{{purchase_status}}</p>
     </div>
+    <form action="/api/payments/create-checkout-session?ticketId={{_id}}" method="POST">                     
+    <button type="submit" class="btn btn-success">Proceed to payment</button>
+    </form>
 
   </div>
 

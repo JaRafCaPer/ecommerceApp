@@ -55,7 +55,6 @@ export const getListProducts = async (req, res) => {
 export const getProducts = async (req, res) => {
   try {
     const { user } = req.user;
-    console.log('user', user)
     const { first_name, last_name, rol } = user;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;

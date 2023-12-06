@@ -1,4 +1,4 @@
-import { cartService, productService } from "../services/index.js";
+import { cartService, productService, ticketService } from "../services/index.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateCartErrorInfo } from "../errors/info.js";
@@ -141,14 +141,24 @@ export const getTicketsByUserById = async (req, res) => {
         await productService.updateProduct(product._id, { stock: newStock });
       }
     }
-    // await cartService.updateCartById(user.cartId, { products: [] });
-    const redirectUrl = `/api/payments/create-checkout-session?ticketId=${encodeURIComponent(ticket._id)}&totalAmount=${encodeURIComponent(ticket.totalAmount)}`;
+    
+    const redirectUrl = `/api/session/ticket/user/${encodeURIComponent(ticket._id)}`;
     res.status(200).redirect(redirectUrl);
   }} catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
+export const getTicketById = async (req, res) => {
+  try {
+   
+    const { user } = req.user;
+    const tid = req.params.tid;
+    const ticket = await ticketService.getTicketById(tid);
+    res.render("ticket",ticket);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 export const updateProductCartById = async (req, res) => {
   try {
     const { user } = req.user;

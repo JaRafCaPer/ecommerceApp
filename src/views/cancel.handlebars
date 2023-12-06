@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cancelled Ticket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #e8eff5;
+            color: #495057;
+            margin-top: 4rem;
+            align-items: center;
+        }
+        .containerPrincipal{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #e8eff5;
+            color: #495057;
+            margin: 4rem;
+        }
+        h1 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        p {
+            margin: 0.5rem 0;
+        }
+
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="containerPrincipal">
+    <h1>Your Purchase has been Cancelled</h1>
+
+    <p><strong>Ticket Code:</strong> {{code}}</p>
+    <p><strong>Purchase Date and Time:</strong> {{purchase_datetime}}</p>
+
+    <h2>Products Cancelled:</h2>
+    {{#each products}}
+        <div class="col-md-3 p-3">
+            <div style="border: none; border-radius: 20px; background-color: #fae9e3; margin: 1rem; height: 100%; width: 100%; box-shadow: 0 4px 8px rgba(104, 63, 1, 0.253);">
+                <div style="border: none; border-radius: 20px; background-color: #fae9e3; margin: 1rem;">
+                    <h4 style="font-size: 1.25rem; font-weight: 700; text-decoration: none; color: #e74c3c;"><a href="/api/products/{{_id}}">{{{title}}}</a></h4>
+                    <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: grey;">{{description}}</p>
+                    <p>${{price}}</p>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+    <h2>Total Amount Refunded: ${{amount}}</h2>
+
+    <p><strong>Purchaser Email:</strong> {{purchaser}}</p>
+    <p><strong>Purchase Status:</strong> Cancelled</p>
+
+    <p>We're sorry to see you cancel. If you have any concerns, please contact our support.</p>
+
+    <p>Please keep the ticket code <strong>{{code}}</strong> for your reference.</p>
+</div>
+
+</body>
+</html>

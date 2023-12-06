@@ -63,7 +63,12 @@ export default class TicketsMongo {
     try {
         const ticket = await ticketModel.findById(id);
         if (!ticket) null;
-        ticketModel.updateOne({ _id: id }, data);
+        const updatedTicket = await ticketModel.findByIdAndUpdate(
+            id,
+            {$set: data}
+           ,
+            { new: true }
+        );
     } catch (e) {
         CustomError.createError({
             name: "Error",

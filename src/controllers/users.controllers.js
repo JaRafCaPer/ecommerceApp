@@ -97,14 +97,11 @@ export const userPremium = async (req, res) => {
 };
 
 export const uploadDocuments = async(req, res)=>{
-  console.log('llegue al controller upload')
-  console.log('req.params',req.params)
-  console.log('req.user',req.user)
-  console.log('req.files',req.files)
+
   const id = req.params.uid;
   const email = req.user.user.email;
   const user = await userService.getUserByEmail(email);
-  console.log('user upload',user)
+ 
   const files = req.files
   if (user.rol === "admin") {
     CustomError.createError({

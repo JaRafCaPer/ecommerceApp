@@ -79,7 +79,7 @@ router.post('/chat', passport.authenticate("jwt", { session: false }), saveMessa
 
 router.get('/uploadDocs', passport.authenticate("jwt", { session: false }), (req, res) => {
   let user = req.user.user
-  console.log('user', user)
+
   res.render('uploadDocs', {user})
 })
 

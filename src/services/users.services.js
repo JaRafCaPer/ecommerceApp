@@ -182,8 +182,7 @@ export default class UserService {
         }
     }
     async uploadDocuments(id, files) {
-      console.log('Llegué al servicio upload');
-      console.log('id', id);
+    
       const user = await this.userDAO.getUserById(id);
     
       if (!user) {

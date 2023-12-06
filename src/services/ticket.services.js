@@ -52,7 +52,6 @@ export default class TicketService{
     async updateTicketById(id, ticket){
         try{
             const ticketUpdated = await this.ticketDAO.updateTicketById(id, ticket);
-            console.log("service:",ticketUpdated);
             return ticketUpdated;
         }catch(error){
             CustomError.createError({

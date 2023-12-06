@@ -1,12 +1,21 @@
 import Stripe from 'stripe';
 import config from '../config/config.js';
 import { ticketService } from '../services/index.js';
+import { cartService } from '../services/index.js';
+import nodemailer from "nodemailer";
 
 const stripe = new Stripe(config.STRIPE_API_KEY);
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    
+    auth: {
+      user: config.USER,
+      pass: config.PASS,
+    },
+  });
 
 export const createSession = async (req, res) => {
     const ticketId = req.query.ticketId;
-
     const ticket = await ticketService.getTicketById(ticketId);
     const products = ticket.products
 
@@ -26,22 +35,44 @@ export const createSession = async (req, res) => {
         success_url: `http://localhost:8080/api/payments/success?ticketId=${encodeURIComponent(ticket._id)}`,
         cancel_url: `http://localhost:8080/api/payments/cancel?ticketId=${encodeURIComponent(ticket._id)}`,
     });
-  return res.redirect(session.url);
+  return res.redirect(session.url); 
 }   
 
 export const success = async (req, res) => {
     const ticketId = req.query.ticketId;
     const ticket = await ticketService.getTicketById(ticketId);
+    const cart = await cartService.getCartUserEmail(ticket.purchaser);
     ticket.purchase_status = "paid";
-    console.log(ticket);
+    const id = cart.cart._id;
+    await cartService.updateCartById(id, { products: [] });
     await ticketService.updateTicketById(ticketId, ticket);
-    res.redirect("/api/session/ticket/user");
+    const result = transporter.sendMail({
+        from: config.USER,
+        to: ticket.purchaser,
+        subject: "Thank you for your purchase!",
+        html: `Thank you for your purchase! Your order number is ${ticket._id}.
+         Your products are: ${ticket.products.map((product) => product.title).join(", ")}.
+         A confirmation email will be sent to you when your order is shipped.`,
+      },
+      function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+          return info.response;
+        }
+      })
+
+
+
+    res.render("success", ticket)
 }
 
 export const cancel = async (req, res) => {
     const ticketId = req.query.ticketId;
     const ticket = await ticketService.getTicketById(ticketId);
-    await ticketService.updateTicketById(ticketId, {purchase_status: "canceled"});
-    res.redirect("/api/session/ticket/user");
+    ticket.purchase_status = "canceled";
+    await ticketService.updateTicketById(ticketId, ticket);
+    res.render("cancel", ticket)
 }
 
