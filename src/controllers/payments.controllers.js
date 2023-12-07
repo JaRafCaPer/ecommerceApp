@@ -44,27 +44,25 @@ export const success = async (req, res) => {
     const cart = await cartService.getCartUserEmail(ticket.purchaser);
     ticket.purchase_status = "paid";
     const id = cart.cart._id;
+    const result = transporter.sendMail({
+      from: config.USER,
+      to: ticket.purchaser,
+      subject: "Thank you for your purchase!",
+      html: `Thank you for your purchase! Your order number is ${ticket._id}.
+       Your products are: ${ticket.products.map((product) => product.title).join(", ")}.
+       A confirmation email will be sent to you when your order is shipped.`,
+    },
+    function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        return info.response;
+      }
+    })
     await cartService.updateCartById(id, { products: [] });
     await ticketService.updateTicketById(ticketId, ticket);
-    const result = transporter.sendMail({
-        from: config.USER,
-        to: ticket.purchaser,
-        subject: "Thank you for your purchase!",
-        html: `Thank you for your purchase! Your order number is ${ticket._id}.
-         Your products are: ${ticket.products.map((product) => product.title).join(", ")}.
-         A confirmation email will be sent to you when your order is shipped.`,
-      },
-      function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email sent: " + info.response);
-          return info.response;
-        }
-      })
-
-
-
+ 
     res.render("success", ticket)
 }
 
