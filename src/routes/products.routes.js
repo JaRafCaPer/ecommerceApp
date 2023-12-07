@@ -57,7 +57,7 @@ router.put(
 
 router.delete(
   "/:pid",
-  passport.authenticate("jwt", { session: false }), (requireAdmin || requirePremium),
+  passport.authenticate("jwt", { session: false }), 
   deleteProductById
 );
 

@@ -61,8 +61,8 @@ export const deleteUsers = async (req, res) => {
 }
 export const userPremium = async (req, res) => {
   try {
-    const id = req.params.uid;
-    const user = await userService.getUserById(id);
+    const email = req.params.email;
+    const user = await userService.getUserByEmail(email);
     if (user) {
       if (user.rol === "admin") {
         CustomError.createError({
@@ -118,6 +118,7 @@ export const getAdminPanel = async (req, res) => {
   try {
     const email = req.user.user.email;
     const user = await userService.getUserByEmail(email);
+    
     if (user) {
       if (user.rol === "admin") {
         const users = await userService.getUsers();

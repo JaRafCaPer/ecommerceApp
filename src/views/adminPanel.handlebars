@@ -59,11 +59,12 @@
             <td>{{this.first_name}} {{this.last_name}}</td>
             <td>{{this.email}}</td>
             <td>{{this.rol}}</td>
+            
             <td>
-              <button type="button" class="btn btn-danger deleteUserButton" user-id="{{this._id}}">
+              <button type="button" class="btn btn-danger deleteUserButton" user-email="{{this.email}}">
                 Delete
               </button>
-              <button type="button" class="btn btn-info changeRolButton" user-id="{{this._id}}">
+              <button type="button" class="btn btn-info changeRolButton" user-email="{{this.email}}">
                 Change Rol
               </button>
             </td>
@@ -87,8 +88,8 @@
       try { 
         var confirmation = confirm('are you sure you want to delete this user?');
         if (confirmation) {
-        const userId = button.getAttribute("user-id");
-        const response = await fetch(`/api/users/${userId}`, {
+        const email = button.getAttribute("user-email");
+        const response = await fetch(`/api/users/${email}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -107,9 +108,6 @@
 
 </script>
 
-
-
-
 <script>
 
    document.addEventListener("DOMContentLoaded", () => {
@@ -120,8 +118,8 @@
       try { 
         var confirmation = confirm('are you sure you want to change this user Rol?');
         if (confirmation) {
-        const userId = button.getAttribute("user-id");
-        const response = await fetch(`/api/users/premium/${userId}`, {
+        const email = button.getAttribute("user-email");
+        const response = await fetch(`/api/users/premium/${email}`, {
           method: "GET",
         });
         if (response.ok) {

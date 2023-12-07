@@ -10,7 +10,7 @@ const router = Router();
 router.get("/",passport.authenticate("jwt", { session: false }), requireAdmin, getUsers);
 
 router.get(
-  "/premium/:uid",
+  "/premium/:email",
   passport.authenticate("jwt", { session: false }), 
   requireAdmin,
   userPremium
