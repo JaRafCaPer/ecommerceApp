@@ -128,16 +128,12 @@ export const getTicketsByUserById = async (req, res) => {
       );
       throw new Error(errorMessages.join("\n"));
     }
-
     const ticket = await cartService.createAndSaveTicket(user);
-   
-    
     for (const cartProduct of cartProducts) {
       const product = await productService.getProductById(cartProduct.pid);
 
       if (product) {
         const newStock = product.stock - cartProduct.quantity;
-
         await productService.updateProduct(product._id, { stock: newStock });
       }
     }
