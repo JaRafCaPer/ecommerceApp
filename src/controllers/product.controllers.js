@@ -163,11 +163,10 @@ export const updateProductById = async (req, res) => {
 
 export const deleteProductById = async (req, res) => {
   try {
-    console.log("req.user", req.user);
+
     const user = req.user.user;
-    
     const productId = req.params.pid;
-    console.log("productId", productId, "user", user);
+   
     const product = await productService.deleteProductById(
       productId,
       user.email
@@ -182,6 +181,7 @@ export const deleteProductById = async (req, res) => {
 
 export const searchProduct = async (req, res) => {
   try {
+    
     const query = req.body.query;
     const products = await productService.searchProduct(query);
     res.status(200).render("search",{products});

@@ -33,7 +33,7 @@ export const generateProducts = () => {
   }
 
 export const generateToken = user =>{
-    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '1h'})
+    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '12h'})
 }
 
 export const authToken = (req, res, next) =>{

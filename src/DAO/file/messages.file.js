@@ -1,4 +1,5 @@
 import FileManager from './file.manager.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class MessagesFile extends FileManager {
   constructor(filename = 'messages.json') {
@@ -6,14 +7,26 @@ export default class MessagesFile extends FileManager {
   }
 
   async createMessage(message) {
-    const messages = await this.get();
-    const newMessage = { ...message, _id: new Date().toISOString() };
-    messages.push(newMessage);
-    await this.writeData(messages);
-    return newMessage;
+    try {
+      const messages = await this.get();
+      message._id = uuidv4();
+      messages.push(message);
+      await this.writeData(messages);
+      return message;
+    } catch (error) {
+      
+      console.error('Error creating message:', error);
+      return null;
+    }
   }
 
   async getMessages() {
-    return this.get();
+    try {
+      return await this.get();
+    } catch (error) {
+      
+      console.error('Error getting messages:', error);
+      return null;
+    }
   }
 }

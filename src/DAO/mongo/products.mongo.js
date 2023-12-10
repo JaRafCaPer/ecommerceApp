@@ -119,14 +119,12 @@ export default class ProductsMongo {
 
   async updateProduct(id, product) {
     try {
-      // Buscar el producto existente por ID
       const existingProduct = await productModel.findById(id);
 
       if (!existingProduct) {
         throw new Error(`Product not found: ${id}`);
       }
 
-      // Comparar las propiedades de existingProduct y product
       for (const key in product) {
         if (
           product.hasOwnProperty(key) &&
@@ -136,7 +134,6 @@ export default class ProductsMongo {
         }
       }
 
-      // Actualizar el producto en la base de datos
       const productUpdated = await existingProduct.save();
 
       if (!productUpdated) {
@@ -145,7 +142,6 @@ export default class ProductsMongo {
 
       return productUpdated;
     } catch (error) {
-      // Manejar errores y lanzar una excepción si es necesario
       throw error;
     }
   }
@@ -304,18 +300,17 @@ export default class ProductsMongo {
 
   async updateProductStatus(productId, newStatus) {
     try {
-      const updatedProduct = await productModel.findByIdAndUpdate(
-        productId,
-        { status: newStatus }
-      ).lean().exec();
-  
+      const updatedProduct = await productModel
+        .findByIdAndUpdate(productId, { status: newStatus })
+        .lean()
+        .exec();
+
       if (!updatedProduct) {
         throw new Error("Product not found");
       }
-      
+
       return updatedProduct;
     } catch (error) {
-      
       throw new Error("Failed to update product status");
     }
   }

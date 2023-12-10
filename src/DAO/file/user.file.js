@@ -1,61 +1,145 @@
 import FileManager from './file.manager.js';
-import CartManager from './carts.file.js';
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default class UsersFile extends FileManager {
   constructor(filename = 'users.json') {
     super(filename);
   }
 
-  async createUser(user) {
-    const users = await this.get();
+  async createUser(req) {
+    try {
+      let user = req;
+      const newCart = { items: [], total: 0, _id: uuidv4() };
+      user.cartId = newCart._id;
 
-    const cartManager = new CartManager();
-    const newCart = await cartManager.createCart();
+      const users = await this.get();
+      const carts = await this.readCarts();
 
-    user.cartId = newCart._id;
-    users.push(user);
-    
-  
-    // Escribe tanto la lista de usuarios como la de carritos en los archivos
-    await this.writeData(users, 'users.json');
-    await this.writeData(carts, 'carts.json');
-  
-    return user;
-}
+      users.push(user);
+      carts.push(newCart);
+
+      await this.writeData(users);
+      await this.writeCarts(carts);
+
+      return user;
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error creating user:', error);
+      return null;
+    }
+  }
+
   async getUserById(id) {
-    const users = await this.get();
-    return users.find((u) => u.id === id);
+    try {
+      const users = await this.get();
+      return users.find((user) => user._id === id);
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error getting user by ID:', error);
+      return null;
+    }
   }
 
   async getUsers() {
-    return this.get();
+    try {
+      return await this.get();
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error getting users:', error);
+      return null;
+    }
+  }
+
+  async getInactiveUsers(date) {
+    try {
+      const users = await this.get();
+      return users.filter((user) => user.lastConnection < date);
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error getting inactive users:', error);
+      return null;
+    }
+  }
+
+  async deleteUsers(date) {
+    try {
+      const users = await this.get();
+      const newUsers = users.filter((user) => user.lastConnection >= date);
+
+      await this.writeData(newUsers);
+      return newUsers;
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error deleting users:', error);
+      return null;
+    }
   }
 
   async getUserByEmail(email) {
-    const users = await this.get();
-    return users.find((user) => user.email === email);
+    try {
+      const users = await this.get();
+      return users.find((user) => user.email === email);
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error getting user by email:', error);
+      return null;
+    }
   }
 
   async updateUser(id, user) {
-    const users = await this.get();
-    const userIndex = users.findIndex((u) => u.id === id);
-    if (userIndex !== -1) {
-      users[userIndex] = user;
-      await this.writeData(users);
-      return user;
+    try {
+      const users = await this.get();
+      const userIndex = users.findIndex((u) => u._id === id);
+
+      if (userIndex !== -1) {
+        users[userIndex] = { ...users[userIndex], ...user };
+        await this.writeData(users);
+        return users[userIndex];
+      }
+
+      return null;
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error updating user:', error);
+      return null;
     }
-    return null;
   }
 
-  async deleteUser(id) {
-    const users = await this.get();
-    const userIndex = users.findIndex((u) => u.id === id);
-    if (userIndex !== -1) {
-      const deletedUser = users.splice(userIndex, 1)[0];
-      await this.writeData(users);
-      return deletedUser;
+  async deleteUserById(id) {
+    try {
+      const users = await this.get();
+      const userIndex = users.findIndex((user) => user._id === id);
+
+      if (userIndex !== -1) {
+        const deletedUser = users.splice(userIndex, 1)[0];
+        await this.writeData(users);
+        return deletedUser;
+      }
+
+      return null;
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error deleting user by ID:', error);
+      return null;
     }
-    return null;
+  }
+
+  async readCarts() {
+    try {
+      return await this.readData('carts.json');
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error reading carts:', error);
+      return [];
+    }
+  }
+
+  async writeCarts(data) {
+    try {
+      await this.writeData('carts.json', data);
+    } catch (error) {
+      // Handle the error appropriately in your application
+      console.error('Error writing carts:', error);
+    }
   }
 }

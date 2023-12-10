@@ -34,8 +34,9 @@ export const registerUser = async (req, res) => {
     res
       .status(200)
       .cookie("keyCookieForJWT", (user.token = access_token), {
-        maxAge: 1000 * 60 * 60 * 24 * 30,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
+        sameSite: 'strict',
       })
       .redirect("/login");
   } catch (error) {
