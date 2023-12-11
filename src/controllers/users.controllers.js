@@ -101,7 +101,7 @@ export const uploadDocuments = async(req, res)=>{
   const id = req.params.uid;
   const email = req.user.user.email;
   const user = await userService.getUserByEmail(email);
-  
+  console.log(user)
   const files = req.files
   if (user.rol === "admin") {
     CustomError.createError({
@@ -111,7 +111,7 @@ export const uploadDocuments = async(req, res)=>{
       info: generateCartErrorInfo({ pid }),
     });}
   const documents = await userService.uploadDocuments(id, files)
-  return res.render("profile", {user, documents});
+  return res.render("profile", {user, documents})
 }
 
 export const getAdminPanel = async (req, res) => {

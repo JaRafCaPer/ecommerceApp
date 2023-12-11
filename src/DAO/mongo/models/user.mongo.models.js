@@ -19,16 +19,17 @@ const userModel = mongoose.model(
       {
         name: String,
         reference: String,
-      }],
-    lastConnection: 
-      {
-        type: Date,
-        default: null,
       },
+    ],
+    lastConnection: {
+      type: Date,
+      default: null,
+    },
     rol: {
       type: String,
-      enum: ["user", "admin","premium"],
-      default: "user",}
+      enum: ["user", "admin", "premium"],
+      default: "user",
+    },
   })
 );
 

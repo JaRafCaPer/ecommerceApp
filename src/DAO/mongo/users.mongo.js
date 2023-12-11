@@ -110,6 +110,7 @@ export default class UsersMongo {
       });
     }
   }
+
   async deleteUserById(id) {
     try {
       return await userModel.findByIdAndDelete(id);
