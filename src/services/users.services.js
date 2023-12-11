@@ -25,6 +25,7 @@ export default class UserService {
     try {
    
       const userAdded = await this.userDAO.createUser(user);
+      console.log("USERADDED SERVICE",userAdded);
       return userAdded;
     } catch (error) {
       CustomError.createError({
@@ -182,29 +183,59 @@ export default class UserService {
         }
     }
     async uploadDocuments(id, files) {
-    
       const user = await this.userDAO.getUserById(id);
-    
+      const uploadedDocuments = [];
       if (!user) {
         CustomError.createError({
-          name: 'Error',
-          message: 'User not exists',
+          name: "Error",
+          message: "User not exists",
           code: EErrors.USER_NOT_EXISTS,
           info: generateUserErrorInfo(user),
         });
       }
-    
-      const profileFiles = files?.profile;
-      const productsFiles = files?.product;  // Cambiado a 'product'
-      const documentsFiles = files?.documents;
-    
-      productsFiles?.forEach((product) => user.documents.push({ name: product.filename, reference: product.path }));
-      profileFiles?.forEach((profile) => user.documents.push({ name: profile.filename, reference: profile.path }));
-      documentsFiles?.forEach((documents) => user.documents.push({ name: documents.filename, reference: documents.path }));
-    
-      const updatedUser = await this.userDAO.updateUser(user._id, user);  // Cambiado a '_id'
+  
+      if (files["profile"]) {
+        const profile = files["profile"][0];
+        uploadedDocuments.push({
+          name: profile.originalname,
+          reference: profile.path,
+        });
+      }
+      if (files["product"]) {
+        const product = files["product"][0];
+        uploadedDocuments.push({
+          name: product.originalname,
+          reference: product.path,
+        });
+      }
+      if (files["dni"]) {
+        const dni = files["dni"][0];
+        uploadedDocuments.push({
+          name: dni.originalname,
+          reference: dni.path,
+        });
+      }
+      if (files["address"]) {
+        const address = files["address"][0];
+        uploadedDocuments.push({
+          name: address.originalname,
+          reference: address.path,
+        });
+      }
+      if (files["state"]) {
+        const state = files["state"][0];
+        uploadedDocuments.push({
+          name: state.originalname,
+          reference: state.path,
+        });
+      }
+  
+      user.documents.push(...uploadedDocuments)
+  
+      const updatedUser = await this.userDAO.updateUser(user._id, user); // Cambiado a '_id'
       return updatedUser;
     }
+  
     
     async getUserByEmail(email) {
       try {

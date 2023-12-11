@@ -72,7 +72,7 @@ export const userPremium = async (req, res) => {
           info: generateCartErrorInfo({ pid }),
         });
       }
-      if (user.rol === "user") {
+      if (user.rol === "user" && user.documents.length >= 4) {
         user.rol = "premium";
         const udpUser = await userService.updateUser(user._id, user);
         return res.render("profile", udpUser);
@@ -101,7 +101,7 @@ export const uploadDocuments = async(req, res)=>{
   const id = req.params.uid;
   const email = req.user.user.email;
   const user = await userService.getUserByEmail(email);
- 
+  
   const files = req.files
   if (user.rol === "admin") {
     CustomError.createError({
@@ -111,7 +111,7 @@ export const uploadDocuments = async(req, res)=>{
       info: generateCartErrorInfo({ pid }),
     });}
   const documents = await userService.uploadDocuments(id, files)
-  return res.json(req.files)
+  return res.render("profile", {user, documents});
 }
 
 export const getAdminPanel = async (req, res) => {

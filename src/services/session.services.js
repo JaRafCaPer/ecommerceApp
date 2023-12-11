@@ -71,8 +71,7 @@ export default class SessionService {
       }
       const userRegister = await this.userDAO.createUser(userFromController);
      
-      
-      return new UserDTO(userRegister);
+      return userRegister;
     } catch (error) {
       CustomError.createError({
         name: "Error",

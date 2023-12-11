@@ -93,7 +93,7 @@ function initializePassport() {
             console.log("User already exists");
             return done(null, false);
           }
-          const newCartForUser = await cartService.createNewCart();
+          const newCartForUser = await cartService.createCart();
           const newUser = {
             first_name,
             last_name,

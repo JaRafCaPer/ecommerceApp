@@ -17,60 +17,9 @@ const userModel = mongoose.model(
     verificationCode: String,
     documents: [
       {
-        profile: {
-          name: {
-            type: String,
-            default: null,
-          },
-          reference: {
-            type: String,
-            default: null,
-          },
-        },
-        products: {
-          name: {
-            type: String,
-            default: null,
-          },
-          reference: {
-            type: String,
-            default: null,
-          },
-        },
-        documents:[{ 
-          identification: {
-          name: {
-            type: String,
-            default: null,
-          },
-          reference: {
-            type: String,
-            default: null,
-          },
-        },
-        state: {
-          name: {
-            type: String,
-            default: null,
-          },
-          reference: {
-            type: String,
-            default: null,
-          },
-        },
-        address: {
-          name: {
-            type: String,
-            default: null,
-          },
-          reference: {
-            type: String,
-            default: null,
-          }}
-        }
-          ],
-      },
-    ],
+        name: String,
+        reference: String,
+      }],
     lastConnection: 
       {
         type: Date,

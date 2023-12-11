@@ -96,17 +96,8 @@ export default class UsersMongo {
 
   async updateUser(id, user) {
     try {
-      const userToUdp = {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        age: user.age,
-        password: user.password,
-        rol: user.rol,
-        lastConnection: user.lastConnection,
-      };
       const userUpdate = await userModel
-        .findByIdAndUpdate(id, userToUdp, { new: true })
+        .findByIdAndUpdate(id, user, { new: true })
         .lean()
         .exec();
       return userUpdate;
@@ -119,7 +110,6 @@ export default class UsersMongo {
       });
     }
   }
-
   async deleteUserById(id) {
     try {
       return await userModel.findByIdAndDelete(id);
