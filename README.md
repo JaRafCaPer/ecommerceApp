@@ -43,6 +43,7 @@ The project is a versatile e-commerce platform designed for the seamless sale of
       - Manage their personal information.
 - **Authentication:**
   - Github and JWT for secure authentication.
+- **Files Uploads**
 - **Shopping Cart**
 - **Chat:**
   - Implemented using websockets.
