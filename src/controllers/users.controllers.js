@@ -101,7 +101,7 @@ export const uploadDocuments = async(req, res)=>{
   const id = req.params.uid;
   const email = req.user.user.email;
   const user = await userService.getUserByEmail(email);
-  console.log(user)
+
   const files = req.files
   if (user.rol === "admin") {
     CustomError.createError({

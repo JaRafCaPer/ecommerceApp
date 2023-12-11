@@ -223,11 +223,7 @@ export default class UserService {
         reference: state.path,
       });
     }
-
     user.documents.push(...uploadedDocuments)
-
-    console.log(user)
-
     const updatedUser = await this.userDAO.updateUser(user._id, user); // Cambiado a '_id'
     return updatedUser;
   }

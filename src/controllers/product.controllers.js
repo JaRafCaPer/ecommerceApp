@@ -171,8 +171,6 @@ export const deleteProductById = async (req, res) => {
       productId,
       user.email
     );
-    console.log(product);
-    
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
