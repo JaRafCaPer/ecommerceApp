@@ -6,7 +6,7 @@ import passport from "passport";
 const router = Router();
 
 router.post("/create-checkout-session", passport.authenticate("jwt", { session: false }), createSession);
-router.get("/success/", passport.authenticate("jwt", { session: false }) , success);
-router.get("/cancel", passport.authenticate("jwt", { session: false }) , cancel);
+router.get("/success/", success);
+router.get("/cancel", cancel);
 
 export default router;
