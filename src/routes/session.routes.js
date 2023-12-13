@@ -29,7 +29,7 @@ router.get(
   "/logout",
   passport.authenticate("jwt", { session: false }), updateLastConnection,
   (req, res) => {
-    res.clearCookie("keyCookieForJWT").redirect("/api/session/login");
+    res.clearCookie("keyCookieForJWTJRCP").redirect("/api/session/login");
   }
 );
 

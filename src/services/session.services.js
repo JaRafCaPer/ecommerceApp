@@ -45,6 +45,7 @@ export default class SessionService {
           info: generateUserErrorInfo(user),
         })
       }
+      
       return user;
     } catch (error) {
       CustomError.createError({

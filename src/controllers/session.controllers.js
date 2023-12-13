@@ -10,12 +10,14 @@ export const loginUser = async (req, res, next) => {
     const logData = req.body;
     const user = await sessionService.loginUser(logData);
     if (user == null) return res.redirect("/login");
+    
     req.user = user;
+
     const access_token = generateToken(user);
-    res
-      .cookie("keyCookieForJWT", (user.token = access_token), {
-        maxAge: 1000 * 60 * 60 * 24 * 30,
+    res.cookie("keyCookieForJWTJRCP", (user.token = access_token), {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
+        sameSite: 'strict',
       })
       .redirect("/api/products");
       return next();
@@ -33,7 +35,7 @@ export const registerUser = async (req, res) => {
     const access_token = generateToken(user);
     res
       .status(200)
-      .cookie("keyCookieForJWT", (user.token = access_token), {
+      .cookie("keyCookieForJWTJRCP", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
         sameSite: 'strict',

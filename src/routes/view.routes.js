@@ -37,7 +37,7 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
     res
-      .cookie("keyCookieForJWT", req.user.token)
+      .cookie("keyCookieForJWTJRCP", req.user.token)
       .redirect("/api/products");
   }
 );
@@ -51,7 +51,7 @@ router.get(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.clearCookie("keyCookieForJWT").redirect("/api/session/login");
+    res.clearCookie("keyCookieForJWTJRCP").redirect("/api/session/login");
   }
 );
 

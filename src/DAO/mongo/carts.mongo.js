@@ -41,7 +41,6 @@ export default class CartsMongo {
   }
   async getCartById(cartId) {
     try {
-      
       const newCartId = cartId;
       const newCart = await cartModel
       .findById(newCartId)

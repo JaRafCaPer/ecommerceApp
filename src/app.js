@@ -62,7 +62,7 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser("keyCookieForJWT"));
+app.use(cookieParser("keyCookieForJWTJRCP"));
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions)
 app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs))

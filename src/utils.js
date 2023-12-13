@@ -33,7 +33,7 @@ export const generateProducts = () => {
   }
 
 export const generateToken = user =>{
-    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '12h'})
+    return jwt.sign({ user }, config.SECRET_JWT, {expiresIn: '48h'})
 }
 
 export const authToken = (req, res, next) =>{
@@ -52,7 +52,7 @@ export const authToken = (req, res, next) =>{
 
 
 export const extractCookie = req =>{
-    return (req && req.cookies) ? req.cookies["keyCookieForJWT"] : null
+    return (req && req.cookies) ? req.cookies["keyCookieForJWTJRCP"] : null
 }
 
 export const authorization = rol =>{

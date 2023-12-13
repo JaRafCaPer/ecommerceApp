@@ -89,6 +89,7 @@ export default class CartService {
         cartId = cart._id;
       }
       const product = await this.productDAO.getProductById(pid);
+     
       if (user.rol === "premium" && product.owner === user.email) {
         CustomError.createError({
           name: "Error",
@@ -108,6 +109,7 @@ export default class CartService {
       const productValidate = cart.products?.find(
         (product) => product.pid._id.toString() == pid.toString()
       );
+      console.log("productValidate:", productValidate);
       if (productValidate) {
         if (product.stock < quantity) {
           CustomError.createError({
@@ -132,8 +134,10 @@ export default class CartService {
           });
         }
       }
+      console.log("casi saliendo de service")
       await this.cartDAO.updateCartById(cartId, cart);
       await this.productDAO.updateProduct(pid, product);
+      console.log("saliendo de service")
       return cart;
     } catch (error) {
       throw error;
