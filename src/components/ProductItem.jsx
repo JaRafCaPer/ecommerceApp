@@ -1,13 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React from 'react'
 
-export default function ProductItem({product}) {
+export default function ProductItem({product, navigation}) {
   return (
-    <TouchableOpacity style={styles.productItemContainer} >
+    <TouchableOpacity onPress={() => navigation.navigate("Details", product.id)} style={styles.productItemContainer} >
             <Text style={styles.productItemTitle}>{product.title}</Text>
             <Image
                 style={styles.productItemImage}
-                reziseMode="cover"
+                resizeMode="cover"
                 source={{uri: product.thumbnail}}
             />
     </TouchableOpacity>

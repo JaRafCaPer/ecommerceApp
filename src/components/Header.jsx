@@ -1,10 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from '../global/colors'
+import {AntDesign} from '@expo/vector-icons'
 
-const Header = ({ title }) => {
+const Header = ({ title, navigation }) => {
     return (
         <View style={styles.headerContainer}>
+            <TouchableOpacity onPress={navigation.goBack}>
+                <AntDesign name="caretleft" size={28} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={navigation.popToTop}>
+                <AntDesign name="home" size={28} color="white" />
+            </TouchableOpacity>
             <Text style={styles.headerTitle}>{title}</Text>
+            
         </View>
     )
 }
@@ -13,8 +21,11 @@ export default Header
 const styles = StyleSheet.create({
     headerContainer: {
         height: 100,
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         alignItems: 'center',
+        marginTop: 30,
+        paddingHorizontal: 40,
         backgroundColor: colors.backgroundLight,
         padding: 10,
         borderBottomWidth: 1,
@@ -22,7 +33,7 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         fontSize: 20,
-        color: colors.textLight,
+        color: colors.textDark,
         fontFamily: 'RobotoSerif_28pt_Condensed-Bold',
     },
 })
