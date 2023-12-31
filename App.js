@@ -1,11 +1,9 @@
 import { ActivityIndicator } from 'react-native';
-import Navigator from './src/navigation/Navigator';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
+import TabNavigator from './src/navigation/TabNavigator';
 
 export default function App() {
-  const [categorySelected, setCategorySelected] = useState('');
-  const [productIdSelected, setProductIdSelected] = useState(null);
 
   const [fontLoaded] = useFonts({
     'RobotoSerif_28pt_Condensed-Bold': require('./assets/fonts/RobotoSerif_28pt_Condensed-Bold.ttf'),
@@ -22,8 +20,7 @@ export default function App() {
 
   return (
     <>
-      <Navigator
-      />
+      <TabNavigator/>
     </>
   );
 }

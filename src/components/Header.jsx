@@ -5,14 +5,17 @@ import {AntDesign} from '@expo/vector-icons'
 const Header = ({ title, navigation }) => {
     return (
         <View style={styles.headerContainer}>
-            <TouchableOpacity onPress={navigation.goBack}>
-                <AntDesign name="caretleft" size={28} color="white" />
-            </TouchableOpacity>
+            {
+                navigation.canGoBack() ? (
+                    <TouchableOpacity onPress={navigation.goBack}>
+                        <AntDesign name="caretleft" size={28} color="white" />
+                    </TouchableOpacity>
+                ) : <View></View>
+            }
             <TouchableOpacity onPress={navigation.popToTop}>
                 <AntDesign name="home" size={28} color="white" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>{title}</Text>
-            
         </View>
     )
 }
