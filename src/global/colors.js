@@ -11,4 +11,5 @@ export const colors = {
     border: '#759fbc',          // Borders or dividing lines
     borderDark: '#90c3c8',      // Darker borders
     borderLight: '#b9b8d3',     // Lighter borders
+    success: '#1f56',         // Success messages or icons
 };

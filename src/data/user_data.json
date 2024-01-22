@@ -1,0 +1,10 @@
+{
+    "name": "test",
+    "role": "Client",
+    "level": 4,
+    "age": 20,
+    "city": "Guayaquil",
+    "address": "Av. 9 de Octubre 100 y Malecón, Guayaquil 090150, Ecuador",
+    "phone": "042 600 800",
+    "email": "test@test.com"
+}

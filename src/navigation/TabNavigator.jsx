@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ShopNavigator from "./ShopNavigator";
 import CartNavigator from "./CartNavigator";
 import OrdersNavigator from "./OrdersNavigator";
+import ProfileNavigator from "./ProfileNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,6 +50,15 @@ const TabNavigator = () => {
                     )
                 }} 
 
+                />
+                <Tab.Screen
+                name="ProfileStack"
+                component={ProfileNavigator}
+                options={{
+                    tabBarIcon: ({focused}) => (
+                        <Entypo name="user" size={24} color={focused?"#fff":"#ccc"} />
+                    )
+                }}
                 />
             </Tab.Navigator>
         </NavigationContainer>
