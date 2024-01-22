@@ -1,11 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { colors } from '../global/colors';
+import { useDispatch } from 'react-redux';
+import { setProductIdSelected } from '../features/shopSlice';
 
 export default function ProductItem({ product, navigation }) {
+
+  const dispatch = useDispatch()
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Details", product.id)}
+      onPress={() => {
+        dispatch(setProductIdSelected(product.id))
+        navigation.navigate("Details", product.id)}}
       style={styles.productItemContainer}
     >
       <Image

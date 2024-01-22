@@ -17,7 +17,7 @@ const ProductDetailScreen = ({ route }) => {
 
   const handleBuyPress = () => {
 
-    console.log('Buy button pressed');
+    console.log('Buy button pressed. Product id: ' + productId);
   };
 
   return (

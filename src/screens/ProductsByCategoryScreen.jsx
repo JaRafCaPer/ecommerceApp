@@ -1,8 +1,8 @@
 import {View, Text, StyleSheet, FlatList} from 'react-native'
-import products_data from '../data/products_data.json'
 import ProductItem from '../components/ProductItem'
 import { useEffect,useState } from 'react'
 import Search from '../components/Search'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const ProductsByCategoryScreen = ({route , navigation}) => {
@@ -10,11 +10,10 @@ const ProductsByCategoryScreen = ({route , navigation}) => {
   const [productsbyCategory, setProductsbyCategory] = useState([])
   const [search, setSearch] = useState('')
 
-  const {category} = route.params
-
+  const category = useSelector(state => state.shopReducer.categorySelected)
+  const productsFilteredByCategory = useSelector(state => state.shopReducer.productsFiltererByCategory)
+  
   useEffect(() => {
-   
-    const productsFilteredByCategory = products_data.filter(product => product.category === category)
     const productsFilteredBySearch = productsFilteredByCategory.filter(
       product=>product.title.toLowerCase().includes(search.toString().toLowerCase()))
     setProductsbyCategory(productsFilteredBySearch)
