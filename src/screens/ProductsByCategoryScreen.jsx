@@ -3,6 +3,8 @@ import ProductItem from '../components/ProductItem'
 import { useEffect,useState } from 'react'
 import Search from '../components/Search'
 import { useDispatch, useSelector } from 'react-redux'
+import { useGetProductsByCategoryQuery } from '../services/shopServices'
+import { ActivityIndicator } from 'react-native'
 
 
 const ProductsByCategoryScreen = ({route , navigation}) => {
@@ -11,13 +13,17 @@ const ProductsByCategoryScreen = ({route , navigation}) => {
   const [search, setSearch] = useState('')
 
   const category = useSelector(state => state.shopReducer.categorySelected)
-  const productsFilteredByCategory = useSelector(state => state.shopReducer.productsFiltererByCategory)
+
+   const {data: productsFilteredByCategory, error, isLoading} = useGetProductsByCategoryQuery(category);
   
   useEffect(() => {
-    const productsFilteredBySearch = productsFilteredByCategory.filter(
-      product=>product.title.toLowerCase().includes(search.toString().toLowerCase()))
-    setProductsbyCategory(productsFilteredBySearch)
-  }, [category, search])
+    if(!isLoading){
+      const productsValues = Object.values(productsFilteredByCategory)
+      const productsFilteredBySearch = productsValues.filter(
+        product=>product.title.toLowerCase().includes(search.toString().toLowerCase()))
+      setProductsbyCategory(productsFilteredBySearch)
+    }
+  }, [isLoading, category, search])
   const renderProductItem = ({item}) => (
     <ProductItem product={item} navigation={navigation} />
   )
@@ -25,13 +31,20 @@ const ProductsByCategoryScreen = ({route , navigation}) => {
         setSearch(search)
     }
     return(
-       <>
+       <>{
+        isLoading?
+        <ActivityIndicator size="large" color="#0000ff" />
+        :
+        <>
         <Search onSearchHandlerEvent={onSearch} />
         <FlatList
             data={productsbyCategory}
             renderItem={renderProductItem}
             keyExtractor={item=>item.id}
         />
+        </>
+       }
+        
        </>
     )
 }

@@ -1,0 +1,729 @@
+[
+  {
+    "id": 1,
+    "title": "Delicious Chocolate Sandwich Cake",
+    "description": "A mouth-watering chocolate sandwich cake for your sweet cravings.",
+    "price": 19.99,
+    "discountPercentage": 10.5,
+    "rating": 4.8,
+    "stock": 20,
+    "brand": "Bakery Delights",
+    "category": "Sandwich Cake",
+    "thumbnail": "https://loremflickr.com/320/240/cake?random=2",
+    "images": [
+      "https://example.com/images/sandwich_cake_1/1.jpg",
+      "https://example.com/images/sandwich_cake_1/2.jpg",
+      "https://example.com/images/sandwich_cake_1/3.jpg",
+      "https://example.com/images/sandwich_cake_1/4.jpg",
+      "https://example.com/thumbnails/sandwich_cake_1.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Delicious Vanilla Sandwich Cake",
+    "description": "A mouth-watering vanilla sandwich cake for your sweet cravings.",
+    "price": 19.99,
+    "discountPercentage": 10.5,
+    "rating": 4.8,
+    "stock": 20,
+    "brand": "Bakery Delights",
+    "category": "Sandwich Cake",
+    "thumbnail": "https://loremflickr.com/320/240/cake?random=3",
+    "images": [
+      "https://example.com/images/sandwich_cake_2/1.jpg",
+      "https://example.com/images/sandwich_cake_2/2.jpg",
+      "https://example.com/images/sandwich_cake_2/3.jpg",
+      "https://example.com/images/sandwich_cake_2/4.jpg",
+      "https://example.com/thumbnails/sandwich_cake_2.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Delicious Strawberry Sandwich Cake",
+    "description": "A mouth-watering strawberry sandwich cake for your sweet cravings.",
+    "price": 19.99,
+    "discountPercentage": 10.5,
+    "rating": 4.8,
+    "stock": 20,
+    "brand": "Bakery Delights",
+    "category": "Sandwich Cake",
+    "thumbnail": "https://loremflickr.com/320/240/cake?random=4",
+    "images": [
+      "https://example.com/images/sandwich_cake_3/1.jpg",
+      "https://example.com/images/sandwich_cake_3/2.jpg",
+      "https://example.com/images/sandwich_cake_3/3.jpg",
+      "https://example.com/images/sandwich_cake_3/4.jpg",
+      "https://example.com/thumbnails/sandwich_cake_3.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Delicious Blueberry Sandwich Cake",
+    "description": "A mouth-watering blueberry sandwich cake for your sweet cravings.",
+    "price": 19.99,
+    "discountPercentage": 10.5,
+    "rating": 4.8,
+    "stock": 20,
+    "brand": "Bakery Delights",
+    "category": "Sandwich Cake",
+    "thumbnail": "https://loremflickr.com/320/240/cake?random=5",
+    "images": [
+      "https://example.com/images/sandwich_cake_4/1.jpg",
+      "https://example.com/images/sandwich_cake_4/2.jpg",
+      "https://example.com/images/sandwich_cake_4/3.jpg",
+      "https://example.com/images/sandwich_cake_4/4.jpg",
+      "https://example.com/thumbnails/sandwich_cake_4.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Delicious Red Velvet Sandwich Cake",
+    "description": "A mouth-watering red velvet sandwich cake for your sweet cravings.",
+    "price": 19.99,
+    "discountPercentage": 10.5,
+    "rating": 4.8,
+    "stock": 20,
+    "brand": "Bakery Delights",
+    "category": "Sandwich Cake",
+    "thumbnail": "https://loremflickr.com/320/240/cake?random=6",
+    "images": [
+      "https://example.com/images/sandwich_cake_5/1.jpg",
+      "https://example.com/images/sandwich_cake_5/2.jpg",
+      "https://example.com/images/sandwich_cake_5/3.jpg",
+      "https://example.com/images/sandwich_cake_5/4.jpg",
+      "https://example.com/thumbnails/sandwich_cake_5.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Pecan Pie Bites",
+    "description": "Enjoy the classic taste of pecan pie in these bite-sized treats, perfect for any sweet tooth.",
+    "price": 16.99,
+    "discountPercentage": 11.5,
+    "rating": 4.8,
+    "stock": 12,
+    "brand": "Southern Sweets",
+    "category": "Small Bytes",
+    "thumbnail": "https://loremflickr.com/320/240/dessert?random=2",
+    "images": [
+      "https://example.com/images/small_bytes_5/1.jpg",
+      "https://example.com/images/small_bytes_5/2.jpg",
+      "https://example.com/images/small_bytes_5/3.jpg",
+      "https://example.com/thumbnails/small_bytes_5.jpg"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Mini Cheesecake Bites",
+      "description": "Indulge in these delightful mini cheesecake bites, perfect for any occasion.",
+      "price": 14.99,
+      "discountPercentage": 8.0,
+      "rating": 4.5,
+      "stock": 15,
+      "brand": "Sweet Treats",
+      "category": "Small Bytes",
+      "thumbnail": "https://loremflickr.com/320/240/dessert?random=3",
+      "images": [
+        "https://example.com/images/small_bytes_1/1.jpg",
+        "https://example.com/images/small_bytes_1/2.jpg",
+        "https://example.com/images/small_bytes_1/3.jpg",
+        "https://example.com/thumbnails/small_bytes_1.jpg"
+      ]
+      },
+      {
+        "id": 8,
+        "title": "Mini Chocolate Cupcakes",
+        "description": "These mini chocolate cupcakes are perfect for any chocolate lover.",
+        "price": 12.99,
+        "discountPercentage": 5.0,
+        "rating": 4.2,
+        "stock": 10,
+        "brand": "Bakery Delights",
+        "category": "Small Bytes",
+        "thumbnail": "https://loremflickr.com/320/240/dessert?random=4",
+        "images": [
+          "https://example.com/images/small_bytes_2/1.jpg",
+          "https://example.com/images/small_bytes_2/2.jpg",
+          "https://example.com/images/small_bytes_2/3.jpg",
+          "https://example.com/thumbnails/small_bytes_2.jpg"
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Mini Red Velvet Cupcakes",
+        "description": "These mini red velvet cupcakes are perfect for any red velvet lover.",
+        "price": 12.99,
+        "discountPercentage": 5.0,
+        "rating": 4.2,
+        "stock": 10,
+        "brand": "Bakery Delights",
+        "category": "Small Bytes",
+        "thumbnail": "https://loremflickr.com/320/240/dessert?random=5",
+        "images": [
+          "https://example.com/images/small_bytes_3/1.jpg",
+          "https://example.com/images/small_bytes_3/2.jpg",
+          "https://example.com/images/small_bytes_3/3.jpg",
+          "https://example.com/thumbnails/small_bytes_3.jpg"
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Mini Vanilla Cupcakes",
+        "description": "These mini vanilla cupcakes are perfect for any vanilla lover.",
+        "price": 12.99,
+        "discountPercentage": 5.0,
+        "rating": 4.2,
+        "stock": 10,
+        "brand": "Bakery Delights",
+        "category": "Small Bytes",
+        "thumbnail": "https://loremflickr.com/320/240/dessert?random=6",
+        "images": [
+          "https://example.com/images/small_bytes_4/1.jpg",
+          "https://example.com/images/small_bytes_4/2.jpg",
+          "https://example.com/images/small_bytes_4/3.jpg",
+          "https://example.com/thumbnails/small_bytes_4.jpg"
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Mango Tango Sorbet",
+      "description": "Experience the tropical delight of ripe mangoes in this refreshing sorbet.",
+      "price": 11.99,
+      "discountPercentage": 10.0,
+      "rating": 4.6,
+      "stock": 25,
+      "brand": "Tropical Treats",
+      "category": "Fruit Desserts",
+      "thumbnail": "https://loremflickr.com/320/240/smoothies?random=2",
+      "images": [
+        "https://example.com/images/fruit_desserts_1/1.jpg",
+        "https://example.com/images/fruit_desserts_1/2.jpg",
+        "https://example.com/images/fruit_desserts_1/3.jpg",
+        "https://example.com/thumbnails/fruit_desserts_1.jpg"
+      ]
+      },
+      {
+        "id": 12,
+        "title": "Peachy Keen Sorbet",
+        "description": "Experience the delightful taste of ripe peaches in this refreshing sorbet.",
+        "price": 11.99,
+        "discountPercentage": 10.0,
+        "rating": 4.6,
+        "stock": 25,
+        "brand": "Tropical Treats",
+        "category": "Fruit Desserts",
+        "thumbnail": "https://loremflickr.com/320/240/smoothies?random=3",
+        "images": [
+          "https://example.com/images/fruit_desserts_2/1.jpg",
+          "https://example.com/images/fruit_desserts_2/2.jpg",
+          "https://example.com/images/fruit_desserts_2/3.jpg",
+          "https://example.com/thumbnails/fruit_desserts_2.jpg"
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Berry Blast Sorbet",
+        "description": "Experience the delightful taste of ripe berries in this refreshing sorbet.",
+        "price": 11.99,
+        "discountPercentage": 10.0,
+        "rating": 4.6,
+        "stock": 25,
+        "brand": "Tropical Treats",
+        "category": "Fruit Desserts",
+        "thumbnail": "https://loremflickr.com/320/240/smoothies?random=4",
+        "images": [
+          "https://example.com/images/fruit_desserts_3/1.jpg",
+          "https://example.com/images/fruit_desserts_3/2.jpg",
+          "https://example.com/images/fruit_desserts_3/3.jpg",
+          "https://example.com/thumbnails/fruit_desserts_3.jpg"
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Tropical Delight Sorbet",
+        "description": "Experience the delightful taste of tropical fruits in this refreshing sorbet.",
+        "price": 11.99,
+        "discountPercentage": 10.0,
+        "rating": 4.6,
+        "stock": 25,
+        "brand": "Tropical Treats",
+        "category": "Fruit Desserts",
+        "thumbnail": "https://loremflickr.com/320/240/smoothies?random=5",
+        "images": [
+          "https://example.com/images/fruit_desserts_4/1.jpg",
+          "https://example.com/images/fruit_desserts_4/2.jpg",
+          "https://example.com/images/fruit_desserts_4/3.jpg",
+          "https://example.com/thumbnails/fruit_desserts_4.jpg"
+        ]
+      },
+      {
+        "id": 15,
+        "title": "Berrylicious Parfait",
+        "description": "Indulge in layers of mixed berries and creamy yogurt in this delightful parfait.",
+        "price": 14.49,
+        "discountPercentage": 8.5,
+        "rating": 4.7,
+        "stock": 20,
+        "brand": "Berry Bliss",
+        "category": "Fruit Desserts",
+        "thumbnail": "https://loremflickr.com/320/240/parfait",
+        "images": [
+          "https://example.com/images/fruit_desserts_2/1.jpg",
+          "https://example.com/images/fruit_desserts_2/2.jpg",
+          "https://example.com/images/fruit_desserts_2/3.jpg",
+          "https://example.com/thumbnails/fruit_desserts_2.jpg"
+        ]
+    },
+    {
+        "id": 16,
+        "title": "Sweet Surprise Pop Cake",
+        "description": "Indulge in the sweet surprise of these delightful pop cakes.",
+        "price": 12.99,
+        "discountPercentage": 7.5,
+        "rating": 4.5,
+        "stock": 15,
+        "brand": "Sweet Delights",
+        "category": "Pop Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/popcake?random=2",
+        "images": [
+          "https://example.com/images/pop_cakes_1/1.jpg",
+          "https://example.com/images/pop_cakes_1/2.jpg",
+          "https://example.com/images/pop_cakes_1/3.jpg",
+          "https://example.com/thumbnails/pop_cakes_1.jpg"
+        ]
+      },
+      {
+        "id": 17,
+        "title": "Chocolate Heaven Pop Cake",
+        "description": "Experience chocolate heaven with these decadent chocolate pop cakes.",
+        "price": 14.99,
+        "discountPercentage": 9.0,
+        "rating": 4.7,
+        "stock": 18,
+        "brand": "Cocoa Bliss",
+        "category": "Pop Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/popcake?random=3",
+        "images": [
+          "https://example.com/images/pop_cakes_2/1.jpg",
+          "https://example.com/images/pop_cakes_2/2.jpg",
+          "https://example.com/images/pop_cakes_2/3.jpg",
+          "https://example.com/thumbnails/pop_cakes_2.jpg"
+        ]
+      },
+      {
+        "id": 18,
+        "title": "Vanilla Dream Pop Cake",
+        "description": "Embark on a journey of vanilla dreams with these delightful pop cakes.",
+        "price": 11.99,
+        "discountPercentage": 6.5,
+        "rating": 4.6,
+        "stock": 20,
+        "brand": "Vanilla Delights",
+        "category": "Pop Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/popcake?random=4",
+        "images": [
+          "https://example.com/images/pop_cakes_3/1.jpg",
+          "https://example.com/images/pop_cakes_3/2.jpg",
+          "https://example.com/images/pop_cakes_3/3.jpg",
+          "https://example.com/thumbnails/pop_cakes_3.jpg"
+        ]
+      },
+      {
+        "id": 19,
+        "title": "Strawberry Bliss Pop Cake",
+        "description": "Delight in the blissful taste of strawberries with these pop cakes.",
+        "price": 13.49,
+        "discountPercentage": 8.0,
+        "rating": 4.4,
+        "stock": 16,
+        "brand": "Berry Delights",
+        "category": "Pop Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/popcake?random=5",
+        "images": [
+          "https://example.com/images/pop_cakes_4/1.jpg",
+          "https://example.com/images/pop_cakes_4/2.jpg",
+          "https://example.com/images/pop_cakes_4/3.jpg",
+          "https://example.com/thumbnails/pop_cakes_4.jpg"
+        ]
+      },
+      {
+        "id": 20,
+        "title": "Caramel Crunch Pop Cake",
+        "description": "Savor the crunchy goodness of caramel in these delightful pop cakes.",
+        "price": 15.99,
+        "discountPercentage": 10.0,
+        "rating": 4.8,
+        "stock": 12,
+        "brand": "Caramel Delights",
+        "category": "Pop Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/popcake?random=6",
+        "images": [
+          "https://example.com/images/pop_cakes_5/1.jpg",
+          "https://example.com/images/pop_cakes_5/2.jpg",
+          "https://example.com/images/pop_cakes_5/3.jpg",
+          "https://example.com/thumbnails/pop_cakes_5.jpg"
+        ]
+      },
+      {
+        "id": 21,
+        "title": "Chocolate Delight Cupcake",
+        "description": "Indulge in the rich and decadent flavor of this chocolate delight cupcake.",
+        "price": 9.99,
+        "discountPercentage": 5.0,
+        "rating": 4.3,
+        "stock": 18,
+        "brand": "Cocoa Bliss",
+        "category": "Cupcakes",
+        "thumbnail": "https://loremflickr.com/320/240/cupcake?random=2",
+        "images": [
+          "https://example.com/images/cupcakes_1/1.jpg",
+          "https://example.com/images/cupcakes_1/2.jpg",
+          "https://example.com/images/cupcakes_1/3.jpg",
+          "https://example.com/thumbnails/cupcakes_1.jpg"
+        ]
+      },
+      {
+        "id": 22,
+        "title": "Vanilla Fantasy Cupcake",
+        "description": "Escape into a fantasy of vanilla goodness with this delightful cupcake.",
+        "price": 8.99,
+        "discountPercentage": 4.5,
+        "rating": 4.2,
+        "stock": 20,
+        "brand": "Vanilla Dreams",
+        "category": "Cupcakes",
+        "thumbnail": "https://loremflickr.com/320/240/cupcake?random=3",
+        "images": [
+          "https://example.com/images/cupcakes_2/1.jpg",
+          "https://example.com/images/cupcakes_2/2.jpg",
+          "https://example.com/images/cupcakes_2/3.jpg",
+          "https://example.com/thumbnails/cupcakes_2.jpg"
+        ]
+      },
+      {
+        "id": 23,
+        "title": "Strawberry Sensation Cupcake",
+        "description": "Experience the sensation of ripe strawberries in every bite of this cupcake.",
+        "price": 10.49,
+        "discountPercentage": 6.0,
+        "rating": 4.4,
+        "stock": 15,
+        "brand": "Berry Bliss",
+        "category": "Cupcakes",
+        "thumbnail": "https://loremflickr.com/320/240/cupcake?random=4",
+        "images": [
+          "https://example.com/images/cupcakes_3/1.jpg",
+          "https://example.com/images/cupcakes_3/2.jpg",
+          "https://example.com/images/cupcakes_3/3.jpg",
+          "https://example.com/thumbnails/cupcakes_3.jpg"
+        ]
+      },
+      {
+        "id": 24,
+        "title": "Red Velvet Elegance Cupcake",
+        "description": "Indulge in the elegant taste of red velvet with this exquisite cupcake.",
+        "price": 11.99,
+        "discountPercentage": 7.0,
+        "rating": 4.6,
+        "stock": 16,
+        "brand": "Velvet Delights",
+        "category": "Cupcakes",
+        "thumbnail": "https://loremflickr.com/320/240/cupcake?random=5",
+        "images": [
+          "https://example.com/images/cupcakes_4/1.jpg",
+          "https://example.com/images/cupcakes_4/2.jpg",
+          "https://example.com/images/cupcakes_4/3.jpg",
+          "https://example.com/thumbnails/cupcakes_4.jpg"
+        ]
+      },
+      {
+        "id": 25,
+        "title": "Caramel Crunch Cupcake",
+        "description": "Savor the delightful crunch of caramel in this scrumptious cupcake.",
+        "price": 12.99,
+        "discountPercentage": 8.0,
+        "rating": 4.7,
+        "stock": 14,
+        "brand": "Caramel Delights",
+        "category": "Cupcakes",
+        "thumbnail": "https://loremflickr.com/320/240/cupcake?random=6",
+        "images": [
+          "https://example.com/images/cupcakes_5/1.jpg",
+          "https://example.com/images/cupcakes_5/2.jpg",
+          "https://example.com/images/cupcakes_5/3.jpg",
+          "https://example.com/thumbnails/cupcakes_5.jpg"
+        ]
+      },
+      {
+        "id": 26,
+        "title": "Classic Apple Pie",
+        "description": "Savor the timeless taste of a classic apple pie, made with fresh, juicy apples.",
+        "price": 16.99,
+        "discountPercentage": 10.0,
+        "rating": 4.5,
+        "stock": 18,
+        "brand": "Homemade Delights",
+        "category": "Pies",
+        "thumbnail": "https://loremflickr.com/320/240/pie?random=2",
+        "images": [
+          "https://example.com/images/pies_1/1.jpg",
+          "https://example.com/images/pies_1/2.jpg",
+          "https://example.com/images/pies_1/3.jpg",
+          "https://example.com/thumbnails/pies_1.jpg"
+        ]
+      },
+      {
+        "id": 27,
+        "title": "Chocolate Silk Pie",
+        "description": "Indulge in the velvety smoothness of this luxurious chocolate silk pie.",
+        "price": 19.99,
+        "discountPercentage": 12.0,
+        "rating": 4.8,
+        "stock": 20,
+        "brand": "Cocoa Bliss",
+        "category": "Pies",
+        "thumbnail": "https://loremflickr.com/320/240/pie?random=3",
+        "images": [
+          "https://example.com/images/pies_2/1.jpg",
+          "https://example.com/images/pies_2/2.jpg",
+          "https://example.com/images/pies_2/3.jpg",
+          "https://example.com/thumbnails/pies_2.jpg"
+        ]
+      },
+      {
+        "id": 28,
+        "title": "Lemon Meringue Pie",
+        "description": "Experience the perfect balance of sweet and tangy with this lemon meringue pie.",
+        "price": 17.49,
+        "discountPercentage": 9.0,
+        "rating": 4.6,
+        "stock": 15,
+        "brand": "Zesty Treats",
+        "category": "Pies",
+        "thumbnail": "https://loremflickr.com/320/240/pie?random=4",
+        "images": [
+          "https://example.com/images/pies_3/1.jpg",
+          "https://example.com/images/pies_3/2.jpg",
+          "https://example.com/images/pies_3/3.jpg",
+          "https://example.com/thumbnails/pies_3.jpg"
+        ]
+      },
+      {
+        "id": 29,
+        "title": "Pecan Perfection Pie",
+        "description": "Delight in the perfection of pecans with this scrumptious pecan pie.",
+        "price": 21.99,
+        "discountPercentage": 15.0,
+        "rating": 4.7,
+        "stock": 16,
+        "brand": "Southern Sweets",
+        "category": "Pies",
+        "thumbnail": "https://loremflickr.com/320/240/pie?random=5",
+        "images": [
+          "https://example.com/images/pies_4/1.jpg",
+          "https://example.com/images/pies_4/2.jpg",
+          "https://example.com/images/pies_4/3.jpg",
+          "https://example.com/thumbnails/pies_4.jpg"
+        ]
+      },
+      {
+        "id": 30,
+        "title": "Banana Cream Pie",
+        "description": "Indulge in the creamy goodness of this delightful banana cream pie.",
+        "price": 18.99,
+        "discountPercentage": 11.0,
+        "rating": 4.4,
+        "stock": 14,
+        "brand": "Creamy Delights",
+        "category": "Pies",
+        "thumbnail": "https://loremflickr.com/320/240/pie?random=6",
+        "images": [
+          "https://example.com/images/pies_5/1.jpg",
+          "https://example.com/images/pies_5/2.jpg",
+          "https://example.com/images/pies_5/3.jpg",
+          "https://example.com/thumbnails/pies_5.jpg"
+        ]
+      },
+      {
+        "id": 31,
+        "title": "Velvet Red Celebration Cake",
+        "description": "Celebrate special moments with the rich and velvety goodness of this red velvet cake.",
+        "price": 29.99,
+        "discountPercentage": 15.0,
+        "rating": 4.8,
+        "stock": 18,
+        "brand": "Velvet Delights",
+        "category": "Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/cake?random=2",
+        "images": [
+          "https://example.com/images/cakes_1/1.jpg",
+          "https://example.com/images/cakes_1/2.jpg",
+          "https://example.com/images/cakes_1/3.jpg",
+          "https://example.com/thumbnails/cakes_1.jpg"
+        ]
+      },
+      {
+        "id": 32,
+        "title": "Chocolate Fudge Delight Cake",
+        "description": "Indulge in the fudgy delight of this chocolate masterpiece, perfect for chocolate lovers.",
+        "price": 34.99,
+        "discountPercentage": 18.0,
+        "rating": 4.9,
+        "stock": 20,
+        "brand": "Cocoa Bliss",
+        "category": "Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/cake?random=3",
+        "images": [
+          "https://example.com/images/cakes_2/1.jpg",
+          "https://example.com/images/cakes_2/2.jpg",
+          "https://example.com/images/cakes_2/3.jpg",
+          "https://example.com/thumbnails/cakes_2.jpg"
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Classic Vanilla Elegance Cake",
+        "description": "Experience the timeless elegance of a classic vanilla cake, perfect for any occasion.",
+        "price": 27.49,
+        "discountPercentage": 12.0,
+        "rating": 4.7,
+        "stock": 15,
+        "brand": "Vanilla Dreams",
+        "category": "Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/cake?random=4",
+        "images": [
+          "https://example.com/images/cakes_3/1.jpg",
+          "https://example.com/images/cakes_3/2.jpg",
+          "https://example.com/images/cakes_3/3.jpg",
+          "https://example.com/thumbnails/cakes_3.jpg"
+        ]
+      },
+      {
+        "id": 34,
+        "title": "Strawberry Bliss Celebration Cake",
+        "description": "Celebrate joyous moments with the blissful taste of strawberries in this delightful cake.",
+        "price": 31.99,
+        "discountPercentage": 16.0,
+        "rating": 4.8,
+        "stock": 16,
+        "brand": "Berry Delights",
+        "category": "Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/cake?random=5",
+        "images": [
+          "https://example.com/images/cakes_4/1.jpg",
+          "https://example.com/images/cakes_4/2.jpg",
+          "https://example.com/images/cakes_4/3.jpg",
+          "https://example.com/thumbnails/cakes_4.jpg"
+        ]
+      },
+      {
+        "id": 35,
+        "title": "Caramel Drizzle Indulgence Cake",
+        "description": "Indulge in the sweet and savory delight of this caramel drizzle masterpiece.",
+        "price": 32.99,
+        "discountPercentage": 14.0,
+        "rating": 4.7,
+        "stock": 14,
+        "brand": "Caramel Delights",
+        "category": "Cakes",
+        "thumbnail": "https://loremflickr.com/320/240/cake?random=6",
+        "images": [
+          "https://example.com/images/cakes_5/1.jpg",
+          "https://example.com/images/cakes_5/2.jpg",
+          "https://example.com/images/cakes_5/3.jpg",
+          "https://example.com/thumbnails/cakes_5.jpg"
+        ]
+      },
+      {
+        "id": 36,
+        "title": "Double Chocolate Chip Cookies",
+        "description": "Indulge in the rich and decadent flavor of these double chocolate chip cookies.",
+        "price": 9.99,
+        "discountPercentage": 5.0,
+        "rating": 4.3,
+        "stock": 18,
+        "brand": "Choco Delights",
+        "category": "Cookies",
+        "thumbnail": "https://loremflickr.com/320/240/cookie?random=2",
+        "images": [
+          "https://example.com/images/cookies_1/1.jpg",
+          "https://example.com/images/cookies_1/2.jpg",
+          "https://example.com/images/cookies_1/3.jpg",
+          "https://example.com/thumbnails/cookies_1.jpg"
+        ]
+      },
+      {
+        "id": 37,
+        "title": "Classic Peanut Butter Cookies",
+        "description": "Savor the classic taste of these peanut butter cookies, perfect for peanut lovers.",
+        "price": 8.99,
+        "discountPercentage": 4.5,
+        "rating": 4.2,
+        "stock": 20,
+        "brand": "Nutty Treats",
+        "category": "Cookies",
+        "thumbnail": "https://loremflickr.com/320/240/cookie?random=3",
+        "images": [
+          "https://example.com/images/cookies_2/1.jpg",
+          "https://example.com/images/cookies_2/2.jpg",
+          "https://example.com/images/cookies_2/3.jpg",
+          "https://example.com/thumbnails/cookies_2.jpg"
+        ]
+      },
+      {
+        "id": 38,
+        "title": "Oatmeal Raisin Delight Cookies",
+        "description": "Enjoy the delightful combination of oats and raisins in these scrumptious cookies.",
+        "price": 10.49,
+        "discountPercentage": 6.0,
+        "rating": 4.4,
+        "stock": 15,
+        "brand": "Raisin Heaven",
+        "category": "Cookies",
+        "thumbnail": "https://loremflickr.com/320/240/cookie?random=4",
+        "images": [
+          "https://example.com/images/cookies_3/1.jpg",
+          "https://example.com/images/cookies_3/2.jpg",
+          "https://example.com/images/cookies_3/3.jpg",
+          "https://example.com/thumbnails/cookies_3.jpg"
+        ]
+      },
+      {
+        "id": 39,
+        "title": "White Chocolate Macadamia Nut Cookies",
+        "description": "Indulge in the luxurious combination of white chocolate and macadamia nuts in these cookies.",
+        "price": 12.99,
+        "discountPercentage": 8.0,
+        "rating": 4.7,
+        "stock": 16,
+        "brand": "Sweet Nuts",
+        "category": "Cookies",
+        "thumbnail": "https://loremflickr.com/320/240/cookie?random=5",
+        "images": [
+          "https://example.com/images/cookies_4/1.jpg",
+          "https://example.com/images/cookies_4/2.jpg",
+          "https://example.com/images/cookies_4/3.jpg",
+          "https://example.com/thumbnails/cookies_4.jpg"
+        ]
+      },
+      {
+        "id": 40,
+        "title": "Snickerdoodle Sensation Cookies",
+        "description": "Experience the sensational cinnamon delight in these snickerdoodle cookies.",
+        "price": 11.99,
+        "discountPercentage": 7.0,
+        "rating": 4.6,
+        "stock": 14,
+        "brand": "Cinnamon Bliss",
+        "category": "Cookies",
+        "thumbnail": "https://loremflickr.com/320/240/cookie?random=6",
+        "images": [
+          "https://example.com/images/cookies_5/1.jpg",
+          "https://example.com/images/cookies_5/2.jpg",
+          "https://example.com/images/cookies_5/3.jpg",
+          "https://example.com/thumbnails/cookies_5.jpg"
+        ]
+      }
+
+
+]

@@ -1,0 +1,1 @@
+export const base_url = 'https://appecommerce-f9b47-default-rtdb.firebaseio.com/'
