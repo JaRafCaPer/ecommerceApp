@@ -29,7 +29,7 @@ export default CategoryItem
 
 const styles = StyleSheet.create({
   cardContainer: {
-      backgroundColor: colors.backgroundDark,
+      backgroundColor: colors.backgroundLight,
       padding: 20,
       margin: 10,
   },
@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'RobotoSerif_28pt_Condensed-Light',
       textTransform: 'capitalize',
-      fontSize: 15
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: colors.textDark,
   }
 })

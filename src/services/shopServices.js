@@ -17,6 +17,9 @@ export const shopApi = createApi({
         getProductById: builder.query({
             query: (id) => `products/${id}.json`
         }),
+        getOrders: builder.query({
+            query: (user) => 'orders.json'
+        }),
         getCart: builder.query({
             query: () => 'cart.json'
         }),
@@ -26,6 +29,13 @@ export const shopApi = createApi({
                 method: 'POST',
                 body: product
             })
+        }),
+        postOrder: builder.mutation({
+                query: ({...order}) => ({
+                    url: 'orders.json',
+                    method: 'POST',
+                    body: order
+                })
         }),
         updateCart: builder.mutation({
             query: (cart) => ({
@@ -48,4 +58,4 @@ export const shopApi = createApi({
         }),
     }),
 });
-export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, useGetCartQuery, useAddToCartMutation, useUpdateCartMutation, useRemoveFromCartMutation, useClearCartMutation } = shopApi;
+export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, useGetOrdersQuery, useGetCartQuery, usePostOrderMutation, useAddToCartMutation, useUpdateCartMutation, useRemoveFromCartMutation, useClearCartMutation } = shopApi;

@@ -4,17 +4,19 @@ import Card from './Card'
 import { Feather } from '@expo/vector-icons';
 
 const OrderItem = ({ order, total }) => {
+    console.log(order)
     return (
         <Card style={styles.cartItemContainer}>
-            <View >
+        
+            <View  style={styles.viewOrders}>
                 <Text style={styles.createdAt}>
-                    Creada el {new Date(order.createdAt).toLocaleString()}
+                    Creada el { Date(order.createdAt).toLocaleString()}
                 </Text>
+                <Text>User: {order.user}</Text>
+                <Text>Items: {order.cartItems.length}</Text>
                 <Text style={styles.total}>Total: ${total}</Text>
             </View>
-            <TouchableOpacity style={styles.searchIcon} onPress={null}>
-                <Feather name="search" size={24} color="black" />
-            </TouchableOpacity>
+          
         </Card>
     )
 }
@@ -22,6 +24,11 @@ const OrderItem = ({ order, total }) => {
 export default OrderItem
 
 const styles = StyleSheet.create({
+    viewOrders: {
+        flexDirection: 'col',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
     cartItemContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

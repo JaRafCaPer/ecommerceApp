@@ -1,24 +1,41 @@
-import { FlatList} from 'react-native'
-import OrderItem from '../components/OrderItem'
-import orders_data from '../data/orders_data.json'
+import { FlatList, ActivityIndicator, Text, View } from 'react-native';
+import OrderItem from '../components/OrderItem';
+import { useGetOrdersQuery } from '../services/shopServices';
 
 const OrdersScreen = () => {
-  const renderOrderItem = ({item}) => {
-    const total = item.items.reduce((accumulator, currentItem) => (
-      accumulator+= currentItem.price*currentItem.quantity
-    ),0)
-    return(
+  const { data, error, isLoading } = useGetOrdersQuery();
+
+  const renderOrderItem = ({ item }) => {
+    const total = item.total;
+
+    return (
       <OrderItem order={item} total={total} />
-    )
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
   }
 
   return (
-      <FlatList
-        data={orders_data}
-        renderItem={renderOrderItem}
-        keyExtractor={item => item.id}
-      />
-  )
-}
+    <FlatList
+      data={Object.values(data)}
+      renderItem={renderOrderItem}
+      keyExtractor={(item, index) => item.id || index.toString()}
+    />
+  );
+};
 
-export default OrdersScreen
+export default OrdersScreen;

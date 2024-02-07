@@ -1,19 +1,29 @@
-import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import { colors } from '../global/colors'
-import cart_data from '../data/cart_data.json'
 import CartItem from '../components/CartItem'
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart } from '../features/cartSlice';
+import {usePostOrderMutation} from '../services/shopServices';
 
 
-const CartScreen = () => {
-  const [total, setTotal] = useState(0)
-  useEffect(() => {
-    const total = cart_data.reduce((acc, item) =>( 
-      acc+=item.price*item.quantity
-      ), 0)
-  
-    setTotal(total)
-  }, [cart_data])
+const CartScreen = ({navigation}) => {
+
+  const dispatch = useDispatch();
+  const cartItems =useSelector(state => state.cartReducer.items);
+  const total = useSelector(state => state.cartReducer.total);
+
+  const [triggerPost, result] = usePostOrderMutation();
+
+  const confirmCart = () => {
+    triggerPost({user:'loggedUser', cartItems, total});
+    dispatch(clearCart())
+    Alert.alert('Order Confirmed', 'Your order has been placed successfully', [{text: 'OK', onPress: () => navigation.navigate('Categories')}])
+  }
+
+  const handleClearCart = () => {
+    dispatch(clearCart())
+  }
 
   const renderCartItem = ({item}) => {
     return (
@@ -26,13 +36,16 @@ const CartScreen = () => {
   return (
     <View style={styles.cartContainer}>
       <FlatList
-        data={cart_data}
+        data={cartItems}
         renderItem={renderCartItem}
         keyExtractor={item => item.id}
         />
         <View style={styles.cartConfirm}>
-        <Text style={styles.totalPrice}>Total: ${total}</Text>
-        <TouchableOpacity style={styles.confirmButton} onPress={null}>
+        <Text style={styles.totalPrice}>Total: ${total.toFixed(2)}</Text>
+        <TouchableOpacity style={styles.clearCartButton} onPress={handleClearCart}>
+          <Text style={styles.clearCartButtonText}>Clear</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.confirmButton} onPress={confirmCart}>
           <Text style={styles.confirmButtonText}>Confirm</Text>
         </TouchableOpacity>
         </View>
@@ -59,13 +72,28 @@ const styles = StyleSheet.create({
     fontFamily: 'RobotoSerif_28pt_Condensed-Bold'
   },
   confirmButton:{
-    backgroundColor: colors.primary,
+    backgroundColor: colors.textLight,
     padding:10,
     borderRadius:10,
+    width: 100,
+  },
+  clearCartButton:{
+   width: 100,
+  },
+  clearCartButtonText:{
+    fontFamily:'RobotoSerif_28pt_Condensed-Bold',
+    fontSize:16,
+    color: colors.backgroundLight,
+    backgroundColor: 'red',
+    padding:10,
+    borderRadius:10,
+    textAlign: 'center',
+    
   },
   confirmButtonText:{
     fontFamily:'RobotoSerif_28pt_Condensed-Bold',
     fontSize:16,
-    color: '#fff'
+    color: colors.textDark,
+    textAlign: 'center',
   }  
 })
