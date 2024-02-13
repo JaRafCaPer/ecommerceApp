@@ -5,7 +5,7 @@ import {useGetCategoriesQuery} from '../services/shopServices'
 
 const CategoriesScreen = ({navigation}) => {
 
-    //const categories = useSelector(state => state.shopReducer.categories);
+   
     const {data, error, isLoading} = useGetCategoriesQuery();
     const renderCategoryItem = ({item}) => (
         <CategoryItem category={item} navigation={navigation} />

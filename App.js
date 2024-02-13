@@ -4,9 +4,13 @@ import { useState } from 'react';
 import { Provider } from 'react-redux';
 import MainNavigator from './src/navigation/MainNavigator';
 import store from './src/store';
+import { init } from './src/db/index';
 
 
 export default function App() {
+  init()
+  .then(()=>console.log('Database initialized'))
+  .catch(err=>console.log('Database initialization failed', err))
 
   const [fontLoaded] = useFonts({
     'RobotoSerif_28pt_Condensed-Bold': require('./assets/fonts/RobotoSerif_28pt_Condensed-Bold.ttf'),
@@ -19,7 +23,7 @@ export default function App() {
   if (!fontLoaded) return (
     <ActivityIndicator />
   );
- 
+  
  
   return (
     <Provider store={store}>

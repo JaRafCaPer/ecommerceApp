@@ -62,7 +62,7 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.primary,
+      backgroundColor: colors.tertiary,
       justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
@@ -70,14 +70,16 @@ const styles = StyleSheet.create({
     },
     btn: {
       padding: 10,
-      backgroundColor: colors.primaryBack,
+      backgroundColor: colors.primary,
       borderRadius: 8,
-      margin: 5,
+      margin: 10,
+      width: 100,
   
     },
     btnText: {
       color: "#fff",
-      fontFamily: "RobotoSerif_28pt_Condensed-Bold"
+      fontFamily: "RobotoSerif_28pt_Condensed-Bold",
+      textAlign: 'center',
     },
     altContainer: {
       flexDirection: 'row',

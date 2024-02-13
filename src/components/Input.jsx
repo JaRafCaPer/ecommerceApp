@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '90%',
         backgroundColor: colors.backgroundLight,
-        color: "black",
+        color: colors.textDark,
         padding: 8
     },
     label:{

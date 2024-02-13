@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Alert } from 'react-native';
-import { useDispatch } from 'react-redux'; // Import useDispatch hook from react-redux
+import { useDispatch } from 'react-redux'; 
 import products_data from '../data/products_data.json';
 import { colors } from '../global/colors';
 import { addItem } from '../features/cartSlice';
@@ -8,8 +8,8 @@ import { addItem } from '../features/cartSlice';
 const ProductDetailScreen = ({ route }) => {
   const [productSelected, setProductSelected] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedQuantity, setSelectedQuantity] = useState(1); // Default quantity
-  const dispatch = useDispatch(); // Initialize dispatch function
+  const [selectedQuantity, setSelectedQuantity] = useState(1); 
+  const dispatch = useDispatch(); 
 
   const productId = route.params;
 
