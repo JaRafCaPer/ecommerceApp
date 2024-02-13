@@ -1,5 +1,4 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native'
-import { useSelector } from 'react-redux'
+import {FlatList} from 'react-native'
 import CategoryItem from '../components/CategoryItem'
 import {useGetCategoriesQuery} from '../services/shopServices'
 

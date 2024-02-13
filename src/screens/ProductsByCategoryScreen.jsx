@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native'
+import {FlatList} from 'react-native'
 import ProductItem from '../components/ProductItem'
 import { useEffect,useState } from 'react'
 import Search from '../components/Search'
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import { useGetProductsByCategoryQuery } from '../services/shopServices'
 import { ActivityIndicator } from 'react-native'
 

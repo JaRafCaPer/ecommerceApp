@@ -16,7 +16,6 @@ const LoginScreen = ({navigation}) => {
 
     const onSubmit = () => {
         triggerLogIn({email, password})
-        console.log(result)
     }
     const dispatch = useDispatch()
 

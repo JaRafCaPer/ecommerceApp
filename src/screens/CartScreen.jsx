@@ -1,7 +1,6 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import { colors } from '../global/colors'
 import CartItem from '../components/CartItem'
-import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../features/cartSlice';
 import {usePostOrderMutation} from '../services/shopServices';

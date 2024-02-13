@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from '../global/colors'
 import {AntDesign} from '@expo/vector-icons'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../features/authSlice'
 import { deleteSession } from '../db/index'
@@ -14,7 +13,6 @@ const Header = ({ title, navigation }) => {
     const onLogout = () => {
         dispatch(logout())
         const deletedSession = deleteSession(localId);
-        console.log("Teminated Session: ", deletedSession) 
     }
 
     return (
