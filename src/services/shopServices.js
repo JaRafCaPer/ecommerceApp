@@ -56,6 +56,18 @@ export const shopApi = createApi({
                 method: 'DELETE'
             })
         }),
+        putProfilePicture: builder.mutation({
+            query: ({image, localId})=>({
+                url:  `profilePictures/${localId}.json`,
+                method: 'PUT',
+                body: {
+                    image: image,
+                }
+            })
+        }),
+        getProfilePicture: builder.query({
+            query: (localId) => `profilePictures/${localId}.json` 
+        }),
     }),
 });
-export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, useGetOrdersQuery, useGetCartQuery, usePostOrderMutation, useAddToCartMutation, useUpdateCartMutation, useRemoveFromCartMutation, useClearCartMutation } = shopApi;
+export const { useGetProductsQuery, useGetProfilePictureQuery, usePutProfilePictureMutation, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, useGetOrdersQuery, useGetCartQuery, usePostOrderMutation, useAddToCartMutation, useUpdateCartMutation, useRemoveFromCartMutation, useClearCartMutation } = shopApi;

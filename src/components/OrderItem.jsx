@@ -1,16 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import React from 'react'
 import Card from './Card'
-import { Feather } from '@expo/vector-icons';
 
 const OrderItem = ({ order, total }) => {
-    console.log(order)
+    
     return (
         <Card style={styles.cartItemContainer}>
         
             <View  style={styles.viewOrders}>
                 <Text style={styles.createdAt}>
-                    Creada el { Date(order.createdAt).toLocaleString()}
+                   Created at: { Date(order.createdAt).toLocaleString()}
                 </Text>
                 <Text>User: {order.user}</Text>
                 <Text>Items: {order.cartItems.length}</Text>

@@ -2,7 +2,7 @@ import { ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { Provider } from 'react-redux';
-import TabNavigator from './src/navigation/TabNavigator';
+import MainNavigator from './src/navigation/MainNavigator';
 import store from './src/store';
 
 
@@ -19,11 +19,11 @@ export default function App() {
   if (!fontLoaded) return (
     <ActivityIndicator />
   );
-
-
+ 
+ 
   return (
     <Provider store={store}>
-      <TabNavigator/>
+      <MainNavigator/>
     </Provider>
   );
 }
