@@ -7,7 +7,7 @@ Welcome to the ecommerceApp mobile application! This app is part of the backend 
 
 <p align="center">
     <img
-    src="https://ruta/hacia/imagen.png"
+    src="https://www.piesandtacos.com/wp-content/uploads/2023/02/pastries-lemon-curd-mascarpone-5-scaled.jpg"
     alt="Imagen de la aplicación"
     width="300px"
     height="300px"
