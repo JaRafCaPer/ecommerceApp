@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Welcome to the ecommerceApp mobile application! This app is part of the backend project for an e-commerce solution developed during the CoderHouse 2023 program.
+Welcome to the e-commerce Pastry App mobile application! This app is part of the backend project for an e-commerce solution developed during the CoderHouse 2024 program.
 
 <p align="center">
     <img
@@ -17,7 +17,7 @@ Welcome to the ecommerceApp mobile application! This app is part of the backend 
 
 ## Application Overview
 
-The ecommerceApp mobile application aims to provide users with a seamless online shopping experience, offering a wide range of products to explore and purchase.
+The e-commerce app mobile application aims to provide users with a seamless online shopping experience, offering a wide range of products in pastry, and desserts, to explore and purchase.
 
 ## Application Architecture
 
@@ -34,6 +34,8 @@ The ecommerceApp mobile application aims to provide users with a seamless online
 - **Checkout Process:** Users can securely complete the checkout process using different payment methods.
 - **Order History:** Users can view their order history and check the status of current orders.
 - **Profile Management:** Users can manage their profile, update personal information, and change passwords.
+- **Device feature: Camera for taking profile pictures.
+- **Session persistence: Using SQLite for local persistence.
 
 ## Installation and Setup
 
