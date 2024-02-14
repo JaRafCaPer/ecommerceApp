@@ -11,11 +11,13 @@ const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const cartItems =useSelector(state => state.cartReducer.items);
   const total = useSelector(state => state.cartReducer.total);
+  const localId = useSelector(state => state.authReducer.localId);
 
   const [triggerPost, result] = usePostOrderMutation();
 
   const confirmCart = () => {
-    triggerPost({user:'loggedUser', cartItems, total});
+    const createdAt = new Date();
+    triggerPost({localId:localId, cartItems,createdAt: createdAt, total});
     dispatch(clearCart())
     Alert.alert('Order Confirmed', 'Your order has been placed successfully', [{text: 'OK', onPress: () => navigation.navigate('Categories')}])
   }
