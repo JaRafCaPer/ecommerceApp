@@ -81,26 +81,26 @@ npm run web
 
 ## Dependencies
 
-** @expo/webpack-config: Version ^19.0.0
-** @react-navigation/bottom-tabs: Version ^6.5.11
-** @react-navigation/native: Version ^6.1.9
-** @react-navigation/native-stack: Version ^6.9.17
-** @reduxjs/toolkit: Version ^2.0.1
-** expo: Version ~49.0.15
-** expo-file-system: Version ~15.4.5
-** expo-font: Version ~11.4.0
-** expo-image-picker: Version ~14.3.2
-** expo-sqlite: Version ^13.2.2
-** expo-status-bar: Version ~1.6.0
-** react: Version 18.2.0
-** react-dom: Version 18.2.0
-** react-native: Version 0.72.6
-** react-native-safe-area-context: Version ^4.6.3
-** react-native-screens: Version ~3.22.0
-** react-native-web: Version ~0.19.6
-** react-redux: Version ^9.0.4
-** redux-persist: Version ^6.0.0
-** Yup: Version ^1.3.3
+- **@expo/webpack-config: Version ^19.0.0
+- **@react-navigation/bottom-tabs: Version ^6.5.11
+- **@react-navigation/native: Version ^6.1.9
+- **@react-navigation/native-stack: Version ^6.9.17
+- **@reduxjs/toolkit: Version ^2.0.1
+- **expo: Version ~49.0.15
+- **expo-file-system: Version ~15.4.5
+- **expo-font: Version ~11.4.0
+- **expo-image-picker: Version ~14.3.2
+- **expo-sqlite: Version ^13.2.2
+- **expo-status-bar: Version ~1.6.0
+- **react: Version 18.2.0
+- **react-dom: Version 18.2.0
+- **react-native: Version 0.72.6
+- **react-native-safe-area-context: Version ^4.6.3
+- **react-native-screens: Version ~3.22.0
+- **react-native-web: Version ~0.19.6
+- **react-redux: Version ^9.0.4
+- **redux-persist: Version ^6.0.0
+- **Yup: Version ^1.3.3
 
 ## Development Dependencies
 
