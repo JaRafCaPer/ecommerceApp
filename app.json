@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ef798a"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -17,13 +17,16 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "icon":"./assets/icon.png", 
+      "package": "com.caballeroperezjavier.myecommerceapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "01f4d20a-03c5-4870-99dd-c7e06c383f26"
+      }
     }
   }
 }

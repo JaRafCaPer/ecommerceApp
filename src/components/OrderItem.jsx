@@ -3,7 +3,6 @@ import React from 'react';
 import Card from './Card';
 
 const OrderItem = ({ order, total }) => {
-    console.log('orders', order);
     const cartItems = order.cartItems;
     return (
         <Card style={styles.cartItemContainer}>
